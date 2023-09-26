@@ -1,14 +1,9 @@
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import DateTime
 from flask_login import UserMixin
-import os
 
-
- 
 db = SQLAlchemy()
-
 
 # User Model
 class User(db.Model, UserMixin):
@@ -39,6 +34,8 @@ class Item(db.Model):
     
     # Define a one-to-many relationship with FoodReview
     reviews = db.relationship('FoodReview', backref='item')
+
+# db.create_all()
 # Create the tables in the database
 # db = SQLAlchemy()
 

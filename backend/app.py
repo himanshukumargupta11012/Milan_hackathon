@@ -7,48 +7,25 @@ from authlib.integrations.flask_client import OAuth
 from authlib.common.security import generate_token
 
 load_dotenv(".env")
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET = os.environ['CLIENT_SECRET']
+
 app = Flask(__name__, template_folder='../frontend/html', static_folder='../frontend/static')
-db_url = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 db_url = "sqlite:///canteen.db"
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
 db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 oauth = OAuth(app)
-CLIENT_ID = os.environ['CLIENT_ID']
-CLIENT_SECRET = os.environ['CLIENT_SECRET']
-with app.app_context(): 
-    db.create_all()
-# db.create_all(app.app_context())
-# DATA = {
-#         'response_type':"code", # this tells the auth server that we are invoking authorization workflow
-#         'redirect_uri':"https://localhost:5000/google/auth", # redirect URI https://console.developers.google.com/apis/credentials
-#         'scope': 'https://www.googleapis.com/auth/userinfo.email', # resource we are trying to access through Google API
-#         'client_id':CLIENT_ID, # client ID from https://console.developers.google.com/apis/credentials
-#         'prompt':'consent'} # adds a consent screen
- 
-# URL_DICT = {
-#         'google_oauth' : 'https://accounts.google.com/o/oauth2/v2/auth', # Google OAuth URI
-#         'token_gen' : 'https://oauth2.googleapis.com/token', # URI to generate token to access Google API
-#         'get_user_info' : 'https://www.googleapis.com/oauth2/v3/userinfo' # URI to get the user info
-#         }
- 
-# Create a Sign in URI
-# CLIENT = oauth2.WebApplicationClient(CLIENT_ID)
-# REQ_URI = CLIENT.prepare_request_uri(
-#     uri=URL_DICT['google_oauth'],
-#     redirect_uri=DATA['redirect_uri'],
-#     scope=DATA['scope'],
-    # prompt=DATA['prompt'])
 
-# def authenticated(f):
-#     def innerfunction(*args, **kwargs):
-#         if current_user.is_authenticated:
-#             return f(*args, **kwargs)
-#         return abort(403)
-#     return innerfunction
+app.app_context().push()
+db.create_all()
 
+item_list = [item.name for item in Item.query.all()]
+print(item_list)
 @login_manager.user_loader
 def load_user(id):
     return User.query.filter_by(id=id).first()
