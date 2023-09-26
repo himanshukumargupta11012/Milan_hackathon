@@ -21,7 +21,7 @@
     <div class="content">
         <section class="main-content">
             <div class="search-container">
-                <input type="text" placeholder="Search for your canteen...">
+                <input type="text" placeholder="Search for your canteen..." id="search_item">
                 <button class="search-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -93,5 +93,35 @@
         <p>&copy; 2023 Your Website</p>
     </footer>
 </body>
+<script type="text/javascript">
+    search_item = document.getElementById("search_item")
+
+    var item_list = {{ item_list | safe}}
+
+
+    function jaccardSimilarity(word1, word2) {
+            const set1 = new Set(word1.split(''));
+            const set2 = new Set(word2.split(''));
+
+            const intersection = new Set([...set1].filter(char => set2.has(char)));
+            const union = new Set([...set1, ...set2]);
+
+            return intersection.size / union.size;
+        }
+
+    search_item.addEventListener("keyup", ()=>{
+        
+        similar_arr = []
+        for(let i = 0; i < item_list.length; i++) {
+            similarity = jaccardSimilarity(item_list[i], search_item.value)
+            if (similarity > .5) {
+                similar_arr.push(item_list[i])
+            }
+        }
+    })
+    
+
+</script>
+<!-- <script src="../static/scripts/recommend.js"></script> -->
 
 </html>
