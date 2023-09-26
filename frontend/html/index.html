@@ -1,11 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <link rel="stylesheet" href="./../static/home.css">
+    <title>Your Website</title>
 </head>
+
 <body>
-    Hello World
+    <header class="flex-header">
+        <a href="review"><button class="review-button">Write a Review</button></a>
+        <button class="review-button">Login</button>
+        <button class="review-button">Sign Up</button>
+        <div class="avatar">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU"
+                alt="Avatar">
+        </div>
+    </header>
+    <div class="content">
+        <section class="main-content">
+            <div class="search-container">
+                <input type="text" placeholder="Search for your canteen...">
+                <button class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.76-2.86-5-5.64-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.78 2.58 5.17 5.34 5.64a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25a1 1 0 0 0 1.41-1.41L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                    </svg>
+                </button>
+            </div>
+            <div class="response">
+                <article class="blog-post">
+                    <h1 class="post-title">Lorem Ipsum Dolor Sit Amet</h1>
+
+                    <div class="post-content">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum scelerisque imperdiet
+                            fermentum. Curabitur in ligula vitae lectus rhoncus tristique. Nullam efficitur, erat nec
+                            convallis cursus, justo purus feugiat erat, eu cursus nisl eros in justo.
+                        </p>
+
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU" alt="Image description">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU" alt="Image description">
+
+                        <p>
+                            Sed vulputate, massa nec ultricies tristique, elit est eleifend velit, nec convallis massa
+                            nunc id nisi. Proin sollicitudin nec justo vel bibendum. Morbi efficitur justo ut est
+                            cursus, vitae lobortis ligula lacinia. Vestibulum nec metus vehicula, blandit odio a, dictum
+                            sapien.
+                        </p>
+
+                        <p>
+                            Integer euismod sapien vel ipsum scelerisque, a interdum elit tristique. Sed vulputate
+                            ligula a neque volutpat, ut rhoncus justo pellentesque. Aenean volutpat ligula eget ultrices
+                            cursus. Nullam auctor varius purus, sit amet cursus ex vestibulum in.
+                        </p>
+                    </div>
+                </article>
+
+
+                <!-- for top queries -->
+                <!-- <section class="hot-topics">
+                    <h2>Top Queries</h2>
+                    <ul>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis quibusdam repellendus voluptatem qui error, numquam at possimus amet totam recusandae laboriosam quia! Debitis, maiores voluptatibus ipsa dolorum ipsam totam dicta temporibus inventore quis illum asperiores reiciendis nihil qui saepe iste dignissimos error consequuntur. Sed voluptas nesciunt soluta modi qui laborum!</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis quibusdam repellendus voluptatem qui error, numquam at possimus amet totam recusandae laboriosam quia! Debitis, maiores voluptatibus ipsa dolorum ipsam totam dicta temporibus inventore quis illum asperiores reiciendis nihil qui saepe iste dignissimos error consequuntur. Sed voluptas nesciunt soluta modi qui laborum!</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis quibusdam repellendus voluptatem qui error, numquam at possimus amet totam recusandae laboriosam quia! Debitis, maiores voluptatibus ipsa dolorum ipsam totam dicta temporibus inventore quis illum asperiores reiciendis nihil qui saepe iste dignissimos error consequuntur. Sed voluptas nesciunt soluta modi qui laborum!</li>
+                        
+                    </ul>
+                </section> -->
+            </div>
+        </section>
+        <section class="hot-topics">
+            <h2>Hot Topics</h2>
+            <ul>
+                <li>Non-veg Noodles</li>
+                <li>Veg Noodles</li>
+                <li>Maggi</li>
+                <li>Panipuri</li>
+                <li>Sandwich</li>
+                <li>Chiken Roll</li>
+                <li>Veg Roll</li>
+                <li>Coffee</li>
+                <li>Ice tea</li>
+                <li>Tea</li>
+                <li>Fruit Juice</li>
+            </ul>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2023 Your Website</p>
+    </footer>
 </body>
+
 </html>
