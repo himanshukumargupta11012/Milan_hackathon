@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import DateTime
 from flask_login import UserMixin
 
@@ -23,7 +23,7 @@ class FoodReview(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     sentiment_insights = db.Column(db.Float)  # Integer for sentiment insights
-    timestamp = db.Column(DateTime, default=datetime.utcnow)
+    timestamp = db.Column(DateTime, default=datetime.utcnow()-timedelta(hours=5, minutes=30))
 
 # Item Model
 class Item(db.Model):

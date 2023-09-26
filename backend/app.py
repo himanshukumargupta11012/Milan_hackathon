@@ -7,7 +7,7 @@ from db_models import *
 from flask_login import login_user, LoginManager, current_user, logout_user
 from authlib.integrations.flask_client import OAuth
 from authlib.common.security import generate_token
-
+import numpy as np
 load_dotenv(".env")
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
@@ -88,16 +88,18 @@ def get_review():
         return render_template('review.html')
     elif request.method == 'POST': 
         user_id = current_user.id
-        item_name = int(request.form['item_name'])
-        item_id=Item.query.filter_by(name=item_name).first()
+        item_name = request.form['contentItem']
+        print(item_name)
+        item_id=Item.query.filter_by(name=item_name).first().id
         review = request.form['review']
-        rating = int(request.form['rating'])
+        # rating = int(request.form['rating'])
+        rating = np.random.randint(3, 5)
         # sentiment_insights = RunModelSentimentAnalysis(review)
         timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
         newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None, timestamp=timestamp)
         db.session.add(newReview)
         db.session.commit()
-        return render_template('index.html')
+        return render_template('index.html', user=current_user, item_list=list_of_items)
 
 def ml_model():
     pass
