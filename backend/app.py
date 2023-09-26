@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import Flask, abort, render_template, redirect, url_for, request, jsonify, session
 from dotenv import load_dotenv
 import os, requests
@@ -24,8 +25,7 @@ oauth = OAuth(app)
 app.app_context().push()
 db.create_all()
 
-item_list = [item.name for item in Item.query.all()]
-print(item_list)
+# print(item_list)
 @login_manager.user_loader
 def load_user(id):
     return User.query.filter_by(id=id).first()
@@ -77,10 +77,18 @@ def logout():
 def get_review():
     if request.method=='GET':
         return render_template('review.html')
-    else:
-        feedback = request.form.get('feedback')
-        # add to database
-        return redirect(url_for('index'))
+    elif request.method == 'POST': 
+        user_id = current_user.id
+        item_name = int(request.form['item_name'])
+        item_id=Item.query.filter_by(name=item_name).first()
+        review = request.form['review']
+        rating = int(request.form['rating'])
+        # sentiment_insights = RunModelSentimentAnalysis(review)
+        timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
+        newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None, timestamp=timestamp)
+        db.session.add(newReview)
+        db.session.commit()
+        return render_template('index.html')
 
 def ml_model():
     pass

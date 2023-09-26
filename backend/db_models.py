@@ -31,6 +31,8 @@ class Item(db.Model):
     name = db.Column(db.String(100), nullable=False)
     average_rating = db.Column(db.Float) 
     item_image_url = db.Column(db.String(255)) 
+    positive_feedback = db.Column(db.String(255))
+    negative_feedback = db.Column(db.String(255))
     
     # Define a one-to-many relationship with FoodReview
     reviews = db.relationship('FoodReview', backref='item')
