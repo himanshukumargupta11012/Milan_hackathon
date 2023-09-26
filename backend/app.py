@@ -44,6 +44,11 @@ def login():
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('index'))
+    
+@app.route('/review')
+def review():
+    return render_template('review.html')
+
 
 @app.route('/logout')
 def logout():
