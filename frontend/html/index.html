@@ -25,7 +25,7 @@
         <section class="main-content">
             <div class="search-container">
                 <input type="text" placeholder="Search for your canteen..." id="search_item">
-                <button class="search-button">
+                <button class="search-button" onclick="search()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path
@@ -33,10 +33,15 @@
                     </svg>
                 </button>
             </div>
+            <div class="dropdown" id="searchDropdown">
+                <div class="dropdown-content" id="searchResults">
+                    <!-- Search results will be displayed here -->
+                </div>
+            </div>
             <div class="response">
+                
                 <article class="blog-post">
                     <h1 class="post-title">Lorem Ipsum Dolor Sit Amet</h1>
-
                     <div class="post-content">
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum scelerisque imperdiet
@@ -44,8 +49,10 @@
                             convallis cursus, justo purus feugiat erat, eu cursus nisl eros in justo.
                         </p>
 
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU" alt="Image description">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU" alt="Image description">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU"
+                            alt="Image description">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU"
+                            alt="Image description">
 
                         <p>
                             Sed vulputate, massa nec ultricies tristique, elit est eleifend velit, nec convallis massa
@@ -127,26 +134,81 @@
 
 
     function jaccardSimilarity(word1, word2) {
-            const set1 = new Set(word1.split(''));
-            const set2 = new Set(word2.split(''));
+        const set1 = new Set(word1.split(''));
+        const set2 = new Set(word2.split(''));
 
-            const intersection = new Set([...set1].filter(char => set2.has(char)));
-            const union = new Set([...set1, ...set2]);
+        const intersection = new Set([...set1].filter(char => set2.has(char)));
+        const union = new Set([...set1, ...set2]);
 
-            return intersection.size / union.size;
-        }
+        return intersection.size / union.size;
+    }
 
-    search_item.addEventListener("keyup", ()=>{
-        
-        similar_arr = []
-        for(let i = 0; i < item_list.length; i++) {
+
+    data = []
+    search_item.addEventListener("keyup", () => {
+
+
+        for (let i = 0; i < item_list.length; i++) {
             similarity = jaccardSimilarity(item_list[i], search_item.value)
             if (similarity > .5) {
-                similar_arr.push(item_list[i])
+                data.push(item_list[i])
             }
         }
+        const searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = ""
+        if (search_item.value == "") {
+            searchResults.style.display = "none"
+            data = []
+            return
+        }
+        if (data.length > 0) {
+            data.forEach(item => {
+                const result = document.createElement("a");
+                result.textContent = item;
+                searchResults.appendChild(result);
+            });
+            searchResults.style.display = "block"
+        } else {
+            searchResults.style.display = "none"
+        }
     })
-    
+
+    //     const data = [
+    //     "Modeling",
+    //     "Simulation",
+    //     "Machine Learning",
+    //     "Control Systems",
+    //     "Artificial Intelligence",
+    //     "Reinforcement Learning",
+    //     "Optimization"
+    //     // Add more items as needed
+    // ];
+
+    function search() {
+        const searchTerm = document.getElementById("search_item").value.toLowerCase();
+        const searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = ""; // Clear previous results
+        if (searchTerm == "") {
+            searchResults.style.display = "none"
+            return
+        }
+        const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
+
+        if (filteredData.length === 0) {
+            const noResults = document.createElement("a");
+            noResults.textContent = "No results found.";
+            searchResults.appendChild(noResults);
+        } else {
+            filteredData.forEach(item => {
+                const result = document.createElement("a");
+                result.textContent = item;
+                searchResults.appendChild(result);
+            });
+            searchResults.style.display = "block"
+        }
+    }
+
+
 
 </script>
 <!-- <script src="../static/scripts/recommend.js"></script> -->
