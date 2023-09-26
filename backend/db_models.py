@@ -2,19 +2,20 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import DateTime
+from flask_login import UserMixin
+import os
 
-# app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/database_name'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost:5432/milan'
+
  
 db = SQLAlchemy()
 
 
 # User Model
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     name = db.Column(db.String(80), nullable=True)
+    profile_url = db.Column(db.String(255))
     
     # Define a one-to-many relationship with FoodReview
     reviews = db.relationship('FoodReview', backref='user', lazy=True)
@@ -37,10 +38,8 @@ class Item(db.Model):
     item_image_url = db.Column(db.String(255)) 
     
     # Define a one-to-many relationship with FoodReview
-    reviews = db.relationship('FoodReview', backref='item', lazy=True)
-
+    reviews = db.relationship('FoodReview', backref='item')
 # Create the tables in the database
-
 # db = SQLAlchemy()
 
 # table 1 user

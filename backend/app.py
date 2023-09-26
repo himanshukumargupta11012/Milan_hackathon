@@ -6,19 +6,20 @@ from flask_login import login_user, LoginManager, current_user, logout_user
 from authlib.integrations.flask_client import OAuth
 from authlib.common.security import generate_token
 
-app = Flask(__name__, template_folder='../frontend/html', static_folder='../frontend/static')
 load_dotenv(".env")
-db_url = f"sqlite:///canteen.db"
-
+app = Flask(__name__, template_folder='../frontend/html', static_folder='../frontend/static')
+db_url = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+db_url = "sqlite:///canteen.db"
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 oauth = OAuth(app)
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
+with app.app_context(): 
+    db.create_all()
 # db.create_all(app.app_context())
 # DATA = {
 #         'response_type':"code", # this tells the auth server that we are invoking authorization workflow
@@ -70,7 +71,6 @@ def login():
         }
     )
     redirect_uri = url_for('google_auth', _external=True)
-    print(redirect_uri)
     session['nonce'] = generate_token()
     return oauth.google.authorize_redirect(redirect_uri, nonce=session['nonce'])
 
@@ -80,6 +80,10 @@ def google_auth():
     user = oauth.google.parse_id_token(token, nonce=session['nonce'])
     session['user'] = user
     usr = User.query.filter_by(email=user['email']).first()
+    if usr is None:
+        usr = User(email=user['email'], name=user['name'], profile_url=user['picture'])
+        db.session.add(usr)
+        db.session.commit()
     login_user(usr, remember=True)
     print(" Google User ", user)
     print(current_user.is_authenticated)
@@ -91,10 +95,10 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/feedback', methods=['GET', 'POST'])
-def get_feedback():
+@app.route('/review', methods=['GET', 'POST'])
+def get_review():
     if request.method=='GET':
-        return render_template('feedback.html')
+        return render_template('review.html')
     else:
         feedback = request.form.get('feedback')
         # add to database
