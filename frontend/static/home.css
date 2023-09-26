@@ -64,6 +64,22 @@ body {
     padding: 1rem;
     height: calc(100vh - 140px);
   }
+
+  @media (max-width: 776px) {
+    .content {
+      flex-direction: column;
+    }
+    .hot-topics{
+      overflow-y: initial;
+    }
+  }
+  @media (max-width: 776px) {
+    .search-container{
+      width: 85vw;
+      display:flex;
+      justify-content: center;
+    }
+  }
   
   .main-content {
     flex: 1;
