@@ -1,6 +1,6 @@
 from flask import Flask, abort, render_template, redirect, url_for, request, jsonify, session
 from dotenv import load_dotenv
-import os, requests, json
+import os
 from db_models import *
 from flask_login import login_user, LoginManager, current_user, logout_user
 from authlib.integrations.flask_client import OAuth
