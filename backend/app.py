@@ -89,7 +89,6 @@ def get_review():
     elif request.method == 'POST': 
         user_id = current_user.id
         item_name = request.form['contentItem']
-        print(item_name)
         item_id=Item.query.filter_by(name=item_name).first().id
         review = request.form['review']
         # rating = int(request.form['rating'])
