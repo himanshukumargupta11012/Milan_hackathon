@@ -1,13 +1,13 @@
 from flask import Flask, abort, render_template, redirect, url_for, request, jsonify
 from dotenv import load_dotenv
-import os
+import os, dotenv
 from db_model import *
 from flask_login import login_user, LoginManager, current_user, logout_user
 
 load_dotenv()
 
-app = Flask(__name__)
-
+app = Flask(__name__, template_folder='../frontend/html', static_folder='../frontend/static')
+files = dotenv.load_dotenv(".env")
 db_url = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
@@ -23,6 +23,10 @@ login_manager.init_app(app)
 #             return f(*args, **kwargs)
 #         return abort(403)
 #     return innerfunction
+
+@login_manager.user_loader
+def load_user(id):
+    return Users.query.filter_by(id=id).first()
 
 @app.route('/')
 def index():
