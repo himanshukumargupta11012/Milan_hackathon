@@ -1,4 +1,5 @@
 from datetime import timedelta
+from functools import wraps
 from flask import Flask, abort, render_template, redirect, url_for, request, jsonify, session
 from dotenv import load_dotenv
 import os, requests
@@ -24,6 +25,16 @@ oauth = OAuth(app)
 
 app.app_context().push()
 db.create_all()
+
+def require_login(f):
+    print("require_login")
+    @wraps(f)
+    def innerfunction(*args, **kwargs):
+        if current_user.is_authenticated:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('login'))
+    return innerfunction
 
 # print(item_list)
 @login_manager.user_loader
@@ -62,18 +73,16 @@ def google_auth():
         db.session.add(usr)
         db.session.commit()
     login_user(usr, remember=True)
-    print(" Google User ", user)
-    print(current_user.is_authenticated)
     return redirect('/')
 
 
 @app.route('/logout')
 def logout():
     logout_user()
-    print("Logged out")
     return redirect(url_for('index'))
 
 @app.route('/review', methods=['GET', 'POST'])
+@require_login
 def get_review():
     if request.method=='GET':
         return render_template('review.html')
