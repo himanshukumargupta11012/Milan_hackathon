@@ -56,7 +56,7 @@ def load_user(id):
 list_of_items = ["tea", "coffee", "veg noodles", "non-veg noodles"]
 @app.route('/')
 def index():
-    return render_template('index.html', item_list=list_of_items)
+    return render_template('index.html', item_list=list_of_items, user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -93,6 +93,7 @@ def google_auth():
 @app.route('/logout')
 def logout():
     logout_user()
+    print("Logged out")
     return redirect(url_for('index'))
 
 @app.route('/review', methods=['GET', 'POST'])

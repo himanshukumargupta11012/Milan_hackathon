@@ -11,12 +11,15 @@
 <body>
     <header class="flex-header">
         <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
-        <button class="review-button">Login</button>
-        <button class="review-button">Sign Up</button>
+        {% if user.is_authenticated %}
+        <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
         <div class="avatar">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU"
+            <img src={{user.profile_url}}
                 alt="Avatar">
         </div>
+        {% else %}
+        <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
+        {% endif %}
     </header>
     <div class="content">
         <section class="main-content">
