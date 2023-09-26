@@ -1,6 +1,6 @@
 from flask import Flask, abort, render_template, redirect, url_for, request, jsonify, session
 from dotenv import load_dotenv
-import os, requests, json
+import os, requests
 from db_models import *
 from flask_login import login_user, LoginManager, current_user, logout_user
 from authlib.integrations.flask_client import OAuth
@@ -52,9 +52,10 @@ CLIENT_SECRET = os.environ['CLIENT_SECRET']
 def load_user(id):
     return User.query.filter_by(id=id).first()
 
+list_of_items = ["tea", "coffee", "veg noodles", "non-veg noodles"]
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', item_list=list_of_items)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
