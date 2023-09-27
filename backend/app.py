@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import timedelta
 from functools import wraps
 from flask import Flask, abort, render_template, redirect, url_for, request, jsonify, session
@@ -122,13 +123,14 @@ def search_result():
     data = request.get_json()
     item_name = data[0]['item_name'].title()
     item = Item.query.filter_by(name=item_name).first()
-    avg = get_average_rating(item.id)
+    avg =  average_rating_window(item.id,32)
     result = [avg, item.positive_feedback, item.negative_feedback]
     return jsonify(result)
 
 @app.route('/')
 def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
+    ItemPage(1)
     return render_template('index.html', item_list=list_of_items, user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -198,6 +200,60 @@ def get_average_rating(item_id):
     return average_rating
 
 
+def average_rating_window(item_id, window_size):
+    # Query the database to get the average rating for the specified item
+    ratings = (
+        db.session.query(FoodReview.rating, FoodReview.timestamp)
+        .filter(FoodReview.item_id == item_id)
+        .filter(FoodReview.timestamp > datetime.utcnow()-timedelta(hours=5, minutes=30)-timedelta(days=window_size)).all()
+    )
+    ratings = [[rating.timestamp.date(), rating.rating] for rating in ratings]
+    
+    # sort ratings by date
+    ratings = sorted(ratings, key=lambda x: x[0])
+    
+    # create this into a list of average ratings per day for the past 30 days
+    rating_list = np.zeros(window_size+1)
+    j = 0
+    for i in range(window_size,0,-1):
+        date_required = (datetime.utcnow()-timedelta(hours=5, minutes=30)-timedelta(days=i)).date()
+        count=0
+        while j<len(ratings) and ratings[j][0] == date_required:
+            rating_list[i] += ratings[j][1]
+            j += 1
+            count += 1
+        if count!=0:
+            rating_list[i] /= count
+    
+    rating_list = rating_list[::-1]
+    rating_list = rating_list[:-1]
+    
+    # generate a moving average of the ratings for 15 days from the current day
+    # print(rating_list)
+    final_list = []
+    k = 0
+    sum = 0
+    count = 0
+    for i in range(0,window_size//2):
+        if rating_list[k] != 0:
+            sum += rating_list[k]
+            count += 1
+        k += 1
+    j = 0
+    while k<len(rating_list):
+        if rating_list[k] != 0:
+            sum += rating_list[k]
+            count += 1
+        k += 1
+        final_list.append(sum/count)
+        if rating_list[j] != 0:
+            sum -= rating_list[j]
+            count -= 1
+        j += 1
+    # print(final_list, len(final_list),j,k)
+    return final_list
+
+
 def latest_reviews(item_id,topNum):
     # Query the database to get the top 5 reviews for the specified item
     top_reviews = (
@@ -248,6 +304,44 @@ def top_reviews(item_id,topNum):
         })
 
     return top_reviews_list
+
+
+def ItemPage(item_id):
+
+    """Calculates the daily average rating and number of ratings for an item_id along wiht top reviews, lates reviews, and rating average.
+
+    Args:
+        item_id (int): The item_id to calculate the daily average rating and
+            number of ratings for.
+
+    Returns:
+        list[list[float]]: A 2D array with the daily average rating and number
+            of ratings for the item_id. Each sub-array contains the following
+            elements:
+
+                [0]: The date.
+                [1]: The average rating.
+                [2]: The number of ratings.
+    """
+    topReviews=top_reviews(item_id,5)
+    latestReviews=latest_reviews(item_id,5) 
+    avg_rating=get_average_rating(item_id)
+    # reviews = FoodReview.query.filter_by(item_id=item_id).all()
+    # grouped_reviews = defaultdict(list)
+    # for review in reviews:
+    #     grouped_reviews[review.timestamp.date()].append(review)
+    # print(grouped_reviews)
+    # l = average_rating_window(item_id, 32)
+    # print(len(l),l )
+    daily_average_ratings = average_rating_window(item_id, 32)
+    # for date, reviews in grouped_reviews.items():
+    #     average_rating = sum(review.rating for review in reviews) / len(reviews)
+    #     number_of_ratings = len(reviews)
+    #     daily_average_ratings[date]=average_rating
+    # daily_average_ratings = sort(daily_average_ratings)
+    final_data=[daily_average_ratings,topReviews ,latestReviews ,avg_rating]
+    # print(final_data)
+    return jsonify(data=final_data)
 
 def ml_model():
     pass
