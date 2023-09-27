@@ -49,32 +49,30 @@
                     <!-- Search results will be displayed here -->
                 </div>
             </div>
-
+            <div style="width: 100%;">
             <!-- canva for drawing the graphs -->
             <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
-                <div style="display: flex; flex-wrap: wrap;">
-                    <div class="chart-container" style="position: relative;  width: 500px;">
+                <div style="display: flex; flex-wrap: wrap;justify-content: center;">
+                    <div class="chart-container" style="width: 65%;">
                         <canvas id="lineplot"></canvas>
                     </div>
-                    <div class="chart-container" style="position: relative;  width: 500px;">
-                        <canvas id="myPieChart" width="200" height="200"></canvas>
+                    <div class="chart-container" style="width: 20rem;">
+                        <canvas id="myPieChart"></canvas>
                     </div>
                 </div>
-
-
-                <div class="hidden justify-evenly w-full m-2 mg:m-10 h-[300px] overflow-y-scroll border-4 border-gray-100 py-5"
-                    id="review_list">
-
-                    <div id="positive_review_list" class="list-none">
-                        <h2 class="text-xl">Positive Feedback</h2>
-                    </div>
-
-                    <div id="negative_review_list" class="list-none">
-                        <h2 class="text-xl">Negative Feedback</h2>
-                    </div>
-                </div>
-
             </div>
+            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5" style="width: 97%; overflow-y: auto;"
+                id="review_list">
+
+                <div id="positive_review_list" class="list-none">
+                    <h2 class="text-xl">Positive Feedback</h2>
+                </div>
+
+                <div id="negative_review_list" class="list-none">
+                    <h2 class="text-xl">Negative Feedback</h2>
+                </div>
+            </div>
+        </div>
 
         </section>
         <section style="flex:1.4;" class="sidebar">
@@ -157,7 +155,7 @@
         if (item_list.indexOf(searchTerm) === -1) {
             showAlert("Item not present")
         }
-        
+
         $.ajax({
             type: "POST",
             url: "/search",
@@ -194,14 +192,14 @@
                 positive_list.innerHTML = '';
                 negative_list.innerHTML = '';
                 for (let i = 0; i < positive_reviews.length; i++) {
-                
+
                     li = document.createElement('li')
                     li.textContent = positive_reviews[i]
                     positive_list.appendChild(li)
                 }
 
                 for (let i = 0; i < negative_reviews.length; i++) {
-                    
+
 
                     li = document.createElement('li')
                     li.textContent = negative_reviews[i]
