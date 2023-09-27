@@ -206,7 +206,7 @@ def average_rating_window(item_id, window_size):
     ratings = (
         db.session.query(FoodReview.rating, FoodReview.timestamp)
         .filter(FoodReview.item_id == item_id)
-        .filter(FoodReview.timestamp > datetime.utcnow()-timedelta(hours=5, minutes=30)-timedelta(days=window_size)).all()
+        .filter(FoodReview.timestamp > datetime.utcnow()+timedelta(hours=5, minutes=30)-timedelta(days=window_size)).all()
     )
     ratings = [[rating.timestamp.date(), rating.rating] for rating in ratings]
     
@@ -217,7 +217,7 @@ def average_rating_window(item_id, window_size):
     rating_list = np.zeros(window_size+1)
     j = 0
     for i in range(window_size,0,-1):
-        date_required = (datetime.utcnow()-timedelta(hours=5, minutes=30)-timedelta(days=i)).date()
+        date_required = (datetime.utcnow()+timedelta(hours=5, minutes=30)-timedelta(days=i)).date()
         count=0
         while j<len(ratings) and ratings[j][0] == date_required:
             rating_list[i] += ratings[j][1]
@@ -285,7 +285,7 @@ def top_items_this_week():
     items = []
     # write a query to make a list of items with the highest average rating in the past week
     all_items = Item.query.all()
-    reviews = FoodReview.query.filter(FoodReview.timestamp > datetime.utcnow()-timedelta(hours=5, minutes=30)-timedelta(days=7)).all()
+    reviews = FoodReview.query.filter(FoodReview.timestamp > datetime.utcnow()+timedelta(hours=5, minutes=30)-timedelta(days=7)).all()
     items_avg = np.zeros(len(all_items))
     count_list = np.zeros(len(all_items))
     for review in reviews:
