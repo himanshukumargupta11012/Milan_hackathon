@@ -18,64 +18,6 @@ from scipy.sparse.linalg import svds
 from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
 
-
-rating = torch.tensor([1, 2, 3, 4, 5])
-
-# sentiment rating model
-pipe = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
-tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-
-
-# aspect based sentiment analysis model
-triplet_extractor = ASTE.AspectSentimentTripletExtractor(
-    checkpoint="english"
-)
-
-
-num_users = User.query.count()
-num_items = Item.query.count()
-top_n = 5
-item_list = [item.name for item in Item.query.all()]
-
-reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
-
-
-ratings = FoodReview.query.all()
-# Create a DataFrame with the desired fields
-ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
-ratings_data = ratings_data.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
-
-unique_items = ratings_data['itemId'].unique()
-item_name_mapping = {item_id: item for item_id, item in enumerate(item_list, start=1)}
-# ratings_data['itemId'] = ratings_data['Item'].map(item_id_mapping)
-# item_name_mapping = {item_id: item_name for item_name, item_id in item_id_mapping.items()}
-
-# Initialize and train the model with all data
-model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
-train_epocs(model, ratings_data, epochs=40, lr=0.01, wd=1e-6, unsqueeze=True)
-
-
-# Save the trained model to a file
-torch.save(model.state_dict(), 'recommendation_model.pth')
-# Load the saved model
-loaded_model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
-loaded_model.load_state_dict(torch.load('recommendation_model.pth'))
-
-# Set the model to evaluation mode
-loaded_model.eval()
-
-candidate_set = create_candidate_set(ratings_data, num_users, num_items, item_name_mapping)
-predicted_ratings_df = predict_ratings_for_candidate_set(loaded_model, candidate_set, item_name_mapping)
-
-user_id_to_recommend = 3
-
-user_recommendations = recommend_items_for_user(loaded_model, user_id_to_recommend, predicted_ratings_df, top_n)
-
-recommend_item = user_recommendations.iloc[:, 1].values
-print(recommend_item)
-
-
 load_dotenv(".env")
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
@@ -93,11 +35,6 @@ oauth = OAuth(app)
 
 app.app_context().push()
 db.create_all()
-
-# sentiment rating model
-pipe = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
-tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
 
 
 # aspect based sentiment analysis model
@@ -129,7 +66,7 @@ item_name_mapping = {item_id: item for item_id, item in enumerate(item_list, sta
 
 # Initialize and train the model with all data
 model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
-train_epocs(model, ratings_data, epochs=40, lr=0.01, wd=1e-6, unsqueeze=True)
+# train_epocs(model, ratings_data, epochs=40, lr=0.01, wd=1e-6, unsqueeze=True)
 
 
 # Save the trained model to a file
@@ -150,6 +87,12 @@ user_recommendations = recommend_items_for_user(loaded_model, user_id_to_recomme
 
 recommend_item = user_recommendations.iloc[:, 1].values
 print(recommend_item)
+
+
+# aspect based sentiment analysis model
+triplet_extractor = ASTE.AspectSentimentTripletExtractor(
+    checkpoint="english"
+)
 
 def require_login(f):
     @wraps(f)
