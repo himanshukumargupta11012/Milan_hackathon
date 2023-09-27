@@ -7,6 +7,8 @@ from db_models import *
 from flask_login import login_user, LoginManager, current_user, logout_user
 from authlib.integrations.flask_client import OAuth
 from authlib.common.security import generate_token
+import numpy as np
+
 # from pyabsa import AspectSentimentTripletExtraction as ASTE
 # import numpy as  np
 
@@ -15,7 +17,6 @@ from authlib.common.security import generate_token
 # )
 
 # print(triplet_extractor.predict("maggi is good"))
-
 
 load_dotenv(".env")
 CLIENT_ID = os.environ['CLIENT_ID']
@@ -131,7 +132,6 @@ def login():
     )
     redirect_uri = url_for('google_auth', _external=True)
     session['nonce'] = generate_token()
-    print(redirect_uri)
     return oauth.google.authorize_redirect(redirect_uri, nonce=session['nonce'])
 
 @app.route('/google/auth')
@@ -171,7 +171,6 @@ def get_review():
         db.session.add(newReview)
         db.session.commit()
         return render_template('index.html', user=current_user, item_list=list_of_items)
-
 
 
 

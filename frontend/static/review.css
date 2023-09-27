@@ -80,4 +80,35 @@ body {
     color: #333;
     margin-bottom: 10px;
   }
+<<<<<<< HEAD
   
+=======
+  
+
+  .stars {
+    display: inline-block;
+    margin-top: 10px;
+    display: inline-flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .stars input[type="radio"] {
+    display: none;
+  }
+
+  .stars label {
+    font-size: 25px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .stars label:before {
+    content: '\2605'; /* Unicode character for a star */
+  }
+
+  .stars input[type="radio"]:checked ~ label:before {
+    content: '\2605'; /* Unicode character for a filled star */
+    color: gold;
+  }
+>>>>>>> ecafb6ece771022760ead30cbc11ccc4414e653d
