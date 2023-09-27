@@ -1,13 +1,6 @@
-<<<<<<< HEAD
 venv*
 .env
 __pycache__
 client_secret.json
 checkpoints
-=======
-venv
-.env
-__pycache__
-client_secret.json
-```
->>>>>>> ecafb6ece771022760ead30cbc11ccc4414e653d
+backend/model

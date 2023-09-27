@@ -84,17 +84,9 @@
             <div class="hot-topics flex-col gap-y-2">
                 <ul>
                     <h2>Recommended for you</h2>
-                    <li>Non-veg Noodles</li>
-                    <li>Veg Noodles</li>
-                    <li>Maggi</li>
-                    <li>Panipuri</li>
-                    <li>Sandwich</li>
-                    <li>Chiken Roll</li>
-                    <li>Veg Roll</li>
-                    <li>Coffee</li>
-                    <li>Ice tea</li>
-                    <li>Tea</li>
-                    <li>Fruit Juice</li>
+                    {% for item in recommended_items %}
+                    <li>{{item}}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </section>

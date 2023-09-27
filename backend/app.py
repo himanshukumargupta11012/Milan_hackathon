@@ -13,6 +13,7 @@ from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassifica
 import torch
 import pandas as pd
 import random
+from model import *
 from scipy.sparse.linalg import svds
 from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
@@ -88,10 +89,6 @@ def require_login(f):
         else:
             return redirect(url_for('login'))
     return innerfunction
-
-
-def RunModelSentimentAnalysis():
-    return 4
 
 # print(item_list)
 item_list = [item.name for item in Item.query.all()]
@@ -172,7 +169,7 @@ def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
     # ItemPage(1)
     print(top_items_this_week())
-    return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week())
+    return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommended_items=recommend_user_items(current_user.id,7))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -221,24 +218,15 @@ def get_review():
         print(item_name)
         item_id=Item.query.filter_by(name=item_name).first().id
         review = request.form['review']
-
-        input = tokenizer(review ,  return_tensors="pt")
-
-        output = model(**input).logits[0]
-        normalized = torch.nn.Softmax()(output)
-        curr_rating = torch.sum(normalized*rating)
-        curr_rating = torch.round(curr_rating).item()
-        print(torch.sum(normalized*rating))
-
         update_neg_pos(review, item_id)
-
+        rating = get_rating(review)
         # rating = int(request.form['rating'])
         # sentiment_insights = RunModelSentimentAnalysis(review)
         # timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
-        newReview = FoodReview(user_id=user_id, review=review, rating=curr_rating, item_id=item_id, sentiment_insights=None)
+        newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None)
         db.session.add(newReview)
         db.session.commit()
-        return render_template('index.html', user=current_user, item_list=list_of_items)
+        return redirect(url_for('index'))
 
 def get_average_rating(item_id):
     # Query the database to get the average rating for the specified item
@@ -455,41 +443,46 @@ def recommend_user_items(user_id,num_recommendations):
     user_item = pd.pivot_table(df_avg, index=['user_id'], columns='item_id', values='rating', fill_value=0)
 
     user_item.fillna(0,inplace = True)
-
-    # print(user_item)
+    return top_items_this_week()
+    print(user_item)
+    print(user_item.loc[user_item['user_id']==user_id])
+    # print(user_item.iloc[117])
 
     # Singular Value Decomposition
     U, S, V = svds(user_item.values, k = 7)
     # print(U[0])
-    print(user_item.iloc[user_id])
-# Construct diagonal array in SVD
-    S = np.diag(S)
+    try:
+        print(user_id)
+        print(user_item.loc[user_item['user_id']==user_id])
+    # Construct diagonal array in SVD
+        S = np.diag(S)
 
-    predicted_ratings = np.matmul(np.matmul(U[user_id-1],S),V)
+        predicted_ratings = np.matmul(np.matmul(U[user_id-1],S),V)
 
-  # Sort the items by predicted rating.
+    # Sort the items by predicted rating.
 
-    print(predicted_ratings)
+        print(predicted_ratings)
 
-    sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
-    # print(sorted_items)
-  # Recommend the top items.
-    recommended_items = sorted_items[:num_recommendations]
-    print(recommended_items)
- # Recommend new items
-    # print(df_avg)
-    
-    old_items = np.nonzero(user_item.iloc[user_id].values)[0] + 1
+        sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
+        # print(sorted_items)
+    # Recommend the top items.
+        recommended_items = sorted_items[:num_recommendations]
+        print(recommended_items)
+    # Recommend new items
+        # print(df_avg)
+        
+        old_items = np.nonzero(user_item.loc[user_item['user_id']==user_id].values)[0] + 1
 
-    print(old_items)
-    # print(old_items)
+        print(old_items)
+        # print(old_items)
 
-    new_items  = recommended_items[~np.isin(recommended_items, old_items)]
-    
-    print(new_items)
-    
-    print({i+1 : item_list[i] for i in range(len(item_list)) })
-    return 
+        new_items  = recommended_items[~np.isin(recommended_items, old_items)]
+        
+        print(new_items)
+        new_items = [item_list[i-1] for i in new_items]
+        return new_items
+    except:
+        return top_items_this_week()
 
 if __name__ == "__main__":
     recommend_user_items(2,7)
