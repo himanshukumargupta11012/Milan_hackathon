@@ -128,25 +128,7 @@ def search_result():
 
 @app.route('/')
 def index():
-    if request.method == 'POST': 
-        user_id = request.form['user_id']
-        item_name = request.form['item_name']
-        item_id=Item.query.filter_by(name=item_name).first().id
-        review = request.form['review']
-        rating = int(request.form['rating'])
-        sentiment_insights = RunModelSentimentAnalysis(review)
-        try: 
-            # Validate the data if needed
-            newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=sentiment_insights)
-            db.session.add(newReview)
-            db.session.commit()
-            return render_template('index.html', data={'status': True})
-        except Exception as e:
-            print(e)
-            return render_template('index.html', data={'status': False, 'error_message': str(e)})
-    # print(latest_reviews(2,3))
     list_of_items = [item.name.lower() for item in Item.query.all()]
-    # print(list_of_items)
     return render_template('index.html', item_list=list_of_items, user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -222,6 +204,32 @@ def latest_reviews(item_id,topNum):
         db.session.query(FoodReview)
         .filter(FoodReview.item_id == item_id)
         .order_by(FoodReview.timestamp.asc())
+        .limit(topNum)
+        .all()
+    )
+
+    # Create a list of dictionaries to hold the review details
+    top_reviews_list = []
+    for review in top_reviews:
+        top_reviews_list.append({
+            'id': review.id,
+            'item_id': review.item_id,
+            'review': review.review,
+            'rating': review.rating,
+            'user_id': review.user_id,
+            'sentiment_insights': review.sentiment_insights,
+            'timestamp': review.timestamp.isoformat(),
+        })
+
+    return top_reviews_list
+
+
+def top_reviews(item_id,topNum):
+    # Query the database to get the top 5 reviews for the specified item
+    top_reviews = (
+        db.session.query(FoodReview)
+        .filter(FoodReview.item_id == item_id)
+        .order_by(FoodReview.sentiment_insights.desc())
         .limit(topNum)
         .all()
     )
