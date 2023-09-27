@@ -13,6 +13,7 @@ from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassifica
 import torch
 import pandas as pd
 import random
+from scipy.sparse.linalg import svds
 
 rating = torch.tensor([1, 2, 3, 4, 5])
 
@@ -119,10 +120,6 @@ def update_neg_pos(review, item_id):
     db.session.commit()
 
     print(negative, positive)
-
-# for i in reviews:
-#     update_neg_pos(i[0], i[1])
-
 
 
 
@@ -391,6 +388,79 @@ def ItemPage(item_id):
     return jsonify(data=final_data)
 
 
+def predict_rating(U, S, V, user_index, item_index):
+  """Predicts the rating of a user for an item.
+
+  Args:
+    U: The U matrix.
+    S: The S matrix.
+    V: The V matrix.
+    user_index: The index of the user in the U matrix.
+    item_index: The index of the item in the V matrix.
+
+  Returns:
+    The predicted rating.
+  """
+
+  predicted_rating = np.matmul(np.matmul(U[user_index-1],S),V[:,item_index-1])
+  
+  return predicted_rating
+
+
+def recommend_user_items(user_id,num_recommendations):
+      # Create a DataFrame from the fetched data
+    ratings = FoodReview.query.all()
+
+    # Create a DataFrame with the desired fields
+    df = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating) for rating in ratings],columns=['user_id', 'item_id', 'rating'])
+
+    # Add more fields from the Rating table if needed
+    # df['item_id'] = df['item_id'].str.strip()
+    
+    
+    df_avg = df.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
+    
+    # Create the user-item matrix
+    user_item = pd.pivot_table(df_avg, index=['user_id'], columns='item_id', values='rating', fill_value=0)
+
+    user_item.fillna(0,inplace = True)
+
+    # print(user_item)
+
+    # Singular Value Decomposition
+    U, S, V = svds(user_item.values, k = 7)
+    # print(U[0])
+    print(user_item.iloc[user_id])
+# Construct diagonal array in SVD
+    S = np.diag(S)
+
+    predicted_ratings = np.matmul(np.matmul(U[user_id-1],S),V)
+
+  # Sort the items by predicted rating.
+
+    print(predicted_ratings)
+
+    sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
+    # print(sorted_items)
+  # Recommend the top items.
+    recommended_items = sorted_items[:num_recommendations]
+    print(recommended_items)
+ # Recommend new items
+    # print(df_avg)
+    
+    old_items = np.nonzero(user_item.iloc[user_id].values)[0] + 1
+
+    print(old_items)
+    # print(old_items)
+
+    new_items  = recommended_items[~np.isin(recommended_items, old_items)]
+    
+    print(new_items)
+    
+    print({i+1 : item_list[i] for i in range(len(item_list)) })
+    return 
 
 if __name__ == "__main__":
+    recommend_user_items(2,7)
     app.run(host='0.0.0.0', port=5000, debug=True)
+   

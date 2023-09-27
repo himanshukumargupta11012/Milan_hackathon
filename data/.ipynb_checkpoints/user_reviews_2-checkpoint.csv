@@ -1,0 +1,281 @@
+id,item_id,review,rating,user_id,sentiment_insights,timestamp
+58,4,"Panipuri was kinda meh, lacked that spicy kick I craved.",2,18,,2023-09-04 15:29:04.458748
+59,2,"Veg noodles were aight, needed more veggies though.",3,18,,2023-08-06 17:40:20.393748
+60,10,"Tea is my jam, always gets the day going.",4,18,,2023-08-29 11:22:19.410748
+61,3,"Maggi is the OG comfort snack, never disappoints.",4,19,,2023-08-26 08:50:05.971748
+62,6,"Chicken roll is fire, so dang tasty!",5,19,,2023-08-08 12:17:47.971748
+63,11,"Fruit juice was a letdown, too watery.",2,19,,2023-08-06 10:12:57.448748
+64,2,"Veg noodles were a miss, too bland for my taste.",2,20,,2023-08-20 13:19:27.942748
+65,10,"Tea is bae, can't start the day without it.",4,20,,2023-09-05 10:33:48.011748
+66,9,"Ice tea was just meh, expected better flavor.",3,20,,2023-08-13 11:45:26.148748
+67,1,"Non veg noodles were so-so, needed more punch.",3,21,,2023-07-31 17:03:16.186748
+68,7,"Veg roll was a flop, not enough flavor.",2,21,,2023-09-03 08:42:40.177748
+69,8,"Coffee was lit, a real wake-me-up!",4,21,,2023-08-27 09:52:44.585748
+70,6,"Chicken roll - a party in my mouth, loved every bite!",5,22,,2023-09-07 19:28:09.355748
+71,9,"Ice tea was a disaster, tasted like water.",1,22,,2023-08-09 13:42:31.640748
+72,4,"Panipuri is bomb, that spiciness is addictive!",5,22,,2023-08-22 14:19:04.194748
+73,3,"Maggi is my go-to savior, the ultimate quick snack!",5,23,,2023-08-16 12:37:27.782748
+74,11,"Fruit juice was so-so, could be more fruity.",3,23,,2023-08-29 16:25:48.323748
+75,8,Coffee - the best buddy for late-night studying.,4,23,,2023-08-15 18:48:56.010748
+76,8,"Coffee was a lifesaver, kept me alive during exams!",5,24,,2023-08-22 18:05:20.680748
+77,10,"Tea was meh, needed more strength.",3,24,,2023-09-17 13:08:46.807748
+78,4,"Panipuri - an explosion of flavors, loved it!",5,24,,2023-09-10 10:34:26.272748
+79,7,"Veg roll was a disappointment, bland as heck.",2,25,,2023-08-23 16:26:10.490748
+80,1,"Non veg noodles were decent, but lacking that oomph.",3,25,,2023-08-28 13:52:23.901748
+81,11,"Fruit juice was refreshing, a good break drink.",4,25,,2023-08-03 19:41:28.814748
+82,9,"Ice tea was alright, nothing special.",3,26,,2023-08-19 12:38:11.027748
+83,2,"Veg noodles were tasteless, didn't hit the spot.",2,26,,2023-08-12 10:42:10.639748
+84,3,"Maggi is a legend, always a comfort.",5,26,,2023-08-20 09:36:19.227748
+85,6,"Chicken roll was decent, but could've been juicier.",4,27,,2023-09-09 09:41:31.544748
+86,10,"Tea was perfecto, just the way I like it!",5,27,,2023-08-25 09:49:17.074748
+87,8,"Coffee was weak, need that caffeine punch!",2,27,,2023-09-02 17:04:23.478748
+88,4,"Panipuri was a letdown, lacked the zing I was hoping for. The tanginess was missing, and the spiciness was just not there. Perhaps a different vendor might do justice to this street food delight.",2,28,,2023-09-08 17:20:21.675748
+89,2,"Veg noodles were decent, but the quantity of veggies was underwhelming. I'm all about that veggie goodness, and I felt like I was left wanting. The taste was alright, but a veggie overload would've made it so much better.",3,29,,2023-09-12 12:10:27.606748
+90,10,"Tea was good, no two ways about it. A warm, comforting cup with just the right amount of sweetness and that distinct tea flavor. The serving size could have been a tad more generous, but nonetheless, a satisfying cuppa.",4,30,,2023-08-17 20:15:25.056748
+91,1,"Non veg noodles had potential but were a bit too oily for my liking. The flavor profile was alright, but the excess oil just overshadowed it. A tweak in the oiliness level could take this dish up a notch.",3,31,,2023-08-21 18:14:12.289748
+92,9,"Ice tea was a disappointment, lacked the refreshing punch I anticipated. It was overly sweet and tasted artificial, far from the natural fruity notes I was hoping for. A more authentic taste is definitely needed.",2,32,,2023-08-27 14:15:41.748748
+93,6,"Chicken roll had great flavor, and the chicken was juicy and tender. However, the wrap was a bit dry, which took away from the overall experience. A more moist and flavorful wrap would make this a stellar choice.",4,33,,2023-08-21 11:30:15.430748
+94,3,"Maggi is a classic comfort food, quick to make and instantly satisfying. The seasoning was good, but a little extra spice could have made it exceptional. Overall, a reliable go-to option for a quick bite.",4,34,,2023-08-11 18:17:43.003748
+95,7,"Veg roll was alright, but the filling was a bit bland. A more flavorful stuffing would have elevated the taste. The presentation could also be improved for a more appealing experience.",3,35,,2023-08-04 09:38:14.158748
+96,11,"Fruit juice was refreshing and had a genuine fruity taste. However, it was slightly too sweet for my preference. Adjusting the sweetness level to a more natural sweetness would make it perfect.",4,36,,2023-08-18 11:54:50.148748
+97,8,"Coffee was exceptional, rich and aromatic, just the way I like it. It had the right balance of bitterness and the right kick of caffeine. A cup of this coffee sets the right tone for the day.",5,37,,2023-08-08 09:22:12.361748
+98,4,"Panipuri lacked spice, not my favorite.",2,38,,2023-09-03 10:53:56.263748
+99,2,"Decent veg noodles, but a bit bland.",3,38,,2023-08-18 08:39:15.101748
+100,10,"Tea was good, just the way I like it.",4,38,,2023-09-10 08:40:34.331748
+101,3,"Maggi's a quick fix, average taste.",3,39,,2023-09-11 15:17:24.519748
+102,6,"Chicken roll hit the spot, flavorful.",4,39,,2023-08-16 12:37:42.731748
+103,11,"Fruit juice was refreshing, a bit sweet.",3,39,,2023-08-13 14:07:24.025748
+104,2,"Veg noodles lacked veggies, a letdown.",2,40,,2023-08-29 10:56:54.926748
+105,10,"Tea was alright, could be stronger.",3,40,,2023-08-17 18:13:07.452748
+106,9,"Ice tea was too sugary, not my taste.",2,40,,2023-08-31 12:50:16.333748
+107,1,"Non veg noodles were tasty, satisfying.",4,41,,2023-08-08 14:35:11.878748
+108,7,"Veg roll lacked flavor, needs improvement.",2,41,,2023-08-31 09:22:04.236748
+109,8,"Coffee was great, woke me up.",4,41,,2023-08-28 17:23:46.519748
+110,6,"Chicken roll was superb, loved it!",5,42,,2023-09-17 15:24:09.045748
+111,9,"Ice tea was awful, too diluted.",1,42,,2023-08-21 10:03:25.391748
+112,4,"Panipuri was a burst of flavors, loved it!",5,42,,2023-09-16 18:29:55.904748
+113,3,"Maggi is a classic favorite, never disappoints.",5,43,,2023-08-14 18:22:31.520748
+114,11,"Fruit juice was refreshing, average taste.",3,43,,2023-08-27 08:38:30.041748
+115,8,Coffee - a great pick-me-up.,4,43,,2023-09-12 12:06:59.474748
+116,8,"Coffee was good, hit the spot.",4,44,,2023-09-01 18:00:32.473748
+117,10,"Tea was average, needed a stronger flavor.",3,44,,2023-09-02 14:05:55.271748
+118,4,"Panipuri was tangy and spicy, enjoyable.",4,44,,2023-09-03 12:25:48.462748
+119,7,"Veg roll was decent, but nothing exceptional.",3,45,,2023-08-13 15:50:37.251748
+120,1,"Non veg noodles were flavorful, good choice.",4,45,,2023-08-09 18:21:47.124748
+121,11,"Fruit juice was refreshing, not too sweet.",4,45,,2023-08-30 11:38:45.019748
+122,9,"Ice tea was alright, a bit too sweet.",3,46,,2023-08-29 08:56:10.177748
+123,2,"Veg noodles were average, could be better.",3,46,,2023-08-16 14:04:43.019748
+124,3,Maggi is a go-to comfort food.,4,46,,2023-08-06 20:26:41.211748
+125,6,"Chicken roll was alright, could be tastier.",3,47,,2023-08-25 08:39:14.303748
+126,10,"Tea was good, just the way I like it.",4,47,,2023-08-08 09:12:18.016748
+127,8,"Coffee was fine, didn't stand out.",3,47,,2023-08-01 12:42:01.403748
+128,4,"Panipuri was a bit bland, needed more spice.",2,48,,2023-08-22 15:42:56.789748
+129,2,"Veg noodles were okay, a tad oily.",3,48,,2023-08-28 09:20:59.378748
+130,10,"Tea hit the spot, perfect warmth.",4,48,,2023-09-09 09:51:00.433748
+131,3,"Maggi is my guilty pleasure, always tasty.",4,49,,2023-09-03 10:15:05.689748
+132,6,"Chicken roll was awesome, loved every bite.",5,49,,2023-08-21 18:58:07.430748
+133,11,"Fruit juice was average, nothing extraordinary.",3,49,,2023-08-22 09:02:48.118748
+134,2,"Veg noodles were disappointing, lacked flavor.",2,50,,2023-09-02 15:57:24.187748
+135,10,"Tea was fine, could have been stronger.",3,50,,2023-08-11 12:29:24.689748
+136,9,Ice tea was too sweet for my liking.,2,50,,2023-08-16 13:10:18.316748
+137,1,"Non veg noodles were on point, satisfying.",4,51,,2023-08-26 10:46:12.627748
+138,7,"Veg roll was below expectations, lacked taste.",2,51,,2023-09-11 11:30:14.919748
+139,8,"Coffee was good, got me through the day.",4,51,,2023-08-26 17:21:59.228748
+140,6,"Chicken roll was top-notch, hit the cravings.",5,52,,2023-08-25 20:08:25.537748
+141,9,"Ice tea was a disaster, way too sugary.",1,52,,2023-07-31 10:24:20.128748
+142,4,"Panipuri was zesty, a burst of flavors.",4,52,,2023-09-09 14:40:38.078748
+143,3,"Maggi is my go-to, never disappoints.",5,53,,2023-08-29 14:02:35.020748
+144,11,"Fruit juice was refreshing, but too sweet.",3,53,,2023-08-23 18:05:21.324748
+145,8,"Coffee was just right, energizing.",4,53,,2023-08-23 16:18:18.539748
+146,8,"Coffee was a lifesaver, got me through the night.",4,54,,2023-08-27 20:03:08.534748
+147,10,"Tea was average, needed more depth of flavor.",3,54,,2023-08-03 15:36:30.114748
+148,4,"Panipuri was tangy, hit the spot.",4,54,,2023-09-06 12:38:13.034748
+149,7,"Veg roll was decent, could use more veggies.",3,55,,2023-09-10 15:15:43.707748
+150,1,"Non veg noodles were tasty, worth it.",4,55,,2023-08-25 10:29:27.445748
+151,11,"Fruit juice was rejuvenating, liked it.",4,55,,2023-08-18 13:33:41.171748
+152,9,"Ice tea was alright, a bit diluted.",3,56,,2023-08-05 10:53:37.500748
+153,2,"Veg noodles were so-so, needed more seasoning.",3,56,,2023-08-30 12:02:28.319748
+154,3,Maggi is my late-night go-to.,4,56,,2023-07-31 17:29:46.652748
+155,6,"Chicken roll was decent, but not mind-blowing.",3,57,,2023-08-20 16:39:41.374748
+156,10,"Tea was just right, perfect for a break.",4,57,,2023-08-22 09:33:18.649748
+157,8,"Coffee was okay, could be stronger.",3,57,,2023-09-06 15:26:17.414748
+158,4,"Panipuri was a disaster, lacked flavor.",1,58,,2023-08-14 16:28:01.092748
+159,2,"Veg noodles were mediocre, expected better.",2,58,,2023-09-04 16:05:39.691748
+160,10,"Tea was okay, could be stronger.",3,58,,2023-09-02 08:55:45.107748
+161,3,"Maggi is a classic, a quick and tasty meal.",4,59,,2023-08-08 20:31:11.436748
+162,6,"Chicken roll was amazing, loved the spices!",5,59,,2023-08-21 09:50:50.696748
+163,11,Fruit juice was refreshing but a bit too sweet.,3,59,,2023-09-03 14:41:33.887748
+164,2,"Veg noodles were tasteless, needed seasoning.",2,60,,2023-09-06 19:46:15.653748
+165,10,"Tea was good, a nice pick-me-up.",4,60,,2023-09-08 13:47:44.887748
+166,9,"Ice tea was overly sweet, not my preference.",2,60,,2023-08-20 17:59:29.109748
+167,1,"Non veg noodles were flavorful, enjoyed them.",4,61,,2023-08-27 17:42:13.368748
+168,7,"Veg roll was bland, didn't leave an impression.",2,61,,2023-08-17 09:33:55.878748
+169,8,"Coffee was just what I needed, a good cup.",4,61,,2023-08-19 16:43:39.071748
+170,6,"Chicken roll was perfect, loved every bite!",5,62,,2023-08-18 11:21:56.346748
+171,9,"Ice tea was a disappointment, tasted odd.",1,62,,2023-08-06 14:09:08.829748
+172,4,"Panipuri had that spicy kick, enjoyed it.",4,62,,2023-08-17 19:17:00.724748
+173,3,"Maggi is a classic, never gets old.",5,63,,2023-08-19 10:56:47.643748
+174,11,"Fruit juice was decent, could have been fresher.",3,63,,2023-08-23 18:45:15.990748
+175,8,"Coffee was good, set the right mood.",4,63,,2023-09-01 10:18:18.525748
+176,8,"Coffee was satisfying, perked me up.",4,64,,2023-09-16 18:11:40.729748
+177,10,"Tea was alright, nothing extraordinary.",3,64,,2023-08-16 20:16:16.765748
+178,4,"Panipuri had that tangy flavor, enjoyed it.",4,64,,2023-08-10 17:02:07.273748
+179,7,"Veg roll was average, lacked a punch.",3,65,,2023-08-22 13:20:51.472748
+180,1,"Non veg noodles were tasty, good choice.",4,65,,2023-08-14 14:22:00.357748
+181,11,"Fruit juice was refreshing, not too sweet.",4,65,,2023-09-09 09:44:47.836748
+182,9,"Ice tea was decent, a nice refreshment.",3,66,,2023-08-27 14:52:22.978748
+183,2,"Veg noodles were okay, needed more flavor.",3,66,,2023-08-21 11:04:36.780748
+184,3,Maggi is a classic comfort food.,4,66,,2023-09-04 18:52:41.226748
+185,6,"Chicken roll was decent, but could be juicier.",3,67,,2023-09-16 15:13:41.145748
+186,10,"Tea was just right, perfect warmth.",4,67,,2023-08-27 18:43:52.453748
+187,8,"Coffee was average, needed more kick.",3,67,,2023-08-27 16:48:04.643748
+188,4,"Panipuri was bland, didn't live up to expectations.",2,68,,2023-08-28 09:25:42.888748
+189,2,"Veg noodles were average, lacked veggies.",3,68,,2023-08-23 09:14:09.296748
+190,10,"Tea was good, a reliable choice.",4,68,,2023-08-10 16:13:32.783748
+191,3,"Maggi is the ultimate comfort food, never disappoints.",5,69,,2023-08-25 15:19:50.351748
+192,6,"Chicken roll was delicious, loved the seasoning.",4,69,,2023-08-27 20:29:47.101748
+193,11,Fruit juice was refreshing but a tad too sweet.,3,69,,2023-08-29 15:52:50.496748
+194,2,"Veg noodles were bland, needed more spices.",2,70,,2023-08-18 12:41:19.878748
+195,10,"Tea was average, could use a stronger flavor.",3,70,,2023-09-06 09:27:20.986748
+196,9,"Ice tea was overly sweet, not my liking.",2,70,,2023-09-06 14:34:33.011748
+197,1,"Non veg noodles were flavorful, enjoyed the variety.",4,71,,2023-09-02 13:10:10.246748
+198,7,"Veg roll was decent, could have more veggies.",3,71,,2023-09-08 19:26:10.215748
+199,8,"Coffee was satisfying, a good pick-me-up.",4,71,,2023-09-16 15:38:25.211748
+200,6,"Chicken roll was excellent, loved the spice blend!",5,72,,2023-09-04 19:22:00.180748
+201,9,"Ice tea was a disappointment, too sugary.",1,72,,2023-08-13 11:01:42.328748
+202,4,"Panipuri had the right tang, thoroughly enjoyed it.",4,72,,2023-08-25 13:07:36.416748
+203,3,"Maggi is a classic, my go-to snack.",5,73,,2023-09-12 18:50:04.301748
+204,11,Fruit juice was refreshing and not overly sweet.,4,73,,2023-08-28 15:21:15.210748
+205,8,"Coffee was good, perked me up.",4,73,,2023-08-11 12:34:29.370748
+206,8,"Coffee was satisfying, just the right bitterness.",4,74,,2023-08-27 19:56:27.953748
+207,10,"Tea was okay, needed more depth of flavor.",3,74,,2023-08-23 12:59:25.744748
+208,4,"Panipuri was zesty, enjoyable.",4,74,,2023-08-18 13:46:21.458748
+209,7,"Veg roll was decent, but could be more flavorful.",3,75,,2023-09-14 10:57:23.363748
+210,1,"Non veg noodles were tasty, worth a try.",4,75,,2023-08-22 09:50:45.817748
+211,11,"Fruit juice was refreshing, not overly sweet.",4,75,,2023-09-06 16:28:34.298748
+212,9,"Ice tea was refreshing, but a bit too sweet.",3,76,,2023-08-24 15:18:00.789748
+213,2,"Veg noodles were alright, could be more seasoned.",3,76,,2023-08-12 11:00:53.065748
+214,3,Maggi is a reliable quick meal.,4,76,,2023-08-25 15:50:27.861748
+215,6,"Chicken roll was decent, but could use more filling.",3,77,,2023-08-24 18:07:37.300748
+216,10,"Tea was just the way I like it, comforting.",4,77,,2023-08-09 14:51:20.677748
+217,8,"Coffee was average, needed a stronger brew.",3,77,,2023-08-24 19:48:34.536748
+218,4,"Panipuri was a letdown, lacked the usual flavors.",1,78,,2023-09-03 17:49:45.061748
+219,2,"Veg noodles were tasteless, needed more seasoning.",2,78,,2023-08-23 10:48:47.116748
+220,10,"Tea was average, could be improved.",3,78,,2023-08-20 18:21:22.611748
+221,3,"Maggi is a classic favorite, always reliable.",4,79,,2023-09-03 15:22:25.295748
+222,6,"Chicken roll was delicious, loved the spice mix.",5,79,,2023-07-30 10:03:01.481748
+223,11,"Fruit juice was refreshing, but a tad too sweet.",3,79,,2023-08-10 13:26:12.533748
+224,2,"Veg noodles were bland, lacked veggies.",2,80,,2023-08-13 19:09:16.276748
+225,10,"Tea was average, could be stronger.",3,80,,2023-08-30 18:43:23.730748
+226,9,Ice tea was too sweet for my liking.,2,80,,2023-09-10 18:58:34.184748
+227,1,"Non veg noodles were tasty, had a good mix of flavors.",4,81,,2023-08-30 09:14:34.435748
+228,7,"Veg roll was decent, could have been more flavorful.",3,81,,2023-08-30 15:06:49.926748
+229,8,"Coffee was good, perked me up.",4,81,,2023-08-31 19:49:26.334748
+230,6,"Chicken roll was amazing, loved the spiciness!",5,82,,2023-08-16 13:13:34.743748
+231,9,"Ice tea was disappointing, too sugary.",1,82,,2023-08-31 17:33:01.255748
+232,4,"Panipuri had a good tangy flavor, enjoyed it.",4,82,,2023-08-17 10:27:21.743748
+233,3,"Maggi is a classic, my quick comfort food.",5,83,,2023-08-15 10:47:34.331748
+234,11,"Fruit juice was refreshing, could be more natural.",3,83,,2023-07-30 16:00:35.507748
+235,8,"Coffee was good, got me going.",4,83,,2023-08-18 18:49:10.576748
+236,8,"Coffee was satisfying, hit the spot.",4,84,,2023-08-29 20:19:24.808748
+237,10,"Tea was alright, nothing exceptional.",3,84,,2023-09-15 09:33:32.040748
+238,4,"Panipuri had that tangy kick, enjoyed it.",4,84,,2023-09-10 16:19:04.490748
+239,7,"Veg roll was average, could use more spices.",3,85,,2023-08-09 13:10:41.865748
+240,1,"Non veg noodles were tasty, satisfying.",4,85,,2023-08-06 09:33:43.601748
+241,11,"Fruit juice was refreshing, just the right sweetness.",4,85,,2023-09-04 18:00:40.540748
+242,9,"Ice tea was refreshing, a good choice.",3,86,,2023-08-05 17:24:04.694748
+243,2,"Veg noodles were decent, needed a bit more flavor.",3,86,,2023-08-22 13:13:06.353748
+244,3,Maggi is my go-to comfort.,4,86,,2023-09-10 10:56:46.407748
+245,6,"Chicken roll was good, but could have been spicier.",3,87,,2023-09-02 10:04:47.878748
+246,10,"Tea was perfect, just what I needed.",4,87,,2023-08-01 15:44:55.395748
+247,8,"Coffee was average, could use a stronger brew.",3,87,,2023-08-15 16:52:42.910748
+248,1,"Non veg noodles were disappointing, lacked flavor.",2,88,,2023-08-25 11:17:58.056748
+249,11,"Fruit juice was okay, but too sweet for my liking.",3,88,,2023-09-09 15:58:41.065748
+250,8,"Coffee was good, just as I like it.",4,88,,2023-08-24 17:56:41.217748
+251,7,"Veg roll was average, needed more seasoning.",3,89,,2023-09-06 11:26:59.219748
+252,9,"Ice tea was too sweet, not a fan of the sweetness.",2,89,,2023-09-02 17:08:15.328748
+253,4,Panipuri was spicy and satisfying.,4,89,,2023-08-14 17:03:54.939748
+254,6,"Chicken roll was fantastic, loved every bite!",5,90,,2023-08-03 15:39:47.260748
+255,10,"Tea was average, could be warmer.",3,90,,2023-08-25 14:02:33.971748
+256,8,"Coffee was good, set the right tone.",4,90,,2023-08-17 20:12:21.804748
+257,3,"Maggi is my go-to, quick and delicious.",4,91,,2023-08-01 18:00:15.960748
+258,2,"Veg noodles were plain, lacked flavor.",2,91,,2023-08-08 18:42:06.251748
+259,9,"Ice tea was refreshing, not too sweet.",3,91,,2023-09-02 11:37:49.143748
+260,9,"Ice tea was decent, but a bit too sugary.",3,92,,2023-09-03 12:53:46.487748
+261,4,"Panipuri had that tangy flavor, loved it.",4,92,,2023-08-08 15:09:22.194748
+262,10,"Tea was weak, needed more strength.",2,92,,2023-09-18 13:06:18.429748
+263,1,Non veg noodles were flavorful and satisfying.,4,93,,2023-09-08 18:21:52.076748
+264,7,"Veg roll was okay, but could be improved.",3,93,,2023-08-17 13:19:54.027748
+265,8,"Coffee was great, perked me up.",4,93,,2023-08-25 16:21:31.764748
+266,6,"Chicken roll was amazing, bursting with flavors!",5,94,,2023-08-24 15:46:36.322748
+267,11,Fruit juice was refreshing but a bit too sweet.,3,94,,2023-09-05 09:11:42.787748
+268,9,Ice tea was too sweet for my liking.,2,94,,2023-08-22 16:32:15.133748
+269,2,"Veg noodles were bland, needed more seasoning.",2,95,,2023-08-16 11:11:21.128748
+270,4,Panipuri was spicy and delightful.,4,95,,2023-08-30 16:01:30.448748
+271,10,"Tea was decent, but could be stronger.",3,95,,2023-07-31 17:15:00.934748
+272,3,"Maggi is a classic, always a quick and tasty choice.",4,96,,2023-08-30 17:16:56.293748
+273,1,"Non veg noodles were alright, not exceptional.",3,96,,2023-08-21 08:44:46.021748
+274,8,"Coffee was good, got me through the day.",4,96,,2023-08-28 17:20:39.388748
+275,6,"Chicken roll was mouth-watering, loved the spices!",5,97,,2023-08-24 08:48:18.717748
+276,10,"Tea was decent, needed a bit more flavor.",3,97,,2023-08-26 09:30:31.949748
+277,9,"Ice tea was too sweet, not to my taste.",2,97,,2023-08-28 20:11:54.042748
+278,4,"Panipuri was tasteless, lacking spice.",2,98,,2023-09-06 16:16:07.246748
+279,2,"Veg noodles were average, needed more veggies.",3,98,,2023-08-13 14:15:10.957748
+280,8,"Coffee was good, just the way I like it.",4,98,,2023-08-27 19:43:17.984748
+281,3,"Maggi is my ultimate comfort food, always delicious.",5,99,,2023-09-03 14:23:08.703748
+282,11,Fruit juice was refreshing but a bit too sweet.,3,99,,2023-08-21 13:48:39.023748
+283,10,"Tea was just right, hit the spot.",4,99,,2023-09-16 19:12:23.343748
+284,2,"Veg noodles were bland, needed more seasoning.",2,100,,2023-09-04 11:28:49.176748
+285,9,"Ice tea was refreshing, but too sweet.",3,100,,2023-08-18 13:53:54.199748
+286,4,"Panipuri had a nice tang, enjoyed it.",4,100,,2023-09-04 11:05:08.215748
+287,1,Non veg noodles were flavorful and satisfying.,4,101,,2023-09-05 18:52:33.922748
+288,7,"Veg roll was decent, could have more veggies.",3,101,,2023-08-11 13:25:25.585748
+289,8,"Coffee was good, perked me up.",4,101,,2023-09-11 18:51:40.882748
+290,6,"Chicken roll was amazing, loved the spiciness!",5,102,,2023-08-31 09:47:18.989748
+291,9,"Ice tea was way too sweet, not enjoyable.",1,102,,2023-08-29 17:08:12.528748
+292,10,"Tea was average, needed more flavor.",3,102,,2023-08-21 18:06:30.999748
+293,3,"Maggi is a classic, my go-to comfort meal.",5,103,,2023-08-24 10:28:47.821748
+294,11,"Fruit juice was refreshing, loved it.",4,103,,2023-09-02 14:28:30.550748
+295,8,"Coffee was good, got me through the day.",4,103,,2023-08-11 16:21:06.204748
+296,8,"Coffee was satisfying, just the right bitterness.",4,104,,2023-08-27 18:16:39.672748
+297,10,"Tea was average, could use a stronger flavor.",3,104,,2023-08-20 18:25:03.738748
+298,4,Panipuri was tangy and enjoyable.,4,104,,2023-08-13 14:35:58.941748
+299,7,"Veg roll was decent, but lacked flavor.",3,105,,2023-08-19 13:26:15.085748
+300,1,Non veg noodles were tasty and fulfilling.,4,105,,2023-08-28 13:47:23.141748
+301,11,"Fruit juice was refreshing, not overly sweet.",4,105,,2023-09-02 13:50:10.577748
+302,9,"Ice tea was decent, a good choice.",3,106,,2023-09-12 14:19:04.671748
+303,2,"Veg noodles were okay, needed more seasoning.",3,106,,2023-08-20 10:43:58.038748
+304,3,Maggi is a quick and reliable choice.,4,106,,2023-08-13 17:41:06.715748
+305,6,"Chicken roll was good,but could be more flavorful.",3,107,,2023-08-25 16:02:54.484748
+306,10,"Tea was just right, perfect warmth.",4,107,,2023-08-29 12:53:09.357748
+307,8,"Coffee was average, needed more kick.",3,107,,2023-08-08 18:00:08.531748
+308,1,"Eh, non veg noodles were a bit meh, needed a flavor boost.",2,108,,2023-09-09 19:35:26.838748
+309,11,"Fruit juice was decent, but could be less sugary.",3,108,,2023-08-19 12:13:07.683748
+310,8,"Coffee hit the spot, just the right buzz.",4,108,,2023-08-13 20:15:50.581748
+311,7,"Veg roll was alright, but could've used more spice.",3,109,,2023-09-04 15:04:08.702748
+312,9,"Ice tea was too sweet for my liking, missed the mark.",2,109,,2023-09-16 12:57:43.553748
+313,4,"Panipuri had a zing, enjoyed the tang.",4,109,,2023-08-28 11:00:01.810748
+314,6,"Chicken roll was a taste explosion, loved every bite!",5,110,,2023-08-22 10:50:38.926748
+315,10,"Tea was your usual, nothing extraordinary.",3,110,,2023-09-17 12:14:49.561748
+316,8,Coffee was a good pick-me-up.,4,110,,2023-08-21 19:16:33.428748
+317,3,"Maggi never disappoints, quick and yummy.",4,111,,2023-08-13 17:54:48.179748
+318,2,"Veg noodles were a bit bland, needs more seasoning.",2,111,,2023-08-21 16:37:47.773748
+319,9,Ice tea was refreshing but a tad too sweet.,3,111,,2023-09-10 13:46:17.283748
+320,9,"Ice tea was decent, but sweetness was overpowering.",3,112,,2023-08-05 17:25:39.006748
+321,4,"Panipuri had that zesty punch, quite enjoyed it.",4,112,,2023-08-24 09:48:25.936748
+322,10,"Tea was a bit weak, lacked that oomph.",2,112,,2023-08-15 09:45:00.953748
+323,1,"Non veg noodles were flavorsome, quite a treat.",4,113,,2023-07-31 20:28:57.665748
+324,7,"Veg roll was average, needed a flavor lift.",3,113,,2023-08-24 19:40:49.394748
+325,8,"Coffee was delightful, got me through the day.",4,113,,2023-09-02 20:19:56.595748
+326,6,"Chicken roll was mind-blowing, loved the spices!",5,114,,2023-08-25 19:11:41.539748
+327,11,"Fruit juice was refreshing, but a bit too sweet for my taste.",3,114,,2023-09-14 09:08:31.234748
+328,9,"Ice tea was too sweet, didn't quite hit the mark.",2,114,,2023-08-14 09:02:24.890748
+329,2,"Veg noodles were a bit bland, needs a flavor upgrade.",2,115,,2023-09-15 08:46:19.474748
+330,4,"Panipuri had a nice tang, enjoyed the spiciness.",4,115,,2023-08-15 17:35:54.738748
+331,10,"Tea was your typical, nothing out of the ordinary.",3,115,,2023-08-15 19:40:31.298748
+332,3,"Maggi is a classic, my go-to comfort food.",4,116,,2023-08-21 18:35:57.644748
+333,1,"Non veg noodles were alright, could've been better.",3,116,,2023-08-28 15:46:37.288748
+334,8,"Coffee was a good energizer, just what I needed.",4,116,,2023-09-16 18:01:22.745748
+335,6,"Chicken roll was good, but lacked that wow factor.",3,117,,2023-08-25 18:24:15.752748
+336,10,"Tea was comforting, just the way I like it.",4,117,,2023-08-05 13:27:44.163748
+337,8,"Coffee was decent, could've been stronger.",3,117,,2023-09-08 17:27:57.412748
