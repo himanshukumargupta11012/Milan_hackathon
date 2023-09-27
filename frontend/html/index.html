@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./../static/home.css">
     <title>Your Website</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -14,8 +15,7 @@
         {% if user.is_authenticated %}
         <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
         <div class="avatar">
-            <img src={{user.profile_url}}
-                alt="Avatar">
+            <img src={{user.profile_url}} alt="Avatar">
         </div>
         {% else %}
         <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
@@ -39,59 +39,19 @@
                 </div>
             </div>
             <div class="response">
-                
-                <article class="blog-post">
-                    <h1 class="post-title">Lorem Ipsum Dolor Sit Amet</h1>
-                    <div class="post-content">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum scelerisque imperdiet
-                            fermentum. Curabitur in ligula vitae lectus rhoncus tristique. Nullam efficitur, erat nec
-                            convallis cursus, justo purus feugiat erat, eu cursus nisl eros in justo.
-                        </p>
+                <div>
+                    <canvas id="myChart" class="canva"  width=400 height=300 ></canvas>
+                    <canvas id="lineplot" class="canva" width="400" height="300"></canvas>
 
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU"
-                            alt="Image description">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKbdJk2tGJf5owybQvU3jwOv679c6uYi1-pA&usqp=CAU"
-                            alt="Image description">
-
-                        <p>
-                            Sed vulputate, massa nec ultricies tristique, elit est eleifend velit, nec convallis massa
-                            nunc id nisi. Proin sollicitudin nec justo vel bibendum. Morbi efficitur justo ut est
-                            cursus, vitae lobortis ligula lacinia. Vestibulum nec metus vehicula, blandit odio a, dictum
-                            sapien.
-                        </p>
-
-                        <p>
-                            Integer euismod sapien vel ipsum scelerisque, a interdum elit tristique. Sed vulputate
-                            ligula a neque volutpat, ut rhoncus justo pellentesque. Aenean volutpat ligula eget ultrices
-                            cursus. Nullam auctor varius purus, sit amet cursus ex vestibulum in.
-                        </p>
-                        <p>
-                            Sed vulputate, massa nec ultricies tristique, elit est eleifend velit, nec convallis massa
-                            nunc id nisi. Proin sollicitudin nec justo vel bibendum. Morbi efficitur justo ut est
-                            cursus, vitae lobortis ligula lacinia. Vestibulum nec metus vehicula, blandit odio a, dictum
-                            sapien.
-                        </p>
-
-                        <p>
-                            Integer euismod sapien vel ipsum scelerisque, a interdum elit tristique. Sed vulputate
-                            ligula a neque volutpat, ut rhoncus justo pellentesque. Aenean volutpat ligula eget ultrices
-                            cursus. Nullam auctor varius purus, sit amet cursus ex vestibulum in.
-                        </p>
-                        <p>
-                            Sed vulputate, massa nec ultricies tristique, elit est eleifend velit, nec convallis massa
-                            nunc id nisi. Proin sollicitudin nec justo vel bibendum. Morbi efficitur justo ut est
-                            cursus, vitae lobortis ligula lacinia. Vestibulum nec metus vehicula, blandit odio a, dictum
-                            sapien.
-                        </p>
-
-                        <p>
-                            Integer euismod sapien vel ipsum scelerisque, a interdum elit tristique. Sed vulputate
-                            ligula a neque volutpat, ut rhoncus justo pellentesque. Aenean volutpat ligula eget ultrices
-                            cursus. Nullam auctor varius purus, sit amet cursus ex vestibulum in.
-                        </p>
-                    </div>
-                </article>
+                    <!-- <div class="plot">
+                        < Create a canvas element to render the chart -->
+                        <!-- <canvas id="myChart"  width=400 height=300 ></canvas> -->
+                    <!-- </div> -->
+    
+                    <!-- <div class="Drawlineplot">
+                        <canvas id="lineplot" class="canva" width="400" height="300"></canvas> -->
+                    <!-- </div>  -->
+                </div>
 
 
                 <!-- for top queries -->
@@ -129,6 +89,9 @@
 </body>
 <script type="text/javascript">
     search_item = document.getElementById("search_item")
+    let canva = document.getElementsByClassName("canva")
+    canva.width=400
+    canva.height=300
 
     var item_list = {{ item_list | safe}}
 
@@ -212,5 +175,90 @@
 
 </script>
 <!-- <script src="../static/scripts/recommend.js"></script> -->
+<script>
+    var item = 'Maagi';
+    const jsondatalineplot = { '50': 7, '60': 8, '70': 8, '80': 9, '90': 9, '100': 9, '110': 10, '120': 11, '130': 14, '140': 14, '150': 15 }
+    function creatLineChart(data, item) {
+        var ctx = document.getElementById('lineplot').getContext('2d');
+        var xValues = Object.keys(data);
+        var yValues = Object.values(data);
+        const barColors = ["red", "green", "blue", "orange", "brown"];
+        var lineplot = new Chart("lineplot", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "Rating of " + item + " over last few days"
+                },
+                legend: { display: false },
+                scales: {
+                    yAxes: [{ ticks: { min: 6, max: 16 } }],
+                }
+            }
+        });
+    }
+    creatLineChart(jsondatalineplot, item)
+</script>
+
+<!-- Call the function to generate the chart -->
+<script>
+    // JSON data
+    var jsonData = { 'Maggi': 9, 'Veg Noodles': 4, 'Lemon Ice Tea': 7.5, 'Pav Bhaji': 6, 'Pani Puri': 10 };
+
+    // Function to create a bar chart
+    function createBarChart(data) {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var labels = Object.keys(data);
+        var values = Object.values(data);
+
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Ratings',
+                    data: values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
+                    borderColor: 'rgba(75, 192, 192, 1)', // Border color
+                    borderWidth: 2
+                }],
+
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true, // Display the title
+                        text: 'Ratings of Top 5 Food Items in the last week', // Title text
+                        fontSize: 30 // Font size for the title
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            fontSize: 25 // Increase the font size for x-axis labels
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Call the function with the JSON data
+    createBarChart(jsonData);
+</script>
 
 </html>

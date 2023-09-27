@@ -81,3 +81,30 @@ body {
     margin-bottom: 10px;
   }
   
+
+  .stars {
+    display: inline-block;
+    margin-top: 10px;
+    display: inline-flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .stars input[type="radio"] {
+    display: none;
+  }
+
+  .stars label {
+    font-size: 25px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .stars label:before {
+    content: '\2605'; /* Unicode character for a star */
+  }
+
+  .stars input[type="radio"]:checked ~ label:before {
+    content: '\2605'; /* Unicode character for a filled star */
+    color: gold;
+  }
