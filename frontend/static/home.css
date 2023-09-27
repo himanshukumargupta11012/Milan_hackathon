@@ -31,7 +31,7 @@ body {
     display: flex;
     align-items: center;
     padding: 10px;
-    justify-content: end;
+    justify-content: space-between;
   }
   
   .review-button {
@@ -322,8 +322,20 @@ body {
   }
 }
 
+@media (max-width: 600px) {
+  .chart-container{
+    width: 400;
+    height: 300;
+  }
+}
+
 
 .canva{
   height: 343px;
   width: 486px;
+}
+.flex{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }

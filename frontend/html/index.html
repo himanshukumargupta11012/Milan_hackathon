@@ -18,15 +18,19 @@
         bg-green-400 transition-all duration-[4s]"></div>
     </div>
     <header class="flex-header">
-        <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
-        {% if user.is_authenticated %}
-        <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
-        <div class="avatar">
-            <img src={{user.profile_url}} alt="Avatar">
+        <img src="./../static/raman.jpeg" alt="Avatar" width="50" height="50" style="margin-left: 1.5rem; border-radius: 50%;">
+        <div class="flex">
+            <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
+            {% if user.is_authenticated %}
+            <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
+            <div class="avatar">
+                <img src={{user.profile_url}} alt="Avatar">
+            </div>
+            {% else %}
+            <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
+            {% endif %}
         </div>
-        {% else %}
-        <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
-        {% endif %}
+       
     </header>
     <div class="content">
         <section class="main-content">
@@ -45,19 +49,17 @@
                     <!-- Search results will be displayed here -->
                 </div>
             </div>
-            <div class="response">
-                <div>
-                    <canvas id="myChart" class="canva"  width=400 height=300 ></canvas>
-                    <canvas id="lineplot" class="canva" width="400" height="300"></canvas>
 
-                    <!-- <div class="plot">
-                        < Create a canvas element to render the chart -->
-                        <!-- <canvas id="myChart"  width=400 height=300 ></canvas> -->
-                    <!-- </div> -->
-    
-                    <!-- <div class="Drawlineplot">
-                        <canvas id="lineplot" class="canva" width="400" height="300"></canvas> -->
-                    <!-- </div>  -->
+            <!-- canva for drawing the graphs -->
+            <div class="response">
+                <div class="flex">
+                    <div class="chart-container" style="position: relative;  width: 500px;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+
+                    <div class="chart-container" style="position: relative;  width: 500px;">
+                        <canvas id="lineplot"></canvas>
+                    </div>
                 </div>
 
                 <span id="spac"></span>
@@ -91,14 +93,14 @@
         </section>
     </div>
     <footer>
-        <p>&copy; 2023 Your Website</p>
+        <p>&copy; Milan Hackthon 2023 From Raman Block</p>
     </footer>
 </body>
 <script type="text/javascript">
     search_item = document.getElementById("search_item")
     let canva = document.getElementsByClassName("canva")
-    canva.width=400
-    canva.height=300
+    canva.width = 400
+    canva.height = 300
 
     var item_list = {{ item_list | safe}}
 
@@ -142,17 +144,6 @@
             searchResults.style.display = "none"
         }
     })
-
-    //     const data = [
-    //     "Modeling",
-    //     "Simulation",
-    //     "Machine Learning",
-    //     "Control Systems",
-    //     "Artificial Intelligence",
-    //     "Reinforcement Learning",
-    //     "Optimization"
-    //     // Add more items as needed
-    // ];
 
     function search() {
         const searchTerm = document.getElementById("search_item").value.toLowerCase();
@@ -291,8 +282,6 @@
             }
         });
     }
-
-    // Call the function with the JSON data
     createBarChart(jsonData);
 </script>
 
