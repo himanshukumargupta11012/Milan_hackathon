@@ -32,6 +32,7 @@ body {
     align-items: center;
     padding: 10px;
     justify-content: space-between;
+    background-color: #A7EDE7;
   }
   
   .review-button {
@@ -146,6 +147,9 @@ body {
     margin-left: -1px;
     height: 51px;
     width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .search-button svg {
