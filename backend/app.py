@@ -130,7 +130,8 @@ def search_result():
 @app.route('/')
 def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
-    ItemPage(1)
+    # ItemPage(1)
+    top_items_this_week()
     return render_template('index.html', item_list=list_of_items, user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -278,6 +279,30 @@ def latest_reviews(item_id,topNum):
         })
 
     return top_reviews_list
+
+
+def top_items_this_week():
+    items = []
+    # write a query to make a list of items with the highest average rating in the past week
+    all_items = Item.query.all()
+    reviews = FoodReview.query.filter(FoodReview.timestamp > datetime.utcnow()-timedelta(hours=5, minutes=30)-timedelta(days=7)).all()
+    items_avg = np.zeros(len(all_items))
+    count_list = np.zeros(len(all_items))
+    for review in reviews:
+        items_avg[review.item_id-1] += int(review.rating)
+        count_list[review.item_id-1] += 1
+    for i in range(len(items_avg)):
+        if count_list[i] != 0:
+            items_avg[i] /= count_list[i]
+    # items_list = items_list.tolist()
+    best5 = np.argsort(items_avg)[::-1][:5]
+    for item in all_items:
+        if item.id in best5:
+            items.append({item.name: items_avg[item.id]})
+    # sort items by average rating
+    items = sorted(items, key=lambda x: list(x.values())[0], reverse=True)
+    # print(items)
+    return items
 
 
 def top_reviews(item_id,topNum):
