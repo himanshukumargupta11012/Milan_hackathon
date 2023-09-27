@@ -6,9 +6,5 @@ SQLAlchemy==2.0.21
 Werkzeug==2.3.7
 jinja2==3.1.2
 Authlib==1.2.1
-<<<<<<< HEAD
 requests==2.31.0
-pyabsa
-=======
-requests==2.31.0
->>>>>>> ecafb6ece771022760ead30cbc11ccc4414e653d
+pyabasa==2.3.3

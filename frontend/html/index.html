@@ -60,7 +60,7 @@
                     <!-- </div>  -->
                 </div>
 
-
+                <span id="spac"></span>
                 <!-- for top queries -->
                 <!-- <section class="hot-topics">
                     <h2>Top Queries</h2>
@@ -163,12 +163,13 @@
 
         $.ajax({
             type: "POST",
-            url: "/process_qtc",
+            url: "/search",
             data: JSON.stringify([{"item_name": searchTerm}]),
             contentType: "application/json",
             dataType: 'json',
             success: function (result) {
-                numRows.innerHTML = result.rows;
+                console.log(result)
+                spac.innerHTML = result.rows[0][1];
             }
         });
 

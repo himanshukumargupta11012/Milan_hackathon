@@ -51,8 +51,8 @@ def RunModelSentimentAnalysis():
 
 # print(item_list)
 item_list = [item.name for item in Item.query.all()]
-print(item_list)
-print(Item.query.with_entities(Item.name).all()[0])
+# print(item_list)
+# print(Item.query.with_entities(Item.name).all()[0])
 
 
 reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
@@ -117,6 +117,15 @@ def update_neg_pos(review, item_id):
 def load_user(id):
     return User.query.filter_by(id=id).first()
 
+@app.route('/search', methods=['POST'])
+def search_result():
+    data = request.get_json()
+    item_name = data[0]['item_name'].title()
+    item = Item.query.filter_by(name=item_name).first()
+    avg = get_average_rating(item.id)
+    result = [avg, item.positive_feedback, item.negative_feedback]
+    return jsonify(result)
+
 @app.route('/')
 def index():
     if request.method == 'POST': 
@@ -135,7 +144,9 @@ def index():
         except Exception as e:
             print(e)
             return render_template('index.html', data={'status': False, 'error_message': str(e)})
-    print(latest_reviews(2,3))
+    # print(latest_reviews(2,3))
+    list_of_items = [item.name.lower() for item in Item.query.all()]
+    # print(list_of_items)
     return render_template('index.html', item_list=list_of_items, user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -179,6 +190,7 @@ def get_review():
     if request.method=='GET':
         return render_template('review.html')
     elif request.method == 'POST': 
+        list_of_items = [item.name for item in Item.query.all()]
         user_id = current_user.id
         item_name = request.form['contentItem']
         item_id=Item.query.filter_by(name=item_name).first().id
@@ -198,6 +210,9 @@ def get_average_rating(item_id):
         db.session.query(db.func.avg(FoodReview.rating))
         .filter(FoodReview.item_id == item_id).scalar()
     )
+    item = Item.query.get(item_id)
+    item.average_rating = average_rating
+    db.session.commit()
     return average_rating
 
 
