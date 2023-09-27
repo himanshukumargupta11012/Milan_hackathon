@@ -395,16 +395,12 @@ def predict_rating(U, S, V, user_index, item_index):
   return predicted_rating
 
 
+# recommendation charan
 def recommend_user_items(user_id,num_recommendations):
-      # Create a DataFrame from the fetched data
+ 
     ratings = FoodReview.query.all()
 
-    # Create a DataFrame with the desired fields
     df = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating) for rating in ratings],columns=['user_id', 'item_id', 'rating'])
-
-    # Add more fields from the Rating table if needed
-    # df['item_id'] = df['item_id'].str.strip()
-    
     
     df_avg = df.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
     
@@ -412,48 +408,44 @@ def recommend_user_items(user_id,num_recommendations):
     user_item = pd.pivot_table(df_avg, index=['user_id'], columns='item_id', values='rating', fill_value=0)
 
     user_item.fillna(0,inplace = True)
-    return top_items_this_week()
-    print(user_item)
-    print(user_item.loc[user_item['user_id']==user_id])
-    # print(user_item.iloc[117])
+
+
+    array_ind = user_item.index
+    
+    array_ind = list(array_ind)
+    
+    act_user_id = array_ind.index(user_id)
+
+    
 
     # Singular Value Decomposition
     U, S, V = svds(user_item.values, k = 7)
     # print(U[0])
-    try:
-        print(user_id)
-        print(user_item.loc[user_item['user_id']==user_id])
-    # Construct diagonal array in SVD
-        S = np.diag(S)
+    print(user_item.iloc[user_id])
+# Construct diagonal array in SVD
+    S = np.diag(S)
 
-        predicted_ratings = np.matmul(np.matmul(U[user_id-1],S),V)
+    predicted_ratings = np.matmul(np.matmul(U[act_user_id-1],S),V)
 
-    # Sort the items by predicted rating.
+  # Sort the items by predicted rating.
 
-        print(predicted_ratings)
+    print(predicted_ratings)
 
-        sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
-        # print(sorted_items)
-    # Recommend the top items.
-        recommended_items = sorted_items[:num_recommendations]
-        print(recommended_items)
-    # Recommend new items
-        # print(df_avg)
-        
-        old_items = np.nonzero(user_item.loc[user_item['user_id']==user_id].values)[0] + 1
+    sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
 
-        print(old_items)
-        # print(old_items)
+  # Recommend the top items.
+    recommended_items = sorted_items[:num_recommendations]
+    print(recommended_items)
+ # Recommend new items
+  
+    
+    old_items = np.nonzero(user_item.iloc[act_user_id].values)[0] + 1
 
-        new_items  = recommended_items[~np.isin(recommended_items, old_items)]
-        
-        print(new_items)
-        new_items = [item_list[i-1] for i in new_items]
-        return new_items
-    except:
-        return top_items_this_week()
-
+    new_items  = recommended_items[~np.isin(recommended_items, old_items)]
+    
+    return 
+# recommend_user_items(132,7)
 if __name__ == "__main__":
-    recommend_user_items(2,7)
+    recommend_user_items(132,7)
     app.run(host='0.0.0.0', port=5000, debug=True)
    
