@@ -17,9 +17,10 @@
         <div class="h-[5px] w-0 
         bg-green-400 transition-all duration-[4s]"></div>
     </div>
-    <header class="flex-header">
+
+    <header class="flex-header bg-pink-700">
         <img src="./../static/raman.jpeg" alt="Avatar" width="50" height="50" style="margin-left: 1.5rem; border-radius: 50%;">
-        <div class="flex">
+        <div class="flex items-center">
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% if user.is_authenticated %}
             <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
@@ -36,7 +37,7 @@
         <section class="main-content">
             <div class="search-container">
                 <input type="text" placeholder="Search for your canteen..." id="search_item">
-                <button class="search-button" onclick="search()">
+                <button class="search-button" onclick="search()" class="hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
                         <path
@@ -51,33 +52,32 @@
             </div>
 
             <!-- canva for drawing the graphs -->
-            <div class="response">
-                <div class="flex">
-                    <div class="chart-container" style="position: relative;  width: 500px;">
-                        <canvas id="myChart"></canvas>
-                    </div>
-
+            <div class="hidden flex-col items-center gap-y-5 w-full" id="item_detail">
+                    
                     <div class="chart-container" style="position: relative;  width: 500px;">
                         <canvas id="lineplot"></canvas>
                     </div>
-                </div>
 
-                <span id="spac"></span>
-                <!-- for top queries -->
-                <!-- <section class="hot-topics">
-                    <h2>Top Queries</h2>
-                    <ul>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis quibusdam repellendus voluptatem qui error, numquam at possimus amet totam recusandae laboriosam quia! Debitis, maiores voluptatibus ipsa dolorum ipsam totam dicta temporibus inventore quis illum asperiores reiciendis nihil qui saepe iste dignissimos error consequuntur. Sed voluptas nesciunt soluta modi qui laborum!</li>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis quibusdam repellendus voluptatem qui error, numquam at possimus amet totam recusandae laboriosam quia! Debitis, maiores voluptatibus ipsa dolorum ipsam totam dicta temporibus inventore quis illum asperiores reiciendis nihil qui saepe iste dignissimos error consequuntur. Sed voluptas nesciunt soluta modi qui laborum!</li>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis quibusdam repellendus voluptatem qui error, numquam at possimus amet totam recusandae laboriosam quia! Debitis, maiores voluptatibus ipsa dolorum ipsam totam dicta temporibus inventore quis illum asperiores reiciendis nihil qui saepe iste dignissimos error consequuntur. Sed voluptas nesciunt soluta modi qui laborum!</li>
+                    <div class="flex justify-evenly w-full h-[300px] overflow-y-scroll" id="review_list">
                         
-                    </ul>
-                </section> -->
+                        <div id="positive_review_list" class="list-none">
+                            <h2 class="text-xl">Positive Feedback</h2>
+                        </div>
+                        
+                        <div id="negative_review_list" class="list-none">
+                            <h2 class="text-xl">Negative Feedback</h2>
+                        </div>
+                    </div>
+
             </div>
         </section>
-        <section class="hot-topics">
-            <h2>Hot Topics</h2>
+        <section class="hot-topics flex-col gap-y-2">
+            <div class="chart-container" style="position: relative;  width: 430px;">
+                <canvas id="myChart"></canvas>
+            </div>
+            
             <ul>
+                <h2>Recommended for you</h2>
                 <li>Non-veg Noodles</li>
                 <li>Veg Noodles</li>
                 <li>Maggi</li>
@@ -97,6 +97,8 @@
     </footer>
 </body>
 <script type="text/javascript">
+    positive_reviews = []
+    negative_reviews = []
     search_item = document.getElementById("search_item")
     let canva = document.getElementsByClassName("canva")
     canva.width = 400
@@ -119,7 +121,7 @@
     data = []
     search_item.addEventListener("keyup", () => {
 
-
+        data = []
         for (let i = 0; i < item_list.length; i++) {
             similarity = jaccardSimilarity(item_list[i], search_item.value)
             if (similarity > .4) {
@@ -128,22 +130,31 @@
         }
         const searchResults = document.getElementById("searchResults");
         searchResults.innerHTML = ""
-        if (search_item.value == "") {
-            searchResults.style.display = "none"
-            data = []
-            return
-        }
+
         if (data.length > 0) {
             data.forEach(item => {
                 const result = document.createElement("a");
                 result.textContent = item;
+                result.addEventListener("click", ()=>{
+                    search2(item);
+                })
                 searchResults.appendChild(result);
             });
             searchResults.style.display = "block"
-        } else {
-            searchResults.style.display = "none"
         }
     })
+
+    //     const data = [
+    //     "Modeling",
+    //     "Simulation",
+    //     "Machine Learning",
+    //     "Control Systems",
+    //     "Artificial Intelligence",
+    //     "Reinforcement Learning",
+    //     "Optimization"
+    //     // Add more items as needed
+    // ];
+
 
     function search() {
         const searchTerm = document.getElementById("search_item").value.toLowerCase();
@@ -166,10 +177,7 @@
 
         const searchResults = document.getElementById("searchResults");
         searchResults.innerHTML = ""; // Clear previous results
-        if (searchTerm == "") {
-            searchResults.style.display = "none"
-            return
-        }
+
         const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
 
         if (filteredData.length === 0) {
@@ -185,6 +193,79 @@
             searchResults.style.display = "block"
         }
     }
+
+    function search2(item) {
+            document.getElementById("searchResults").style.display = "none";
+            console.log(document.getElementById("searchResults").style.display)
+
+            const searchTerm = item.toLowerCase();
+
+            if (item_list.indexOf(searchTerm) === -1) {
+                showAlert("Item not present")
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/search",
+                data: JSON.stringify([{ "item_name": searchTerm }]),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (result) {
+                    // spac.innerHTML = result.rows;
+                    positive_reviews = result[1].split(',')
+                    negative_reviews = result[2].split(',')
+
+                    console.log(negative_reviews)
+
+                    
+                    for(let i = 0; i < positive_reviews.length; i++) {
+                        positive_list = document.getElementById("positive_review_list")
+
+                        li = document.createElement('li')
+                        li.textContent = positive_reviews[i]
+                        positive_list.appendChild(li)
+                    }
+
+                    for (let i = 0; i < negative_reviews.length; i++) {
+                        negative_list = document.getElementById("negative_review_list")
+
+                        li = document.createElement('li')
+                        li.textContent = negative_reviews[i]
+                        negative_list.appendChild(li)
+                    }
+
+                    item_detail = document.getElementById("item_detail")
+                    item_detail.classList.replace("hidden", "flex")
+
+                    console.log(positive_reviews)
+                }
+            });
+
+            const searchResults = document.getElementById("searchResults");
+            searchResults.innerHTML = ""; // Clear previous results
+
+            const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
+
+            if (filteredData.length === 0) {
+                const noResults = document.createElement("a");
+                noResults.textContent = "No results found.";
+                searchResults.appendChild(noResults);
+            } else {
+                filteredData.forEach(item => {
+                    const result = document.createElement("a");
+                    result.textContent = item;
+                    searchResults.appendChild(result);
+                });
+            }
+        }
+
+    document.getElementById("search_item").addEventListener("keypress", send_item);
+        function send_item(event) {
+
+            if (event.key == "Enter") {
+                search();
+            }
+        }
     // for showing alert
     showAlert = (msg) => {
             alert_box.firstElementChild.innerText = msg;
@@ -199,7 +280,6 @@
         }
 
 </script>
-<!-- <script src="../static/scripts/recommend.js"></script> -->
 
 <script>
     var item = 'Maagi';
