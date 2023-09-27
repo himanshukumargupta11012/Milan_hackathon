@@ -32,6 +32,50 @@ triplet_extractor = ASTE.AspectSentimentTripletExtractor(
     checkpoint="english"
 )
 
+
+num_users = User.query.count()
+num_items = Item.query.count()
+top_n = 5
+item_list = [item.name for item in Item.query.all()]
+
+reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
+
+
+ratings = FoodReview.query.all()
+# Create a DataFrame with the desired fields
+ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
+ratings_data = ratings_data.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
+
+unique_items = ratings_data['itemId'].unique()
+item_name_mapping = {item_id: item for item_id, item in enumerate(item_list, start=1)}
+# ratings_data['itemId'] = ratings_data['Item'].map(item_id_mapping)
+# item_name_mapping = {item_id: item_name for item_name, item_id in item_id_mapping.items()}
+
+# Initialize and train the model with all data
+model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
+train_epocs(model, ratings_data, epochs=40, lr=0.01, wd=1e-6, unsqueeze=True)
+
+
+# Save the trained model to a file
+torch.save(model.state_dict(), 'recommendation_model.pth')
+# Load the saved model
+loaded_model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
+loaded_model.load_state_dict(torch.load('recommendation_model.pth'))
+
+# Set the model to evaluation mode
+loaded_model.eval()
+
+candidate_set = create_candidate_set(ratings_data, num_users, num_items, item_name_mapping)
+predicted_ratings_df = predict_ratings_for_candidate_set(loaded_model, candidate_set, item_name_mapping)
+
+user_id_to_recommend = 3
+
+user_recommendations = recommend_items_for_user(loaded_model, user_id_to_recommend, predicted_ratings_df, top_n)
+
+recommend_item = user_recommendations.iloc[:, 1].values
+print(recommend_item)
+
+
 load_dotenv(".env")
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
@@ -50,6 +94,63 @@ oauth = OAuth(app)
 app.app_context().push()
 db.create_all()
 
+# sentiment rating model
+pipe = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
+tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+
+
+# aspect based sentiment analysis model
+triplet_extractor = ASTE.AspectSentimentTripletExtractor(
+    checkpoint="english"
+)
+
+
+num_users = User.query.count()
+num_items = Item.query.count()
+top_n=3
+item_list = [item.name for item in Item.query.all()]
+# print(item_list)
+# print(Item.query.with_entities(Item.name).all()[0])
+
+
+reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
+
+
+ratings = FoodReview.query.all()
+# Create a DataFrame with the desired fields
+ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
+ratings_data = ratings_data.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
+
+unique_items = ratings_data['itemId'].unique()
+item_name_mapping = {item_id: item for item_id, item in enumerate(item_list, start=1)}
+# ratings_data['itemId'] = ratings_data['Item'].map(item_id_mapping)
+# item_name_mapping = {item_id: item_name for item_name, item_id in item_id_mapping.items()}
+
+# Initialize and train the model with all data
+model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
+train_epocs(model, ratings_data, epochs=40, lr=0.01, wd=1e-6, unsqueeze=True)
+
+
+# Save the trained model to a file
+torch.save(model.state_dict(), 'recommendation_model.pth')
+# Load the saved model
+loaded_model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
+loaded_model.load_state_dict(torch.load('recommendation_model.pth'))
+
+# Set the model to evaluation mode
+loaded_model.eval()
+
+candidate_set = create_candidate_set(ratings_data, num_users, num_items, item_name_mapping)
+predicted_ratings_df = predict_ratings_for_candidate_set(loaded_model, candidate_set, item_name_mapping)
+
+user_id_to_recommend = 3
+
+user_recommendations = recommend_items_for_user(loaded_model, user_id_to_recommend, predicted_ratings_df, top_n)
+
+recommend_item = user_recommendations.iloc[:, 1].values
+print(recommend_item)
+
 def require_login(f):
     @wraps(f)
     def innerfunction(*args, **kwargs):
@@ -60,12 +161,7 @@ def require_login(f):
     return innerfunction
 
 # print(item_list)
-item_list = [item.name for item in Item.query.all()]
-# print(item_list)
-# print(Item.query.with_entities(Item.name).all()[0])
 
-
-reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
 
 
 
@@ -116,7 +212,7 @@ def update_neg_pos(review, item_id):
 
     db.session.commit()
 
-    print(negative, positive)
+    # print(negative, positive)
 
 
 
@@ -141,7 +237,7 @@ def index():
     if not current_user.is_authenticated:
         return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=top_items_this_week())
     else:
-        item_id = recommend_user_items(current_user.id, 7)
+        item_id = recommend_user_items(current_user.id, top_n)
         print(item_id)
         item_name = [item_list[i-1] for i in item_id]
         return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=item_name)
