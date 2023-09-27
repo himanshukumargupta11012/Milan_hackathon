@@ -18,8 +18,8 @@
         bg-green-400 transition-all duration-[4s]"></div>
     </div>
 
-    <header class="flex-header bg-pink-700">
-        <img src="./../static/raman.jpeg" alt="Avatar" width="50" height="50" style="margin-left: 1.5rem; border-radius: 50%;">
+    <header class="flex-header">
+        <img src="./../static/raman.jpeg" alt="Avatar" width="50" height="50" class="hedear-img">
         <div class="flex items-center">
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% if user.is_authenticated %}
@@ -31,10 +31,10 @@
             <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
             {% endif %}
         </div>
-       
+
     </header>
     <div class="content">
-        <section class="main-content">
+        <section class="main-content" style="flex: 3;">
             <div class="search-container">
                 <input type="text" placeholder="Search for your canteen..." id="search_item">
                 <button class="search-button" onclick="search()" class="hover:cursor-pointer">
@@ -52,44 +52,51 @@
             </div>
 
             <!-- canva for drawing the graphs -->
-            <div class="hidden flex-col items-center gap-y-5 w-full" id="item_detail">
-                    
+            <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
+                <div style="display: flex;">
                     <div class="chart-container" style="position: relative;  width: 500px;">
                         <canvas id="lineplot"></canvas>
                     </div>
+                    <div class="chart-container" style="position: relative;  width: 500px;">
+                        <canvas id="myPieChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+                
 
-                    <div class="flex justify-evenly w-full h-[300px] overflow-y-scroll" id="review_list">
-                        
-                        <div id="positive_review_list" class="list-none">
-                            <h2 class="text-xl">Positive Feedback</h2>
-                        </div>
-                        
-                        <div id="negative_review_list" class="list-none">
-                            <h2 class="text-xl">Negative Feedback</h2>
-                        </div>
+                <div class="flex justify-evenly w-full h-[300px] overflow-y-scroll" id="review_list">
+
+                    <div id="positive_review_list" class="list-none">
+                        <h2 class="text-xl">Positive Feedback</h2>
                     </div>
 
+                    <div id="negative_review_list" class="list-none">
+                        <h2 class="text-xl">Negative Feedback</h2>
+                    </div>
+                </div>
+
             </div>
+
         </section>
-        <section class="hot-topics flex-col gap-y-2">
-            <div class="chart-container" style="position: relative;  width: 430px;">
+        <section style="flex:1.4;" class="sidebar">
+            <div class="chart-container" style="position: relative; display: flex; justify-content: center;">
                 <canvas id="myChart"></canvas>
             </div>
-            
-            <ul>
-                <h2>Recommended for you</h2>
-                <li>Non-veg Noodles</li>
-                <li>Veg Noodles</li>
-                <li>Maggi</li>
-                <li>Panipuri</li>
-                <li>Sandwich</li>
-                <li>Chiken Roll</li>
-                <li>Veg Roll</li>
-                <li>Coffee</li>
-                <li>Ice tea</li>
-                <li>Tea</li>
-                <li>Fruit Juice</li>
-            </ul>
+            <div class="hot-topics flex-col gap-y-2">
+                <ul>
+                    <h2>Recommended for you</h2>
+                    <li>Non-veg Noodles</li>
+                    <li>Veg Noodles</li>
+                    <li>Maggi</li>
+                    <li>Panipuri</li>
+                    <li>Sandwich</li>
+                    <li>Chiken Roll</li>
+                    <li>Veg Roll</li>
+                    <li>Coffee</li>
+                    <li>Ice tea</li>
+                    <li>Tea</li>
+                    <li>Fruit Juice</li>
+                </ul>
+            </div>
         </section>
     </div>
     <footer>
@@ -135,7 +142,7 @@
             data.forEach(item => {
                 const result = document.createElement("a");
                 result.textContent = item;
-                result.addEventListener("click", ()=>{
+                result.addEventListener("click", () => {
                     search2(item);
                 })
                 searchResults.appendChild(result);
@@ -159,14 +166,14 @@
     function search() {
         const searchTerm = document.getElementById("search_item").value.toLowerCase();
 
-        if(item_list.indexOf(searchTerm) === -1) {
+        if (item_list.indexOf(searchTerm) === -1) {
             showAlert("Item not present")
         }
 
         $.ajax({
             type: "POST",
             url: "/search",
-            data: JSON.stringify([{"item_name": searchTerm}]),
+            data: JSON.stringify([{ "item_name": searchTerm }]),
             contentType: "application/json",
             dataType: 'json',
             success: function (result) {
@@ -195,89 +202,89 @@
     }
 
     function search2(item) {
-            document.getElementById("searchResults").style.display = "none";
-            console.log(document.getElementById("searchResults").style.display)
+        document.getElementById("searchResults").style.display = "none";
+        console.log(document.getElementById("searchResults").style.display)
 
-            const searchTerm = item.toLowerCase();
+        const searchTerm = item.toLowerCase();
 
-            if (item_list.indexOf(searchTerm) === -1) {
-                showAlert("Item not present")
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/search",
-                data: JSON.stringify([{ "item_name": searchTerm }]),
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (result) {
-                    // spac.innerHTML = result.rows;
-                    positive_reviews = result[1].split(',')
-                    negative_reviews = result[2].split(',')
-
-                    console.log(negative_reviews)
-
-                    
-                    for(let i = 0; i < positive_reviews.length; i++) {
-                        positive_list = document.getElementById("positive_review_list")
-
-                        li = document.createElement('li')
-                        li.textContent = positive_reviews[i]
-                        positive_list.appendChild(li)
-                    }
-
-                    for (let i = 0; i < negative_reviews.length; i++) {
-                        negative_list = document.getElementById("negative_review_list")
-
-                        li = document.createElement('li')
-                        li.textContent = negative_reviews[i]
-                        negative_list.appendChild(li)
-                    }
-
-                    item_detail = document.getElementById("item_detail")
-                    item_detail.classList.replace("hidden", "flex")
-
-                    console.log(positive_reviews)
-                }
-            });
-
-            const searchResults = document.getElementById("searchResults");
-            searchResults.innerHTML = ""; // Clear previous results
-
-            const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
-
-            if (filteredData.length === 0) {
-                const noResults = document.createElement("a");
-                noResults.textContent = "No results found.";
-                searchResults.appendChild(noResults);
-            } else {
-                filteredData.forEach(item => {
-                    const result = document.createElement("a");
-                    result.textContent = item;
-                    searchResults.appendChild(result);
-                });
-            }
+        if (item_list.indexOf(searchTerm) === -1) {
+            showAlert("Item not present")
         }
+
+        $.ajax({
+            type: "POST",
+            url: "/search",
+            data: JSON.stringify([{ "item_name": searchTerm }]),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (result) {
+                // spac.innerHTML = result.rows;
+                positive_reviews = result[1].split(',')
+                negative_reviews = result[2].split(',')
+
+                console.log(negative_reviews)
+
+
+                for (let i = 0; i < positive_reviews.length; i++) {
+                    positive_list = document.getElementById("positive_review_list")
+
+                    li = document.createElement('li')
+                    li.textContent = positive_reviews[i]
+                    positive_list.appendChild(li)
+                }
+
+                for (let i = 0; i < negative_reviews.length; i++) {
+                    negative_list = document.getElementById("negative_review_list")
+
+                    li = document.createElement('li')
+                    li.textContent = negative_reviews[i]
+                    negative_list.appendChild(li)
+                }
+
+                item_detail = document.getElementById("item_detail")
+                item_detail.classList.replace("hidden", "flex")
+
+                console.log(positive_reviews)
+            }
+        });
+
+        const searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = ""; // Clear previous results
+
+        const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
+
+        if (filteredData.length === 0) {
+            const noResults = document.createElement("a");
+            noResults.textContent = "No results found.";
+            searchResults.appendChild(noResults);
+        } else {
+            filteredData.forEach(item => {
+                const result = document.createElement("a");
+                result.textContent = item;
+                searchResults.appendChild(result);
+            });
+        }
+    }
 
     document.getElementById("search_item").addEventListener("keypress", send_item);
-        function send_item(event) {
+    function send_item(event) {
 
-            if (event.key == "Enter") {
-                search();
-            }
+        if (event.key == "Enter") {
+            search();
         }
+    }
     // for showing alert
     showAlert = (msg) => {
-            alert_box.firstElementChild.innerText = msg;
-            alert_box.classList.replace("opacity-0", "opacity-100");
-            alert_box.firstElementChild.nextElementSibling.classList.add("w-full");
+        alert_box.firstElementChild.innerText = msg;
+        alert_box.classList.replace("opacity-0", "opacity-100");
+        alert_box.firstElementChild.nextElementSibling.classList.add("w-full");
 
 
-            setTimeout(() => {
-                alert_box.classList.replace("opacity-100", "opacity-0");
-                alert_box.firstElementChild.nextElementSibling.classList.remove("w-full")
-            }, 4000)
-        }
+        setTimeout(() => {
+            alert_box.classList.replace("opacity-100", "opacity-0");
+            alert_box.firstElementChild.nextElementSibling.classList.remove("w-full")
+        }, 4000)
+    }
 
 </script>
 
@@ -363,6 +370,50 @@
         });
     }
     createBarChart(jsonData);
+</script>
+<script>
+    // fetch from backend to here
+    var jsondata = { 'correct': 85, 'wrong': 15 };
+
+    function DrawPieChart(jsondata) {
+        var plotvalues = Object.values(jsondata);
+        var allLabels = Object.keys(jsondata);
+
+        // Get a reference to the canvas element
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+
+        // Define the data for the pie chart
+        var data = {
+            labels: allLabels,
+            datasets: [{
+                data: plotvalues, // The data values for each segment
+                backgroundColor: ['green', 'red'], // The colors for each segment
+            }]
+        };
+
+        // Create the pie chart
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                legend: { display: false },
+                plugins: {
+                    title: {
+                        display: true, // Display the title
+                        text: 'Ratings of Top 5 Food Items in the last week', // Title text
+                        fontSize: 30 // Font size for the title
+                    }
+                },
+
+                devicePixelRatio: 2, // Increase the device pixel ratio for better quality
+                scales: {
+
+                }
+            }
+        })
+    };
+
+    DrawPieChart(jsondata);
 </script>
 
 </html>

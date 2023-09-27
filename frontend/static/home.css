@@ -34,7 +34,10 @@ body {
     justify-content: space-between;
     background-color: #A7EDE7;
   }
-  
+  .hedear-img{
+    margin-left: 1rem;
+    border-radius: 50%;
+  }
   .review-button {
     padding: 10px 20px;
     font-size: 16px;
@@ -45,6 +48,17 @@ body {
     border-radius: 10px;
     margin:  0 7px;
   }
+
+  @media (max-width: 450px) {
+    .review-button {
+      margin:  0 2px;
+    }
+    .hedear-img{
+      margin: 0;
+    }
+  }
+  
+  
   
   .avatar {
     width: 35px;
@@ -79,11 +93,6 @@ body {
       width: 85vw;
       display:flex;
       justify-content: center;
-    }
-  }
-  @media (min-width: 776px) {
-    .hot-topics{
-      overflow-y: initial;
     }
   }
 
@@ -225,7 +234,9 @@ body {
   background-color: #c41c1c;
 }
 
-
+#item_detail{
+  overflow-y: auto;
+}
 
 
 
@@ -238,7 +249,8 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  max-height: calc(100vh-30vh);
 }
 
 .hot-topics h2 {
@@ -342,4 +354,10 @@ body {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+}
+
+@media (min-width: 1050px) {
+  .sidebar{
+    overflow-y: auto;
+  }
 }
