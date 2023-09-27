@@ -15,4 +15,7 @@ flask run
 Your flask server will be up and running on port 5000. You can head over to your browser and start exploring.
 
 ## Tech stack
-We are using Flask for the backend, Sqlite for the database and tailwind css and jquery,graph.js for the frontend. 
+We are using,  
+  --  Flask for the Backend  
+  -- Sqlite for the Database 
+  -- Tailwind CSS, Jquery, graph.js for the Frontend
