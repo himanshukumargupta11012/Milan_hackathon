@@ -121,7 +121,7 @@ def load_user(id):
 @app.route('/search', methods=['POST'])
 def search_result():
     data = request.get_json()
-    item_name = data[0]['item_name'].title()
+    item_name = data[0]['item_name'].capitalize()
     item = Item.query.filter_by(name=item_name).first()
     avg =  average_rating_window(item.id,32)
     result = [avg, item.positive_feedback, item.negative_feedback]
@@ -282,7 +282,7 @@ def latest_reviews(item_id,topNum):
 
 
 def top_items_this_week():
-    items = []
+    items = {}
     # write a query to make a list of items with the highest average rating in the past week
     all_items = Item.query.all()
     reviews = FoodReview.query.filter(FoodReview.timestamp > datetime.utcnow()+timedelta(hours=5, minutes=30)-timedelta(days=7)).all()
@@ -295,13 +295,13 @@ def top_items_this_week():
         if count_list[i] != 0:
             items_avg[i] /= count_list[i]
     # items_list = items_list.tolist()
-    best5 = np.argsort(items_avg)[::-1][:5]
+    best5 = np.argsort(items_avg)[::-1][:6]
     for item in all_items:
         if item.id in best5:
-            items.append({item.name: items_avg[item.id]})
+            items[item.name]= items_avg[item.id]
     # sort items by average rating
-    items = sorted(items, key=lambda x: list(x.values())[0], reverse=True)
-    # print(items)
+    # items = sorted(items, key=lambda x: list(x.values())[0], reverse=True)
+    items = dict(sorted(items.items(), key=lambda x: x[1], reverse=True))
     return items
 
 
