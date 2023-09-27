@@ -9,15 +9,26 @@ from flask_login import login_user, LoginManager, current_user, logout_user
 from authlib.integrations.flask_client import OAuth
 from authlib.common.security import generate_token
 import numpy as np
+from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, AdamW
+import torch
+import pandas as pd
+import random
 
-# from pyabsa import AspectSentimentTripletExtraction as ASTE
-# import numpy as  np
+rating = torch.tensor([1, 2, 3, 4, 5])
 
-# triplet_extractor = ASTE.AspectSentimentTripletExtractor(
-#     checkpoint="english"
-# )
+pipe = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
+tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
 
-# print(triplet_extractor.predict("maggi is good"))
+
+from pyabsa import AspectSentimentTripletExtraction as ASTE
+import numpy as  np
+
+triplet_extractor = ASTE.AspectSentimentTripletExtractor(
+    checkpoint="english"
+)
+
+print(triplet_extractor.predict("maggi is good"))
 
 load_dotenv(".env")
 CLIENT_ID = os.environ['CLIENT_ID']
@@ -57,6 +68,7 @@ item_list = [item.name for item in Item.query.all()]
 
 
 reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
+
 
 
 def update_neg_pos(review, item_id):
@@ -131,8 +143,8 @@ def search_result():
 def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
     # ItemPage(1)
-    top_items_this_week()
-    return render_template('index.html', item_list=list_of_items, user=current_user)
+    print(top_items_this_week())
+    return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week())
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -178,13 +190,24 @@ def get_review():
         list_of_items = [item.name for item in Item.query.all()]
         user_id = current_user.id
         item_name = request.form['contentItem']
+        print(item_name)
         item_id=Item.query.filter_by(name=item_name).first().id
         review = request.form['review']
+
+        input = tokenizer(review ,  return_tensors="pt")
+
+        output = model(**input).logits[0]
+        normalized = torch.nn.Softmax()(output)
+        curr_rating = torch.sum(normalized*rating)
+        curr_rating = torch.round(curr_rating).item()
+        print(torch.sum(normalized*rating))
+
+        update_neg_pos(review, item_id)
+
         # rating = int(request.form['rating'])
-        rating = np.random.randint(3, 5)
         # sentiment_insights = RunModelSentimentAnalysis(review)
         # timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
-        newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None)
+        newReview = FoodReview(user_id=user_id, review=review, rating=curr_rating, item_id=item_id, sentiment_insights=None)
         db.session.add(newReview)
         db.session.commit()
         return render_template('index.html', user=current_user, item_list=list_of_items)
@@ -365,11 +388,8 @@ def ItemPage(item_id):
     #     daily_average_ratings[date]=average_rating
     # daily_average_ratings = sort(daily_average_ratings)
     final_data=[daily_average_ratings,topReviews ,latestReviews ,avg_rating]
-    # print(final_data)
     return jsonify(data=final_data)
 
-def ml_model():
-    pass
 
 
 if __name__ == "__main__":

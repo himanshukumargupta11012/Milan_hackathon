@@ -106,6 +106,8 @@
 <script type="text/javascript">
     positive_reviews = []
     negative_reviews = []
+    rating_array = []
+    curr_search_value = ""
     search_item = document.getElementById("search_item")
     let canva = document.getElementsByClassName("canva")
     canva.width = 400
@@ -127,7 +129,7 @@
 
     data = []
     search_item.addEventListener("keyup", () => {
-
+        curr_search_value = search_item.value
         data = []
         for (let i = 0; i < item_list.length; i++) {
             similarity = jaccardSimilarity(item_list[i], search_item.value)
@@ -183,7 +185,7 @@
         });
 
         const searchResults = document.getElementById("searchResults");
-        searchResults.innerHTML = ""; // Clear previous results
+        searchResults.innerHTML = "";
 
         const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
 
@@ -211,30 +213,39 @@
             showAlert("Item not present")
         }
 
-        $.ajax({
-            type: "POST",
-            url: "/search",
-            data: JSON.stringify([{ "item_name": searchTerm }]),
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (result) {
-                // spac.innerHTML = result.rows;
-                positive_reviews = result[1].split(',')
-                negative_reviews = result[2].split(',')
+            $.ajax({
+                type: "POST",
+                url: "/search",
+                data: JSON.stringify([{ "item_name": searchTerm }]),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (result) {
+                    positive_reviews = result[1].split(',')
+                    negative_reviews = result[2].split(',')
 
-                console.log(negative_reviews)
+                    curr_search_value = searchTerm
 
+                    console.log(result)
+                    
+                    rating_array = result[0]
+                    
+                    date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                    if (typeof item_line_chart !== 'undefined') {
+                        item_line_chart.destroy()
+                    }
+                    item_line_chart = creatLineChart(date, rating_array, item)
+                    console.log(rating_array)
 
-                for (let i = 0; i < positive_reviews.length; i++) {
-                    positive_list = document.getElementById("positive_review_list")
+                    for(let i = 0; i < positive_reviews.length; i++) {
+                        positive_list = document.getElementById("positive_review_list")
 
                     li = document.createElement('li')
                     li.textContent = positive_reviews[i]
                     positive_list.appendChild(li)
                 }
 
-                for (let i = 0; i < negative_reviews.length; i++) {
-                    negative_list = document.getElementById("negative_review_list")
+                    for (let i = 0; i < negative_reviews.length; i++) {
+                        negative_list = document.getElementById("negative_review_list")
 
                     li = document.createElement('li')
                     li.textContent = negative_reviews[i]
@@ -286,26 +297,24 @@
         }, 4000)
     }
 
-</script>
-
-<script>
-    var item = 'Maagi';
+    var item = curr_search_value;
     const jsondatalineplot = { '50': 7, '60': 8, '70': 8, '80': 9, '90': 9, '100': 9, '110': 10, '120': 11, '130': 14, '140': 14, '150': 15 }
-    function creatLineChart(data, item) {
+    
+    function creatLineChart(x, y, item) {
         var ctx = document.getElementById('lineplot').getContext('2d');
-        var xValues = Object.keys(data);
-        var yValues = Object.values(data);
+        // var xValues = Object.keys(data);
+        // var yValues = Object.values(data);
         const barColors = ["red", "green", "blue", "orange", "brown"];
         var lineplot = new Chart("lineplot", {
             type: "line",
             data: {
-                labels: xValues,
+                labels: x,
                 datasets: [{
                     fill: false,
                     lineTension: 0,
                     backgroundColor: "#9681EB",
                     borderColor: "#6527BE",
-                    data: yValues
+                    data: y
                 }]
             },
             options: {
@@ -320,14 +329,13 @@
                 }
             }
         });
+        return lineplot
     }
-    creatLineChart(jsondatalineplot, item)
-</script>
 
-<!-- Call the function to generate the chart -->
-<script>
     // JSON data
-    var jsonData = { 'Maggi': 9, 'Veg Noodles': 4, 'Lemon Ice Tea': 7.5, 'Pav Bhaji': 6, 'Pani Puri': 10 };
+    var jsonData = {{ top5|safe }};
+
+    console.log(jsonData)
 
     // Function to create a bar chart
     function createBarChart(data) {
