@@ -138,7 +138,13 @@ def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
     # ItemPage(1)
     print(top_items_this_week())
-    return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommended_items=recommend_user_items(current_user.id,7))
+    if not current_user.is_authenticated:
+        return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=top_items_this_week())
+    else:
+        item_id = recommend_user_items(current_user.id, 7)
+        print(item_id)
+        item_name = [item_list[i-1] for i in item_id]
+        return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=item_name)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -413,37 +419,43 @@ def recommend_user_items(user_id,num_recommendations):
     array_ind = user_item.index
     
     array_ind = list(array_ind)
-    
-    act_user_id = array_ind.index(user_id)
+    try:
+        act_user_id = array_ind.index(user_id)
 
     
 
     # Singular Value Decomposition
-    U, S, V = svds(user_item.values, k = 7)
-    # print(U[0])
-    print(user_item.iloc[user_id])
-# Construct diagonal array in SVD
-    S = np.diag(S)
+        U, S, V = svds(user_item.values, k = 7)
+        # print(U[0])
+        # print(user_item.iloc[user_id])
+    # Construct diagonal array in SVD
+        S = np.diag(S)
 
-    predicted_ratings = np.matmul(np.matmul(U[act_user_id-1],S),V)
+        predicted_ratings = np.matmul(np.matmul(U[act_user_id],S),V)
 
-  # Sort the items by predicted rating.
+    # Sort the items by predicted rating.
 
-    print(predicted_ratings)
+        print(predicted_ratings)
 
-    sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
+        sorted_items = np.argsort(predicted_ratings)[::-1] + 1 # (item index starts from 1)
 
-  # Recommend the top items.
-    recommended_items = sorted_items[:num_recommendations]
-    print(recommended_items)
- # Recommend new items
-  
+    # Recommend the top items.
+        recommended_items = sorted_items[:num_recommendations]
+        print(recommended_items)
+    # Recommend new items
     
-    old_items = np.nonzero(user_item.iloc[act_user_id].values)[0] + 1
+        
+        old_items = np.nonzero(user_item.iloc[act_user_id].values)[0] + 1
 
-    new_items  = recommended_items[~np.isin(recommended_items, old_items)]
-    
-    return 
+        new_items  = recommended_items[~np.isin(recommended_items, old_items)]
+        
+        return new_items
+    except:
+        temp = top_items_this_week().keys()
+        answer = []
+        for i in temp:
+            answer.append(item_list.index(i)+1)
+        return answer
 # recommend_user_items(132,7)
 if __name__ == "__main__":
     recommend_user_items(132,7)

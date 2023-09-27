@@ -81,10 +81,18 @@
             </div>
             <div class="hot-topics flex-col gap-y-2">
                 <ul>
+                    {% if not user.is_authenticated %}
+                    <h2>Recommended items</h2>
+                    {% else %}
                     <h2>Recommended for you</h2>
-                    {% for item in recommended_items %}
+                    {% endif %}
+
+                    {% if recommend_items is not none %}
+                    
+                    {% for item in recommend_items %}
                     <li>{{item}}</li>
                     {% endfor %}
+                    {%endif%}
                 </ul>
             </div>
         </section>

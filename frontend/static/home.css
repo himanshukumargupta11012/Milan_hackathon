@@ -22,7 +22,7 @@ body {
   
   
   header {
-    background-color: #ededed;
+    background-color: #fffeeb;
     padding: 10px;
     padding-right: 5vw;
     text-align: end;
@@ -32,7 +32,7 @@ body {
     align-items: center;
     padding: 10px;
     justify-content: space-between;
-    background-color: #A7EDE7;
+    background-color: #86bbd8;
   }
   .hedear-img{
     margin-left: 1rem;
@@ -42,7 +42,7 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #3498db;
+    background-color: #86bbd8;
     color: white;
     border: none;
     border-radius: 10px;
@@ -108,7 +108,7 @@ body {
   
   .hot-topics {
     flex: 0 0 30%;
-    background-color: #f1f1f1;
+    background-color: #86bbd8;
     padding: 10px;
   }
   
@@ -126,7 +126,7 @@ body {
   }
   
   footer {
-    background-color: #f0f0f0;
+    background-color: #fffeeb;
     text-align: center;
     position: fixed;
     bottom: 0;
@@ -142,14 +142,14 @@ body {
   .search-container input {
     padding: 10px;
     border-radius: 5px 0px 0 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #fffeeb;
     width: 400px;
     height: 51px;
 
   }
   
   .search-button {
-    background-color: #3498db;
+    background-color: #86bbd8;
     color: white;
     border: none;
     border-radius: 0px 5px 5px 0px;
@@ -162,7 +162,7 @@ body {
   }
   
   .search-button svg {
-    fill: white;
+    fill: #fffeeb;
   }
 
 
@@ -182,14 +182,14 @@ body {
   .post-title {
     font-size: 32px;
     font-weight: bold;
-    color: #333;
+    color: #262730;
     margin-bottom: 10px;
   }
   
   .post-content {
     font-size: 18px;
     line-height: 1.6;
-    color: #555;
+    color: #262730;
   }
   
   .post-content p {
@@ -202,7 +202,7 @@ body {
 
   /* suggestion */
 #suggestions-section {
-  background-color: white;
+  background-color: #fffeeb;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -212,7 +212,7 @@ body {
 #suggestions-section h2 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #333;
+  color: #262730;
 }
 
 #suggestions-list {
@@ -226,12 +226,12 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #fffeeb;
   transition: background-color 0.3s ease;
 }
 
 #suggestions-list li:hover {
-  background-color: #c41c1c;
+  background-color: #93a8ac;
 }
 
 /* #item_detail{
@@ -244,7 +244,7 @@ body {
 /*hot Topics*/
 
 .hot-topics {
-  background-color: #f9f9f9;
+  background-color: #fffeeb;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -256,7 +256,7 @@ body {
 .hot-topics h2 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #333;
+  color: #262730;
 }
 
 .hot-topics ul {
@@ -270,7 +270,7 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: #fffeeb;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -280,10 +280,10 @@ body {
       padding: 10px;
       margin-bottom: 5px;
       border-radius: 5px;
-      background-color: #ffffff;
+      background-color: #fffeeb;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      background-color: #edecec;
+      background-color: #93a8ac;
 }
 
 .hot-topics li:hover {
@@ -307,7 +307,7 @@ body {
 
 
 .dropbtn {
-  background-color: #f9f9f9;
+  background-color: #fffeeb;
   color: black;
   padding: 10px;
   font-size: 16px;
@@ -318,7 +318,7 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: white; /* Change the background color to white */
+  background-color: #fffeeb; /* Change the background color to white */
   color: black; /* Change the text color to black */
   width: 408px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -333,7 +333,7 @@ body {
 }
 
 .dropdown-content a:hover {
-  background-color: #bdbdbd;
+  background-color: #93a8ac;
 }
 
 .dropdown:hover .dropdown-content {
