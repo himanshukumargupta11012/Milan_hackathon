@@ -19,7 +19,7 @@
     </div>
 
     <header class="flex-header">
-        <img src="./../static/raman.jpeg" alt="Avatar" width="50" height="50" class="hedear-img">
+        <img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]">
         <div class="flex items-center">
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% if user.is_authenticated %}
@@ -31,7 +31,6 @@
             <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
             {% endif %}
         </div>
-
     </header>
     <div class="content">
         <section class="main-content" style="flex: 3;">
@@ -61,9 +60,10 @@
                         <canvas id="myPieChart" width="200" height="200"></canvas>
                     </div>
                 </div>
-                
 
-                <div class="flex justify-evenly w-full h-[300px] overflow-y-scroll" id="review_list">
+
+                <div class="hidden justify-evenly w-full m-2 mg:m-10 h-[300px] overflow-y-scroll border-4 border-gray-100 py-5"
+                    id="review_list">
 
                     <div id="positive_review_list" class="list-none">
                         <h2 class="text-xl">Positive Feedback</h2>
@@ -106,10 +106,14 @@
 <script type="text/javascript">
     positive_reviews = []
     negative_reviews = []
-    rating_array = []
+    item_line_chart = [1]
+    rating_pie_chart = 1
+    rating_array = 1
     curr_search_value = ""
     search_item = document.getElementById("search_item")
     let canva = document.getElementsByClassName("canva")
+    positive_list = document.getElementById("positive_review_list")
+    negative_list = document.getElementById("negative_review_list")
     canva.width = 400
     canva.height = 300
 
@@ -145,7 +149,9 @@
                 const result = document.createElement("a");
                 result.textContent = item;
                 result.addEventListener("click", () => {
-                    search2(item);
+                    search_item.value = item
+                    document.getElementById("searchResults").style.display = "none";
+                    search();
                 })
                 searchResults.appendChild(result);
             });
@@ -153,25 +159,13 @@
         }
     })
 
-    //     const data = [
-    //     "Modeling",
-    //     "Simulation",
-    //     "Machine Learning",
-    //     "Control Systems",
-    //     "Artificial Intelligence",
-    //     "Reinforcement Learning",
-    //     "Optimization"
-    //     // Add more items as needed
-    // ];
-
-
     function search() {
         const searchTerm = document.getElementById("search_item").value.toLowerCase();
 
         if (item_list.indexOf(searchTerm) === -1) {
             showAlert("Item not present")
         }
-
+        
         $.ajax({
             type: "POST",
             url: "/search",
@@ -179,102 +173,54 @@
             contentType: "application/json",
             dataType: 'json',
             success: function (result) {
+
+                console.log(result[1])
+                positive_reviews = result[1].split(',')
+                negative_reviews = result[2].split(',')
+
+                curr_search_value = searchTerm
+
                 console.log(result)
-                spac.innerHTML = result.rows[0][1];
-            }
-        });
 
-        const searchResults = document.getElementById("searchResults");
-        searchResults.innerHTML = "";
+                rating_array = result[0]
 
-        const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
+                date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                if (item_line_chart != 1) {
+                    item_line_chart.destroy()
+                }
+                item_line_chart = creatLineChart(date, rating_array, item);
 
-        if (filteredData.length === 0) {
-            const noResults = document.createElement("a");
-            noResults.textContent = "No results found.";
-            searchResults.appendChild(noResults);
-        } else {
-            filteredData.forEach(item => {
-                const result = document.createElement("a");
-                result.textContent = item;
-                searchResults.appendChild(result);
-            });
-            searchResults.style.display = "block"
-        }
-    }
 
-    function search2(item) {
-        document.getElementById("searchResults").style.display = "none";
-        console.log(document.getElementById("searchResults").style.display)
+                n_ratings = { 'Positive': positive_reviews.length, 'Negative': negative_reviews.length };
+                if (rating_pie_chart != 1) {
+                    console.log("yes")
+                    rating_pie_chart.destroy()
+                }
+                rating_pie_chart = DrawPieChart(n_ratings);
 
-        const searchTerm = item.toLowerCase();
 
-        if (item_list.indexOf(searchTerm) === -1) {
-            showAlert("Item not present")
-        }
-
-            $.ajax({
-                type: "POST",
-                url: "/search",
-                data: JSON.stringify([{ "item_name": searchTerm }]),
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (result) {
-                    positive_reviews = result[1].split(',')
-                    negative_reviews = result[2].split(',')
-
-                    curr_search_value = searchTerm
-
-                    console.log(result)
-                    
-                    rating_array = result[0]
-                    
-                    date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-                    if (typeof item_line_chart !== 'undefined') {
-                        item_line_chart.destroy()
-                    }
-                    item_line_chart = creatLineChart(date, rating_array, item)
-                    console.log(rating_array)
-
-                    for(let i = 0; i < positive_reviews.length; i++) {
-                        positive_list = document.getElementById("positive_review_list")
-
+                positive_list.innerHTML = '';
+                negative_list.innerHTML = '';
+                for (let i = 0; i < positive_reviews.length; i++) {
+                
                     li = document.createElement('li')
                     li.textContent = positive_reviews[i]
                     positive_list.appendChild(li)
                 }
 
-                    for (let i = 0; i < negative_reviews.length; i++) {
-                        negative_list = document.getElementById("negative_review_list")
+                for (let i = 0; i < negative_reviews.length; i++) {
+                    
 
                     li = document.createElement('li')
                     li.textContent = negative_reviews[i]
                     negative_list.appendChild(li)
                 }
 
-                item_detail = document.getElementById("item_detail")
+                item_detail = document.getElementById("review_list")
                 item_detail.classList.replace("hidden", "flex")
-
-                console.log(positive_reviews)
             }
         });
 
-        const searchResults = document.getElementById("searchResults");
-        searchResults.innerHTML = ""; // Clear previous results
-
-        const filteredData = data.filter(item => item.toLowerCase().includes(searchTerm));
-
-        if (filteredData.length === 0) {
-            const noResults = document.createElement("a");
-            noResults.textContent = "No results found.";
-            searchResults.appendChild(noResults);
-        } else {
-            filteredData.forEach(item => {
-                const result = document.createElement("a");
-                result.textContent = item;
-                searchResults.appendChild(result);
-            });
-        }
     }
 
     document.getElementById("search_item").addEventListener("keypress", send_item);
@@ -298,18 +244,17 @@
     }
 
     var item = curr_search_value;
-    const jsondatalineplot = { '50': 7, '60': 8, '70': 8, '80': 9, '90': 9, '100': 9, '110': 10, '120': 11, '130': 14, '140': 14, '150': 15 }
-    
+
     function creatLineChart(x, y, item) {
         var ctx = document.getElementById('lineplot').getContext('2d');
-        // var xValues = Object.keys(data);
-        // var yValues = Object.values(data);
+
         const barColors = ["red", "green", "blue", "orange", "brown"];
         var lineplot = new Chart("lineplot", {
             type: "line",
             data: {
                 labels: x,
                 datasets: [{
+                    label: 'Rating',
                     fill: false,
                     lineTension: 0,
                     backgroundColor: "#9681EB",
@@ -318,13 +263,20 @@
                 }]
             },
             options: {
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: "Rating of " + item + " over last few days"
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Variation of average rating in last 16 days',
+                        fontSize: 30
+                    }
                 },
                 legend: { display: false },
                 scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    },
                     yAxes: [{ ticks: { min: 6, max: 16 } }],
                 }
             }
@@ -333,9 +285,7 @@
     }
 
     // JSON data
-    var jsonData = {{ top5|safe }};
-
-    console.log(jsonData)
+    var jsonData = {{ top5| safe }};
 
     // Function to create a bar chart
     function createBarChart(data) {
@@ -360,7 +310,7 @@
                 plugins: {
                     title: {
                         display: true, // Display the title
-                        text: 'Ratings of Top 5 Food Items in the last week', // Title text
+                        text: 'Average ratings of Top 5 Food Items in the last week', // Title text
                         fontSize: 30 // Font size for the title
                     }
                 },
@@ -371,17 +321,16 @@
                         }
                     },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 5
                     }
                 }
             }
         });
     }
     createBarChart(jsonData);
-</script>
-<script>
-    // fetch from backend to here
-    var jsondata = { 'correct': 85, 'wrong': 15 };
+
 
     function DrawPieChart(jsondata) {
         var plotvalues = Object.values(jsondata);
@@ -408,7 +357,7 @@
                 plugins: {
                     title: {
                         display: true, // Display the title
-                        text: 'Ratings of Top 5 Food Items in the last week', // Title text
+                        text: 'Count of positive and negative points in all reviews', // Title text
                         fontSize: 30 // Font size for the title
                     }
                 },
@@ -419,9 +368,9 @@
                 }
             }
         })
+        return myPieChart
     };
 
-    DrawPieChart(jsondata);
 </script>
 
 </html>
