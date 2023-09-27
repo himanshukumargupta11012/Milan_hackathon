@@ -7,7 +7,17 @@ num_users = 100
 num_items = 10
 
 
+# ratings = FoodReview.query.all()
+# Create a DataFrame with the desired fields
+# ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
+# ratings_data = ratings_data.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
+
 ratings_data = pd.read_csv('ratings.csv')
+
+unique_items = ratings_data['Item'].unique()
+item_id_mapping = {item: item_id for item_id, item in enumerate(unique_items, start=1)}
+ratings_data['itemId'] = ratings_data['Item'].map(item_id_mapping)
+
 
 # Initialize and train the model with all data
 model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
