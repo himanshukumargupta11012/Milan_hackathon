@@ -49,9 +49,9 @@
             {% endif %}
         </div>
     </header>
-    <div class="content">
-        <section class="main-content" style="flex: 3;">
-            <div class="search-container">
+    <div class="content items-center md:items-top">
+        <section class="main-content md:h-full" style="flex: 3;">
+            <div class="search-container w-full md:w-[60%]">
                 <input type="text" placeholder="Search for your canteen..." id="search_item" style="width: 100%;">
                 <button class="search-button" onclick="search()" class="hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -61,24 +61,26 @@
                     </svg>
                 </button>
             </div>
-            <div class="dropdown" id="searchDropdown">
+            <div class="dropdown w-full md:w-[60%]" id="searchDropdown">
                 <div class="dropdown-content" id="searchResults">
                     <!-- Search results will be displayed here -->
                 </div>
             </div>
 
-            <div class="hidden" id="item_content">
-                <div class="m-5 flex flex-wrap" id="item_tags"></div>
-                <div class="h-[200px] list-none w-full p-2 overflow-y-auto" id="item_tags_reviews"></div>
+            <div class="hidden m-5 gap-y-5" id="item_content">
+                <div class="">
+                    <div class="text-2xl font-bold">Review Summary</div>
+                    <div id="summary"></div>
+                </div>
                 
-                <div class="star">
-                    <span class="rateHeader">User Rating</span>
-                    <span class="fa fa-star rated"></span>
+                <div class="star w-[300px] sm:w-[500px]">
+                    <span class="rateHeader font-bold">User Rating</span>
+                    <!-- <span class="fa fa-star rated"></span>
                     <span class="fa fa-star rated"></span>
                     <span class="fa fa-star rated"></span>
                     <span class="fa fa-star rated"></span>
                     <span class="fa fa-star"></span>
-                    <p>3.9 average based on 200 foodies.</p>
+                    <p>3.9 average based on 200 foodies.</p> -->
                     <div class="row" id="rating_count_display">
                         
                         <div class="hidden" id="dummy_rating_item">
@@ -98,8 +100,15 @@
                     </div>
                 </div>
 
+                <div>
+                    <div class="text-2xl font-bold">Search reviews by tag</div>
+                    <div class="mb-5 flex flex-wrap justify-center" id="item_tags"></div>
+                    <div class="h-[200px] list-none w-full p-2 overflow-y-auto hidden bg-gray-50" id="item_tags_reviews"></div>
+                </div>
+                
+
                 <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
-                    <div style="display: flex; flex-wrap: wrap;justify-content: center;">
+                    <div style="display: flex; flex-wrap: wrap;justify-content: center;" class="gap-y-5">
                         <div class="chart-container" style="width: 65%;">
                             <canvas id="lineplot"></canvas>
                         </div>
@@ -108,6 +117,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div style="width: 100%;" class="answerContent">
@@ -143,7 +153,7 @@
             </div>
 
         </section>
-        <section style="flex:1.4;" class="sidebar w-fit">
+        <section style="flex:1.4;" class="sidebar w-fit md:h-full">
             <div class="chart-container" style="position: relative; display: flex; justify-content: center;">
                 <canvas id="myChart"></canvas>
             </div>
@@ -168,9 +178,9 @@
 
     <!-- star -->
     
-    <footer>
+    <!-- <footer>
         <p>&copy; Milan Hackthon 2023 From Raman Block</p>
-    </footer>
+    </footer> -->
 </body>
 <script type="text/javascript">
     // for showing alert
@@ -209,6 +219,7 @@
     item_content = document.getElementById("item_content")
     dummy_rating_item = document.getElementById("dummy_rating_item")
     rating_count_display = document.getElementById("rating_count_display")
+    summary_div = document.getElementById("summary")
     canva.width = 400
     canva.height = 300
     is_tag_clicked = false
@@ -222,7 +233,6 @@
 
         for (let i = 0; i < (word2.length - word1.length + 1); i++) {
             curr = 0;
-            console.log(curr)
             for (let j = 0; j < word1.length; j++) {
                 if (word1[j] === word2[i + j]) curr++;
             }
@@ -275,13 +285,12 @@
             contentType: "application/json",
             dataType: 'json',
             success: function (result) {
-                item_content.classList.replace("hidden", "block")
+                item_content.classList.replace("hidden", "flex")
 
                 rating_count_display.innerHTML = ''
                 item_tags.innerHTML = ''
 
 
-                console.log(result)
 
                 item_tags_list = Object.keys(result[4])
                 item_tags_reviews_list = result[4]
@@ -289,6 +298,8 @@
                 summary = result[5]
 
                 each_rating_count = result[3]
+                console.log(summary)
+                summary_div.textContent = summary
 
                 var sum = 0;
 
@@ -326,7 +337,7 @@
                                 li2 = document.createElement("li");
                                 li2.textContent = curr_reviews[j];
                                 item_tags_reviews.appendChild(li2)
-                                li2.classList.add("bg-gray-200", "m-1", "p-1", "rounded", "w-fit")
+                                li2.classList.add("bg-[#fffeeb]", "m-1", "p-1", "rounded", "w-fit")
                             }
                             is_tag_clicked = !is_tag_clicked
                         }
@@ -368,31 +379,6 @@
                     rating_pie_chart.destroy()
                 }
                 rating_pie_chart = DrawPieChart(n_ratings);
-
-
-                // positive_list.innerHTML = '';
-                // negative_list.innerHTML = '';
-                // for (let i = 0; i < positive_reviews.length; i++) {
-
-                //     li = document.createElement('li')
-                //     li.style.margin = "2px 5px"
-                //     li.style.height = "fit-content"
-                //     li.textContent = positive_reviews[i]
-                //     positive_list.appendChild(li)
-                // }
-
-                // for (let i = 0; i < negative_reviews.length; i++) {
-
-
-                //     li = document.createElement('li')
-                //     li.style.margin = "2px 5px"
-                //     li.style.height = "fit-content"
-                //     li.textContent = negative_reviews[i]
-                //     negative_list.appendChild(li)
-                // }
-
-                // item_detail = document.getElementById("review_list")
-                // item_detail.classList.replace("hidden", "flex")
             }
         });
 
@@ -542,16 +528,33 @@
     const modalContent = document.querySelector('.modal-content');
     const btn = document.getElementById('openModal');
     const span = document.getElementsByClassName('close')[0];
+    
+    var modal_open = false;
 
     btn.onclick = () => {
-        modal.style.display = 'block';
-        modal.classList.remove('hide');
-        modal.classList.add('show');
+        console.log(modal_open)
+        let temp = "{{ user.is_authenticated }}";
+        if(modal_open) {
+            modal.style.display = 'none';
+            modal.classList.replace('show', 'hide');
+        }
+        else {
+            if (temp !== "False") {
+                modal.style.display = 'block';
+                modal.classList.replace('hide', 'show');
+            }
+            else {
+                showAlert("Login to write a review")
+            }
+        }
+        modal_open = !modal_open
+        
     };
 
     span.onclick = () => {
         modal.classList.remove('show');
         modal.classList.add('hide');
+        modal_open = !modal_open
 
         // Add a delay to allow the animation to complete before hiding the modal
         setTimeout(() => {
@@ -561,7 +564,8 @@
 
     // Close the modal if user clicks anywhere outside of it
     window.onclick = (event) => {
-        if (event.target !== modal && !modal.contains(event.target) && event.target !== btn) {
+        if (event.target !== modal && !modal.contains(event.target) && event.target !== btn && modal_open) {
+            modal_open = !modal_open
             modal.classList.remove('show');
             modal.classList.add('hide');
 

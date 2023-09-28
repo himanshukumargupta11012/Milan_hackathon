@@ -28,15 +28,18 @@
             <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Add Item</button>
             <a href="{{url_for('index')}}" class="review-button" style="font-family: 'Unbounded';">Home</a>
             {%else%}
-            <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a Review</button></a>
+            <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a
+                    Review</button></a>
             {% endif %}
             {% if user.is_authenticated %}
-            <a href="{{url_for('logout')}}"><button class="review-button" style="font-family: 'Unbounded';">Logout</button></a>
+            <a href="{{url_for('logout')}}"><button class="review-button"
+                    style="font-family: 'Unbounded';">Logout</button></a>
             <div class="avatar">
                 <img src={{user.profile_url}} alt="Avatar">
             </div>
             {% else %}
-            <a href="{{url_for('login')}}"><button class="review-button" style="font-family: 'Unbounded';">Login</button></a>
+            <a href="{{url_for('login')}}"><button class="review-button"
+                    style="font-family: 'Unbounded';">Login</button></a>
             {% endif %}
         </div>
     </header>
@@ -44,25 +47,26 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add Item</h2>
-            <form id="itemForm", method="POST" action="add_item">
-              <label for="itemName">Item Name:</label>
-              <input type="text" id="itemName" name="itemName" required><br><br>
-      
-              <label for="itemURL">Item image URL:</label>
-              <input type="url" id="itemURL" name="itemURL" required><br><br>
-      
-              <label for="itemDescription">Item Description:</label>
-              <textarea id="itemDescription" name="itemDescription" rows="4" cols="50" style="width: 100%;" required></textarea><br><br>
-      
-              <input type="submit" value="Submit">
+            <form id="itemForm" , method="POST" action="add_item">
+                <label for="itemName">Item Name:</label>
+                <input type="text" id="itemName" name="itemName" required><br><br>
+
+                <label for="itemURL">Item image URL:</label>
+                <input type="url" id="itemURL" name="itemURL" required><br><br>
+
+                <label for="itemDescription">Item Description:</label>
+                <textarea id="itemDescription" name="itemDescription" rows="4" cols="50" style="width: 100%;"
+                    required></textarea><br><br>
+
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>
     </div>
     <div class="content">
         <section class="main-content" style="flex: 3;">
-            <div class="search-container">
-                <input type="text" placeholder="Search for your canteen..." id="search_item" style="width: 100%;">
+            <div class="search-container w-full sm:w-[80%] md:w-[50%]">
+                <input type="text" placeholder="Search for your food..." id="search_item" style="width: 100%;">
                 <button class="search-button" onclick="search()" class="hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -102,21 +106,29 @@
                     </div>
                 </div> -->
             </div>
-            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px] py-5 flex-row flex md:flex-col" style="width: 97%; "
-                id="review_list">
+            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px] py-5 flex-row flex md:flex-col gap-y-5"
+                style="width: 97%; " id="review_list">
 
-                <div id="positive_review_list" class="list-none md:w-1/2 w-full h-h/2 md:h-full border-4 p-2 border-gray-100" style="max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
-                    <h2 class="text-xl">Positive Feedback</h2>
+                <div class="list-none md:w-1/2 w-full h-h/2 md:h-full">
+                    <div class="text-2xl font-bold" id="positive_heading"></div>
+                    <div id="positive_review_list" class=" border-4 p-2 border-gray-100"
+                        style="max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
+                    </div>
                 </div>
 
-                <div id="negative_review_list" class="list-none md:w-1/2 w-full h-1/2 md:h-full border-4 p-2 border-gray-100" style="max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
-                    <h2 class="text-xl">Negative Feedback</h2>
+                <div class="list-none md:w-1/2 w-full h-1/2 md:h-full">
+                    <div class="text-2xl font-bold" id="negative_heading">
+
+                    </div>
+                    <div id="negative_review_list" class=" border-4 p-2 border-gray-100 h-full"
+                        style="max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
+                    </div>
                 </div>
             </div>
-        </div>
+    </div>
 
-        </section>
-        <!-- <section style="flex:1.4;" class="sidebar">
+    </section>
+    <!-- <section style="flex:1.4;" class="sidebar">
             <div class="chart-container" style="position: relative; display: flex; justify-content: center;">
                 <canvas id="myChart"></canvas>
             </div>
@@ -138,9 +150,9 @@
             </div>
         </section> -->
     </div>
-    <footer class="z-0">
+    <!-- <footer class="z-0">
         <p>&copy; Milan Hackthon 2023 From Raman Block</p>
-    </footer>
+    </footer> -->
 </body>
 <script type="text/javascript">
     positive_reviews = []
@@ -159,28 +171,28 @@
     var item_list = {{ item_list | safe}}
 
 
-        function jaccardSimilarity(word1, word2) {
-                var max_common = 0, curr = 0;
+    function jaccardSimilarity(word1, word2) {
+        var max_common = 0, curr = 0;
 
-                for (let i = 0; i < (word2.length - word1.length + 1); i++) {
-                    curr = 0;
-                    console.log(curr)
-                    for (let j = 0; j < word1.length; j++) {
-                        if (word1[j] === word2[i + j]) curr++;
-                    }
-                    max_common = Math.max(max_common, curr)
-                }
-                console.log(max_common)
-                return max_common / word1.length
-                // const set1 = new Set(word1.split(''));
-                // const set2 = new Set(word2.split(''));
-
-                // const intersection = new Set([...set1].filter(char => set2.has(char)));
-                // const union = new Set([...set1, ...set2]);
-
-                // return intersection.size / union.size;
-
+        for (let i = 0; i < (word2.length - word1.length + 1); i++) {
+            curr = 0;
+            console.log(curr)
+            for (let j = 0; j < word1.length; j++) {
+                if (word1[j] === word2[i + j]) curr++;
             }
+            max_common = Math.max(max_common, curr)
+        }
+        console.log(max_common)
+        return max_common / word1.length
+        // const set1 = new Set(word1.split(''));
+        // const set2 = new Set(word2.split(''));
+
+        // const intersection = new Set([...set1].filter(char => set2.has(char)));
+        // const union = new Set([...set1, ...set2]);
+
+        // return intersection.size / union.size;
+
+    }
 
 
     data = []
@@ -236,11 +248,26 @@
 
                 rating_array = result[0]
 
-                date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                
+
+                var d = new Date();
+                d.setDate(d.getDate() - 1);
+
+                date = []
+                var d = new Date();
+                for (let i = 0; i < rating_array.length; i++) {
+                    d.setDate(d.getDate() - 1)
+                    date.push(d.getDate().toString() + " " + d.toLocaleString("en-US", { month: "short" }).toString())
+                }
+                date.reverse()
+
                 if (item_line_chart != 1) {
                     item_line_chart.destroy()
                 }
                 item_line_chart = creatLineChart(date, rating_array, item);
+
+                document.getElementById("positive_heading").textContent = "Points loved about " + searchTerm
+                document.getElementById("negative_heading").textContent = "Points disliked about " + searchTerm
 
 
                 n_ratings = { 'Positive': positive_reviews.length, 'Negative': negative_reviews.length };
@@ -260,6 +287,7 @@
                     li.style.height = "fit-content"
                     li.textContent = positive_reviews[i]
                     positive_list.appendChild(li)
+                    li.classList.add("bg-gray-50")
                 }
 
                 for (let i = 0; i < negative_reviews.length; i++) {
@@ -270,6 +298,7 @@
                     li.style.height = "fit-content"
                     li.textContent = negative_reviews[i]
                     negative_list.appendChild(li)
+                    li.classList.add("bg-[#efefef]")
                 }
 
                 item_detail = document.getElementById("review_list")
