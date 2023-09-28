@@ -7,7 +7,7 @@ import pandas as pd
 
 def create_keyword_dict(item_id, df, n_keywords =20):
     # Filter the DataFrame to get reviews for the specified itemId
-    item_reviews = df[df['itemId'] == item_id]['review'].tolist()
+    item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
 
     # Combine the reviews into a single text
     combined_text = ' '.join(item_reviews)
@@ -35,7 +35,7 @@ def create_keyword_dict(item_id, df, n_keywords =20):
 
 def get_summary(item_id, df, proportion=0.2, max_words = 100):
     # Filter the DataFrame to get reviews for the specified itemId
-    item_reviews = df[df['itemId'] == item_id]['review'].tolist()
+    item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
 
     # Combine the reviews into a single text
     combined_text = ' '.join(item_reviews)
@@ -57,9 +57,19 @@ def get_summary(item_id, df, proportion=0.2, max_words = 100):
     return unique_summary
 
 
-df = pd.read_csv('ratings.csv')
 
-# Call the function to create the keyword dictionary for item with itemId 2
+# ---------------- Use the below in app.py ------------------- #
+
+
+# ratings = FoodReview.query.all()
+# # Create a DataFrame with the desired fields
+# df = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
+# df = df.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
+
+
+
+df = pd.read_csv('ratings.csv')
+# Call the function to create the keyword dictionary for item with itemId 7
 item_id = 7
 keyword_list, keyword_dict = create_keyword_dict(item_id, df)
 print(keyword_list)
