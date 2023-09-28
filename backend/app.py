@@ -22,10 +22,12 @@ from gensim.summarization.summarizer import summarize
 from gensim.summarization import keywords
 from nltk.tokenize import sent_tokenize
 import nltk
+nltk.download('punkt')
 
 
 def create_keyword_dict(item_id, df, n_keywords =20):
     # Filter the DataFrame to get reviews for the specified itemId
+    print(df.head())
     item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
 
     # Combine the reviews into a single text
@@ -121,8 +123,9 @@ reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
 
 ratings = FoodReview.query.all()
 # Create a DataFrame with the desired fields
-ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
-ratings_data = ratings_data.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
+ratings_data1 = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
+print(ratings_data1.head())
+ratings_data = ratings_data1.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
 unique_items = ratings_data['itemId'].unique()
 item_name_mapping = {item_id: item for item_id, item in enumerate(item_list, start=1)}
 
@@ -254,8 +257,8 @@ def search_result():
     result = [avg, item.positive_feedback, item.negative_feedback]
     item_id = item.id
 
-    keyword_list, keyword_dict = create_keyword_dict(item_id, ratings_data)
-    item_summary = get_summary(item_id, ratings_data)
+    keyword_list, keyword_dict = create_keyword_dict(item_id, ratings_data1)
+    item_summary = get_summary(item_id, ratings_data1)
 
     stmt = session2.query(func.count(FoodReview.rating).label('total_quantity')).group_by(FoodReview.rating).filter(FoodReview.item_id == item_id).all()
     stmt = [i[0] for i  in stmt]
