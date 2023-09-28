@@ -32,7 +32,7 @@ body {
     align-items: center;
     padding: 10px;
     justify-content: space-between;
-    background-color: #86bbd8;
+    background-color: #0e8dd6;
   }
   .hedear-img{
     margin-left: 1rem;
@@ -43,7 +43,7 @@ body {
     font-size: 22px;
     cursor: pointer;
     font-weight: 600;
-    background-color: #86bbd8;
+    background-color: #0e8dd6;
     color: white;
     border: none;
     border-radius: 10px;
@@ -152,7 +152,7 @@ body {
   }
   
   .search-button {
-    background-color: #86bbd8;
+    background-color: #0e8dd6;
     color: white;
     border: none;
     border-radius: 0px 5px 5px 0px;
@@ -162,6 +162,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .search-button:hover svg {
+    fill: #171738;
   }
   
   .search-button svg {
@@ -205,7 +209,7 @@ body {
 
   /* suggestion */
 #suggestions-section {
-  background-color: #fffeeb;
+  background-color: #fff6fd;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -229,7 +233,7 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-  background-color: #fffeeb;
+  background-color: #fff6fd;
   transition: background-color 0.3s ease;
 }
 
@@ -247,7 +251,7 @@ body {
 /*hot Topics*/
 
 .hot-topics {
-  background-color: #fffeeb;
+  background-color: #fff6fd;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -273,7 +277,7 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 10px;
-  background-color: #fffeeb;
+  background-color: #fff6fd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -292,6 +296,7 @@ body {
 .hot-topics li:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #c150e4;
 }
 
 
@@ -321,7 +326,7 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #fffeeb; /* Change the background color to white */
+  background-color: #fff6fd; /* Change the background color to white */
   color: black; /* Change the text color to black */
   width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -360,8 +365,8 @@ body {
 }
 
 a:hover button:hover{
-  background-color:#4d8b31;
-  color: #eeeeff;
+  background-color:#fff6fd;
+  color: #171738;
 }
 
 .canva{
@@ -549,8 +554,8 @@ go-back-button{
 }
 
 button:hover {
-  background-color: #4d8b31;
-  color: #eeeeff;
+  background-color: #fff6fd;
+  color: #171738;
 }
 
 

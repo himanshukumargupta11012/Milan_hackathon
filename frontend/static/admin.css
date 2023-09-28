@@ -39,7 +39,7 @@ body {
     align-items: center;
     padding: 10px;
     justify-content: space-between;
-    background-color: #86bbd8;
+    background-color: #0e8dd6;
   }
   .hedear-img{
     margin-left: 1rem;
@@ -50,7 +50,7 @@ body {
     font-size: 22px;
     cursor: pointer;
     font-weight: 600;
-    background-color: #86bbd8;
+    background-color: #0e8dd6;
     color: white;
     border: none;
     border-radius: 10px;
@@ -165,7 +165,7 @@ body {
   }
   
   .search-button {
-    background-color: #86bbd8;
+    background-color: #0e8dd6;
     color: white;
     border: none;
     border-radius: 0px 5px 5px 0px;
@@ -175,6 +175,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .search-button:hover {
+    background-color: #fff6fd;
+  }
+  
+  .search-button:hover svg {
+    fill: #171738;
   }
   
   .search-button svg {
@@ -333,7 +341,7 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #fffeeb; /* Change the background color to white */
+  background-color: #fff6fd; /* Change the background color to white */
   color: black; /* Change the text color to black */
   width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -371,12 +379,12 @@ body {
   }
 }
 a:hover button:hover{
-  background-color:#4d8b31;
-  color: #eeeeff;
+  background-color:#fff6fd;
+  color: #171738;
 }
 #openModal:hover{
-  background-color:#4d8b31;
-  color: #eeeeff;
+  background-color:#fff6fd;
+  color: #171738;
 }
 
 .canva{
@@ -558,4 +566,9 @@ input[type=text] {
 
 .modal.hide {
   right: -100%; /* Slide out to the right */
+}
+
+.home-gunjit:hover{
+  background-color: #fff6fd;
+  color: #171738;
 }

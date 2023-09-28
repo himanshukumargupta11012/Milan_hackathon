@@ -26,14 +26,14 @@
         <div class="flex items-center">
             {% if user.type ==1 or user.type==2 %}
             {% if user.type==1 %}
-            <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Add Item</button>
+            <button class="review-button home-gunjit" id="openModal" style="font-family: 'Unbounded';">Add Item</button>
             <button class="hidden" id="openModal2">Add Admin</button>
             {% endif %}
             {% if user.type==2 %}
             <button class="hidden" id="openModal">Add Item</button>
             <button class="review-button" id="openModal2" style="font-family: 'Unbounded';">Add Admin</button>
             {% endif %}
-            <a href="{{url_for('index')}}" class="review-button" style="font-family: 'Unbounded';">Home</a>
+            <a href="{{url_for('index')}}" class="review-button home-gunjit" style="font-family: 'Unbounded';" >Home</a>
             {%else%}
             <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a
                     Review</button></a>
@@ -424,7 +424,7 @@
             labels: allLabels,
             datasets: [{
                 data: plotvalues, // The data values for each segment
-                backgroundColor: ['#D81E5B', '#93A8AC'], // The colors for each segment
+                backgroundColor: ['#9381e4', '#93A8AC'], // The colors for each segment
             }]
         };
 
