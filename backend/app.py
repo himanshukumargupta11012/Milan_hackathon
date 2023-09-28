@@ -13,9 +13,9 @@ from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassifica
 import torch
 import pandas as pd
 import random
-from model import *
+# from model import *
 from scipy.sparse.linalg import svds
-from pyabsa import AspectSentimentTripletExtraction as ASTE
+# from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
 
 load_dotenv(".env")
@@ -38,9 +38,9 @@ db.create_all()
 
 
 # aspect based sentiment analysis model
-triplet_extractor = ASTE.AspectSentimentTripletExtractor(
-    checkpoint="english"
-)
+# triplet_extractor = ASTE.AspectSentimentTripletExtractor(
+#     checkpoint="english"
+# )
 
 
 # recommendation_model
@@ -119,8 +119,8 @@ def super_user(f):
 
 def update_neg_pos(review, item_id): 
 
-    dict = triplet_extractor.predict(review)['Triplets']
-    # dict = {}
+    # dict = triplet_extractor.predict(review)['Triplets']
+    dict = {}
     print(len(dict))
     if dict == '[]':
         return
@@ -253,8 +253,8 @@ def get_review():
         item_id=Item.query.filter_by(name=item_name).first().id
         review = request.form['review']
         update_neg_pos(review, item_id)
-        rating = get_rating(review)
-        # rating  = np.random.randint(1,5)
+        # rating = get_rating(review)
+        rating = np.random.randint(1,5)
         # rating = int(request.form['rating'])
         # sentiment_insights = RunModelSentimentAnalysis(review)
         # timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
