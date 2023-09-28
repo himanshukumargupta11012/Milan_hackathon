@@ -24,6 +24,7 @@
             {% if user.type ==1 or user.type==2 %}
             <button class="review-button" id="openModal">Add Item</button>
             <a href="{{url_for('index')}}" class="review-button">Home</a>
+            {%else%}
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% endif %}
             {% if user.is_authenticated %}
@@ -40,7 +41,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add Item</h2>
-            <form id="itemForm">
+            <form id="itemForm", method="POST" action="add_item">
               <label for="itemName">Item Name:</label>
               <input type="text" id="itemName" name="itemName" required><br><br>
       

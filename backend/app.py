@@ -12,9 +12,9 @@ from authlib.common.security import generate_token
 import numpy as np
 import torch
 import pandas as pd
-from model import *
+# from model import *
 from scipy.sparse.linalg import svds
-from pyabsa import AspectSentimentTripletExtraction as ASTE
+# from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
 
 
@@ -110,7 +110,7 @@ db.create_all()
 
 
 # aspect based sentiment analysis model
-triplet_extractor = ASTE.AspectSentimentTripletExtractor(checkpoint="english")
+# triplet_extractor = ASTE.AspectSentimentTripletExtractor(checkpoint="english")
 
 # recommendation_model
 num_users = User.query.count()
@@ -360,6 +360,16 @@ def super():
     list_of_items = [item.name.lower() for item in Item.query.all()]
     return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items)
 
+@app.route('/add_item', methods=['POST'])
+def add_item():
+    data = request.form
+    item_name = data['itemName'].capitalize()
+    item_url = data['itemURL']
+    item_desc = data['itemDescription']
+    item = Item(name=item_name, item_image_url=item_url, positive_feedback=None, negative_feedback=None, description=item_desc, average_rating=None)
+    db.session.add(item)
+    db.session.commit()
+    return redirect(url_for('admin'))
 
 def average_rating_window(item_id, window_size):
     # Query the database to get the average rating for the specified item

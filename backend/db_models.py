@@ -33,6 +33,7 @@ class Item(db.Model):
     item_image_url = db.Column(db.String(255)) 
     positive_feedback = db.Column(db.String(255))
     negative_feedback = db.Column(db.String(255))
+    description = db.Column(db.Text)
     
     # Define a one-to-many relationship with FoodReview
     reviews = db.relationship('FoodReview', backref='item')
