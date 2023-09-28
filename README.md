@@ -27,12 +27,12 @@ Welcome to the Canteen Recommendation & Review System for IIT Hyderabad! This we
 
 ## Contributors
 
-- [Himanshu Kumar Gupta](https://github.com/your_username) - Project Lead
-- [Gunjit Mittal](https://github.com/your_username) 
-- [Donal Loitam](https://github.com/your_username) 
+- [Himanshu Kumar Gupta](https://github.com/himanshukumargupta11012) - Project Lead
+- [Gunjit Mittal](https://github.com/gunjitmittal) 
+- [Donal Loitam](https://github.com/Donal-08) 
 - [Suraj Kumar](https://github.com/kumarsuraj151) 
 - [Ravula Karthik](https://github.com/karthik6281) 
-- [Mannem Charan](https://github.com/your_username) 
+- [Mannem Charan](https://github.com/charanyash) 
 
 ## Installation
 
