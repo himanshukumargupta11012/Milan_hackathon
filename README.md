@@ -4,7 +4,7 @@ Welcome to the Canteen Recommendation & Review System for IIT Hyderabad! This we
 
 ## Features
 
-- **Feedback Collection**: Users can provide feedback on the canteen's food.
+- <u>**Feedback Collection**</u>: Users can provide feedback on the canteen's food.
 
 - **Search Functionality**: Users can search for any item available in the canteen.
 
