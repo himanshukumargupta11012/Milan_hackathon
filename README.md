@@ -1,6 +1,6 @@
 # Canteen Recommendation & Review Application - IIT Hyderabad
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white) ![Chart.js](https://img.shields.io/badge/chart.js-F5788D.svg?style=for-the-badge&logo=chart.js&logoColor=white) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?style=for-the-badge&logo=jquery&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Static Badge](https://img.shields.io/badge/Gensim-Python-blue) [![Share to Community](https://huggingface.co/datasets/huggingface/badges/raw/main/powered-by-huggingface-light.svg)](https://huggingface.co) </br> </br>    
-## Welcome to the Canteen Recommendation & Review Application for IIT Hyderabad! This web application offers personalized food recommendations and insights based on user feedback. Users can also search for specific items available in the canteen. Additionally, the canteen administrator can access an admin page to view user reviews and work on improving the food items.
+### Welcome to the Canteen Recommendation & Review Application for IIT Hyderabad! This web application offers personalized food recommendations and insights based on user feedback. Users can also search for specific items available in the canteen. Additionally, the canteen administrator can access an admin page to view user reviews and work on improving the food items.
 
 ## Features
 
@@ -23,7 +23,7 @@
 - **Keyword Extraction with Gensim**: Gensim assists in extracting key terms and phrases from feedback, enabling a deeper understanding of the main aspects of user opinions.
 
 - **Flask-based Website**: The backend of this system is powered by Python and Flask, utilizing Jinja templates for rendering HTML, CSS, and JavaScript, enhancing the user interface and displaying the results seamlessly.
-
+<img width="2056" alt="Home" src="https://github.com/himanshukumargupta11012/Milan_hackathon/assets/102616426/1affdcf4-e632-4ac8-a547-c515996eadc0">
 
 ## Contributors
 
