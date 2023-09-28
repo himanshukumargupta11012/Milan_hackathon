@@ -24,6 +24,8 @@
 
 - **Flask-based Website**: The backend of this system is powered by Python and Flask, utilizing Jinja templates for rendering HTML, CSS, and JavaScript, enhancing the user interface and displaying the results seamlessly.
 <img width="2056" alt="Home" src="https://github.com/himanshukumargupta11012/Milan_hackathon/assets/102616426/1affdcf4-e632-4ac8-a547-c515996eadc0">
+<img width="2056" alt="Screenshot 2023-09-28 at 11 43 50 PM" src="https://github.com/himanshukumargupta11012/Milan_hackathon/assets/102616426/eb571ac4-2a72-49be-8ab8-1d3dae1f60b4">
+
 
 ## Contributors
 
