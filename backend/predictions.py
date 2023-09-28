@@ -5,14 +5,13 @@ from helper import CollabFNet, create_candidate_set, predict_ratings_for_candida
 
 num_users = 100
 num_items = 10
-top_n = 3
-
+top_n=3
 
 
 # ratings = FoodReview.query.all()
 # Create a DataFrame with the desired fields
 # ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
-# ratings_data = ratings_data.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
+# ratings_data = ratings_df.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
 
 
 ratings_data = pd.read_csv('ratings.csv')

@@ -3,16 +3,18 @@ import numpy as np
 import torch
 from helper import CollabFNet, train_epocs
 
-num_users = 100
-num_items = 10
+
+# Speify the correct number of users and items
+num_users = 130
+num_items = 11
 
 
-# ratings = FoodReview.query.all()
+ratings = FoodReview.query.all()
 # Create a DataFrame with the desired fields
-# ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
-# ratings_data = ratings_data.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
+ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rating.review) for rating in ratings],columns=['userId', 'itemId', 'rating', 'Review'])
+ratings_data = ratings_data.groupby(['user_id', 'item_id'])['rating'].mean().reset_index()
 
-ratings_data = pd.read_csv('ratings.csv')
+# ratings_data = pd.read_csv('ratings.csv')
 
 unique_items = ratings_data['Item'].unique()
 item_id_mapping = {item: item_id for item_id, item in enumerate(unique_items, start=1)}

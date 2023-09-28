@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../static/admin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Canteen Feedback</title>
+</head>
+
+<body>
+    <div id="alert_box" class="fixed top-0 left-0 flex-col flex m-2 bg-white opacity-0 w-[20rem]">
+        <p class="m-2"></p>
+        <div class="h-[5px] w-0 
+        bg-green-400 transition-all duration-[4s]"></div>
+    </div>
+
+    <header class="flex-header">
+        <img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]">
+        <div class="flex items-center">
+            {% if user.type ==1 or user.type==2 %}
+            <button class="review-button" id="openModal">Add Item</button>
+            <a href="{{url_for('index')}}">Home</a>
+            {% else %}
+            <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
+            <div class="avatar">
+                <img src={{user.profile_url}} alt="Avatar">
+            </div>
+            {% else %}
+            <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
+            {% endif %}
+        </div>
+    </header>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Item</h2>
+            <form id="itemForm">
+              <label for="itemName">Item Name:</label>
+              <input type="text" id="itemName" name="itemName" required><br><br>
+      
+              <label for="itemURL">Item URL:</label>
+              <input type="url" id="itemURL" name="itemURL" required><br><br>
+      
+              <label for="itemDescription">Item Description:</label>
+              <textarea id="itemDescription" name="itemDescription" rows="4" cols="50" style="width: 100%;" required></textarea><br><br>
+      
+              <input type="submit" value="Submit">
+            </form>
+          </div>
+        </div>
+      </div>
+    <div class="content">
+        <section class="main-content" style="flex: 3;">
+            <div class="search-container">
+                <input type="text" placeholder="Search for your canteen..." id="search_item">
+                <button class="search-button" onclick="search()" class="hover:cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.76-2.86-5-5.64-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.78 2.58 5.17 5.34 5.64a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25a1 1 0 0 0 1.41-1.41L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                    </svg>
+                </button>
+            </div>
+            <div class="dropdown" id="searchDropdown">
+                <div class="dropdown-content" id="searchResults">
+                    <!-- Search results will be displayed here -->
+                </div>
+            </div>
+            <div style="width: 100%;" class="answerContent">
+            <!-- canva for drawing the graphs -->
+            <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
+                <div style="display: flex; flex-wrap: wrap;justify-content: center;">
+                    <div class="chart-container" style="width: 65%;">
+                        <canvas id="lineplot"></canvas>
+                    </div>
+                    <div class="chart-container" style="width: 29rem;">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5" style="width: 97%; "
+                id="review_list">
+
+                <div id="positive_review_list" class="list-none" style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
+                    <h2 class="text-xl">Positive Feedback</h2>
+                </div>
+
+                <div id="negative_review_list" class="list-none" style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
+                    <h2 class="text-xl">Negative Feedback</h2>
+                </div>
+            </div>
+        </div>
+
+        </section>
+        <!-- <section style="flex:1.4;" class="sidebar">
+            <div class="chart-container" style="position: relative; display: flex; justify-content: center;">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="hot-topics flex-col gap-y-2">
+                <ul>
+                    {% if not user.is_authenticated %}
+                    <h2>Recommended items</h2>
+                    {% else %}
+                    <h2>Recommended for you</h2>
+                    {% endif %}
+
+                    {% if recommend_items is not none %}
+                    
+                    {% for item in recommend_items %}
+                    <li>{{item}}</li>
+                    {% endfor %}
+                    {%endif%}
+                </ul>
+            </div>
+        </section> -->
+    </div>
+    <footer>
+        <p>&copy; Milan Hackthon 2023 From Raman Block</p>
+    </footer>
+</body>
+<script type="text/javascript">
+    positive_reviews = []
+    negative_reviews = []
+    item_line_chart = [1]
+    rating_pie_chart = 1
+    rating_array = 1
+    curr_search_value = ""
+    search_item = document.getElementById("search_item")
+    let canva = document.getElementsByClassName("canva")
+    positive_list = document.getElementById("positive_review_list")
+    negative_list = document.getElementById("negative_review_list")
+    canva.width = 400
+    canva.height = 300
+
+    var item_list = {{ item_list | safe}}
+
+
+    function jaccardSimilarity(word1, word2) {
+        const set1 = new Set(word1.split(''));
+        const set2 = new Set(word2.split(''));
+
+        const intersection = new Set([...set1].filter(char => set2.has(char)));
+        const union = new Set([...set1, ...set2]);
+
+        return intersection.size / union.size;
+    }
+
+
+    data = []
+    search_item.addEventListener("keyup", () => {
+        curr_search_value = search_item.value
+        data = []
+        for (let i = 0; i < item_list.length; i++) {
+            similarity = jaccardSimilarity(item_list[i], search_item.value)
+            if (similarity > .4) {
+                data.push(item_list[i])
+            }
+        }
+        const searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = ""
+
+        if (data.length > 0) {
+            data.forEach(item => {
+                const result = document.createElement("a");
+                result.textContent = item;
+                result.addEventListener("click", () => {
+                    search_item.value = item
+                    document.getElementById("searchResults").style.display = "none";
+                    search();
+                })
+                searchResults.appendChild(result);
+            });
+            searchResults.style.display = "block"
+        }
+    })
+
+    function search() {
+        const searchTerm = document.getElementById("search_item").value.toLowerCase();
+
+        if (item_list.indexOf(searchTerm) === -1) {
+            showAlert("Item not present")
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/search",
+            data: JSON.stringify([{ "item_name": searchTerm }]),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (result) {
+
+                console.log(result[1])
+                positive_reviews = result[1].split(',')
+                negative_reviews = result[2].split(',')
+
+                curr_search_value = searchTerm
+
+                console.log(result)
+
+                rating_array = result[0]
+
+                date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                if (item_line_chart != 1) {
+                    item_line_chart.destroy()
+                }
+                item_line_chart = creatLineChart(date, rating_array, item);
+
+
+                n_ratings = { 'Positive': positive_reviews.length, 'Negative': negative_reviews.length };
+                if (rating_pie_chart != 1) {
+                    console.log("yes")
+                    rating_pie_chart.destroy()
+                }
+                rating_pie_chart = DrawPieChart(n_ratings);
+
+
+                positive_list.innerHTML = '';
+                negative_list.innerHTML = '';
+                for (let i = 0; i < positive_reviews.length; i++) {
+
+                    li = document.createElement('li')
+                    li.style.margin = "2px 5px"
+                    li.style.height = "fit-content"
+                    li.textContent = positive_reviews[i]
+                    positive_list.appendChild(li)
+                }
+
+                for (let i = 0; i < negative_reviews.length; i++) {
+
+
+                    li = document.createElement('li')
+                    li.style.margin = "2px 5px"
+                    li.style.height = "fit-content"
+                    li.textContent = negative_reviews[i]
+                    negative_list.appendChild(li)
+                }
+
+                item_detail = document.getElementById("review_list")
+                item_detail.classList.replace("hidden", "flex")
+            }
+        });
+
+    }
+
+    document.getElementById("search_item").addEventListener("keypress", send_item);
+    function send_item(event) {
+
+        if (event.key == "Enter") {
+            search();
+        }
+    }
+    // for showing alert
+    showAlert = (msg) => {
+        alert_box.firstElementChild.innerText = msg;
+        alert_box.classList.replace("opacity-0", "opacity-100");
+        alert_box.firstElementChild.nextElementSibling.classList.add("w-full");
+
+
+        setTimeout(() => {
+            alert_box.classList.replace("opacity-100", "opacity-0");
+            alert_box.firstElementChild.nextElementSibling.classList.remove("w-full")
+        }, 4000)
+    }
+
+    var item = curr_search_value;
+
+    function creatLineChart(x, y, item) {
+        var ctx = document.getElementById('lineplot').getContext('2d');
+
+        const barColors = ["red", "green", "blue", "orange", "brown"];
+        var lineplot = new Chart("lineplot", {
+            type: "line",
+            data: {
+                labels: x,
+                datasets: [{
+                    label: 'Rating',
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "#9681EB",
+                    borderColor: "#6527BE",
+                    data: y
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Variation of average rating in last 16 days',
+                        fontSize: 30
+                    }
+                },
+                legend: { display: false },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    },
+                    yAxes: [{ ticks: { min: 6, max: 16 } }],
+                }
+            }
+        });
+        return lineplot
+    }
+
+    // JSON data
+    var jsonData = {{ top5| safe }};
+
+    // Function to create a bar chart
+    function createBarChart(data) {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var labels = Object.keys(data);
+        var values = Object.values(data);
+
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Ratings',
+                    data: values,
+                    backgroundColor: '#9681EB', // Bar color
+                    borderColor: '#6527BE', // Border color
+                    borderWidth: 2
+                }],
+
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true, // Display the title
+                        text: 'Average ratings of Top 5 Food Items in the last week', // Title text
+                        fontSize: 30 // Font size for the title
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            fontSize: 25 // Increase the font size for x-axis labels
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    }
+                }
+            }
+        });
+    }
+    createBarChart(jsonData);
+
+
+    function DrawPieChart(jsondata) {
+        var plotvalues = Object.values(jsondata);
+        var allLabels = Object.keys(jsondata);
+
+        // Get a reference to the canvas element
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+
+        // Define the data for the pie chart
+        var data = {
+            labels: allLabels,
+            datasets: [{
+                data: plotvalues, // The data values for each segment
+                backgroundColor: ['green', 'red'], // The colors for each segment
+            }]
+        };
+
+        // Create the pie chart
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                legend: { display: false },
+                plugins: {
+                    title: {
+                        display: true, // Display the title
+                        text: 'Count of positive and negative points in all reviews', // Title text
+                        fontSize: 30 // Font size for the title
+                    }
+                },
+
+                devicePixelRatio: 2, // Increase the device pixel ratio for better quality
+                scales: {
+
+                }
+            }
+        })
+        return myPieChart
+    };
+
+</script>
+
+<script>
+    const modal = document.getElementById('myModal');
+const btn = document.getElementById('openModal');
+const span = document.getElementsByClassName('close')[0];
+const content = document.getElementsByClassName('content');
+
+btn.onclick = () => {
+  modal.style.width = '30%';
+  modal.style.display = 'block';
+};
+
+span.onclick = () => {
+  modal.style.width = '0';
+  modal.style.display = 'none';
+};
+
+content.onclick = (event) => {
+console.log("check")
+  if (event.target === modal) {
+    modal.style.width = '0';
+    modal.style.display = 'none';
+    console.log("checking")
+  }
+};
+
+</script>
+
+</html>
