@@ -17,6 +17,76 @@ from scipy.sparse.linalg import svds
 from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
 
+
+from gensim.summarization.summarizer import summarize
+from gensim.summarization import keywords
+from nltk.tokenize import sent_tokenize
+import nltk
+
+
+def create_keyword_dict(item_id, df, n_keywords =20):
+    # Filter the DataFrame to get reviews for the specified itemId
+    item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
+
+    # Combine the reviews into a single text
+    combined_text = ' '.join(item_reviews)
+
+    # Tokenize the combined text into sentences
+    sentences = sent_tokenize(combined_text)
+
+    # Extract keywords from the combined text
+    extracted_keywords = keywords(combined_text, words=n_keywords, lemmatize=True).split('\n')
+
+    # Create a dictionary to store keyword occurrences
+    keyword_occurrences = {keyword: [] for keyword in extracted_keywords}
+
+    # Iterate through sentences and keywords
+    for sentence in sentences:
+        for keyword in extracted_keywords:
+            if keyword in sentence:
+                # Add the sentence to the dictionary under the keyword
+                keyword_occurrences[keyword].append(sentence)
+
+    return extracted_keywords, keyword_occurrences
+
+
+
+
+def get_summary(item_id, df, proportion=0.2, max_words = 100):
+    # Filter the DataFrame to get reviews for the specified itemId
+    item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
+
+    # Combine the reviews into a single text
+    combined_text = ' '.join(item_reviews)
+
+    # Generate the summary
+    summary_word_count = summarize(combined_text, word_count=max_words)
+    summary_proportion = summarize(combined_text, ratio=proportion)
+    summary = min(summary_word_count, summary_proportion, key=len)
+
+    # Tokenize the summary into sentences
+    summary_sentences = sent_tokenize(summary)
+
+    # Remove duplicates by converting to a set and back to a list
+    unique_summary_sentences = list(set(summary_sentences))
+
+    # Reconstruct the summary with unique sentences
+    unique_summary = ' '.join(unique_summary_sentences)
+
+    return unique_summary
+
+
+
+
+
+
+
+
+
+
+
+
+
 load_dotenv(".env")
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
@@ -55,6 +125,8 @@ ratings_data = pd.DataFrame([(rating.user_id, rating.item_id, rating.rating, rat
 ratings_data = ratings_data.groupby(['userId', 'itemId'])['rating'].mean().reset_index()
 unique_items = ratings_data['itemId'].unique()
 item_name_mapping = {item_id: item for item_id, item in enumerate(item_list, start=1)}
+
+
 
 # Initialize and train the model with all data
 model = CollabFNet(num_users, num_items, emb_size=50, n_hidden=20)
@@ -175,18 +247,30 @@ def search_result():
     data = request.get_json()
     item_name = data[0]['item_name'].capitalize()
     item = Item.query.filter_by(name=item_name).first()
+
+    
+
     avg =  average_rating_window(item.id,32)
     result = [avg, item.positive_feedback, item.negative_feedback]
     item_id = item.id
+
+    keyword_list, keyword_dict = create_keyword_dict(item_id, ratings_data)
+    item_summary = get_summary(item_id, ratings_data)
+
     stmt = session2.query(func.count(FoodReview.rating).label('total_quantity')).group_by(FoodReview.rating).filter(FoodReview.item_id == item_id).all()
     stmt = [i[0] for i  in stmt]
     result.append(stmt)
+    result.append(keyword_dict)
+    result.append(item_summary)
     return jsonify(result)
 
 
 @app.route('/')
 def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
+
+    
+
     q_dict = {0:None,1:"You are not an admin", 2:"You are not a super user"}
     try :
         q = int(request.args.get('q'))
@@ -224,12 +308,11 @@ def google_auth():
     user = oauth.google.parse_id_token(token, nonce=session['nonce'])
     session['user'] = user
     usr = User.query.filter_by(email=user['email']).first()
-    is_adm = usr.type == 1 or usr.type == 2
     if usr is None:
         usr = User(email=user['email'], name=user['name'], profile_url=user['picture'],type=0)
         db.session.add(usr)
         db.session.commit()
-    if is_adm and usr.profile_url is None:
+    if usr.profile_url is None:
         usr.profile_url = user['picture']
         db.session.commit()
     login_user(usr, remember=True)
@@ -256,7 +339,6 @@ def get_review():
         review = request.form['review']
         update_neg_pos(review, item_id)
         rating = get_rating(review)
-        # rating = np.random.randint(1,5) 
         newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None)
         db.session.add(newReview)
         db.session.commit()
@@ -266,15 +348,17 @@ def get_review():
 @app.route('/admin', methods=['GET', 'POST'])
 @is_admin
 def admin():
+    list_of_items = [item.name.lower() for item in Item.query.all()]
     if current_user.type == 2:
         return redirect('/super')
-    return render_template('admin.html', user=current_user, top5=top_items_this_week())
+    return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items)
 
 
 @app.route('/super', methods=['GET', 'POST'])
 @super_user
 def super():
-    return render_template('admin.html', user=current_user, top5=top_items_this_week())
+    list_of_items = [item.name.lower() for item in Item.query.all()]
+    return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items)
 
 
 def average_rating_window(item_id, window_size):

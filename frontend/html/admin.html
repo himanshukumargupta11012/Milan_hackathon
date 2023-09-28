@@ -36,7 +36,7 @@
             {% endif %}
         </div>
     </header>
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal overflow-y-scroll z-5">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add Item</h2>
@@ -44,7 +44,7 @@
               <label for="itemName">Item Name:</label>
               <input type="text" id="itemName" name="itemName" required><br><br>
       
-              <label for="itemURL">Item URL:</label>
+              <label for="itemURL">Item image URL:</label>
               <input type="url" id="itemURL" name="itemURL" required><br><br>
       
               <label for="itemDescription">Item Description:</label>
@@ -84,14 +84,14 @@
                     </div>
                 </div>
             </div>
-            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5" style="width: 97%; "
+            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px] py-5 flex-row flex md:flex-col" style="width: 97%; "
                 id="review_list">
 
-                <div id="positive_review_list" class="list-none" style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
+                <div id="positive_review_list" class="list-none md:w-1/2 w-full h-h/2 md:h-full border-4 p-2 border-gray-100" style="max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
                     <h2 class="text-xl">Positive Feedback</h2>
                 </div>
 
-                <div id="negative_review_list" class="list-none" style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
+                <div id="negative_review_list" class="list-none md:w-1/2 w-full h-1/2 md:h-full border-4 p-2 border-gray-100" style="max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
                     <h2 class="text-xl">Negative Feedback</h2>
                 </div>
             </div>
@@ -120,7 +120,7 @@
             </div>
         </section> -->
     </div>
-    <footer>
+    <footer class="z-0">
         <p>&copy; Milan Hackthon 2023 From Raman Block</p>
     </footer>
 </body>
@@ -141,15 +141,28 @@
     var item_list = {{ item_list | safe}}
 
 
-    function jaccardSimilarity(word1, word2) {
-        const set1 = new Set(word1.split(''));
-        const set2 = new Set(word2.split(''));
+        function jaccardSimilarity(word1, word2) {
+                var max_common = 0, curr = 0;
 
-        const intersection = new Set([...set1].filter(char => set2.has(char)));
-        const union = new Set([...set1, ...set2]);
+                for (let i = 0; i < (word2.length - word1.length + 1); i++) {
+                    curr = 0;
+                    console.log(curr)
+                    for (let j = 0; j < word1.length; j++) {
+                        if (word1[j] === word2[i + j]) curr++;
+                    }
+                    max_common = Math.max(max_common, curr)
+                }
+                console.log(max_common)
+                return max_common / word1.length
+                // const set1 = new Set(word1.split(''));
+                // const set2 = new Set(word2.split(''));
 
-        return intersection.size / union.size;
-    }
+                // const intersection = new Set([...set1].filter(char => set2.has(char)));
+                // const union = new Set([...set1, ...set2]);
+
+                // return intersection.size / union.size;
+
+            }
 
 
     data = []
@@ -157,8 +170,8 @@
         curr_search_value = search_item.value
         data = []
         for (let i = 0; i < item_list.length; i++) {
-            similarity = jaccardSimilarity(item_list[i], search_item.value)
-            if (similarity > .4) {
+            similarity = jaccardSimilarity(search_item.value, item_list[i])
+            if (similarity > .5) {
                 data.push(item_list[i])
             }
         }
@@ -354,7 +367,7 @@
             }
         });
     }
-    createBarChart(jsonData);
+    // createBarChart(jsonData);
 
 
     function DrawPieChart(jsondata) {
