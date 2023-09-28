@@ -269,7 +269,8 @@ def get_review():
 def admin():
     if current_user.id == 1:
         return redirect('/super')
-    return jsonify("hello")
+    list_of_items = [item.name.lower() for item in Item.query.all()]
+    return render_template('admin.html', user=current_user, item_list=list_of_items, top5=top_items_this_week())
 
 @app.route('/super', methods=['GET', 'POST'])
 @super_user
