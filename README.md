@@ -1,21 +1,57 @@
-# Milan_hackathon
+# Canteen Recommendation & Review System - IIT Hyderabad
 
-## Getting started
-To get started, you need to install the dependencies. To do this, run the following command in the root directory of the project:
-```
-pip install -r requirements.txt
-```
-Also you will need to configure the environment variables. To do this, create a file called `.env` in the root directory of the project. Follow the .env_sample file in the backend folder to configure the environment variables.
+Welcome to the Canteen Recommendation & Review System for IIT Hyderabad! This web application offers personalized food recommendations and insights based on user feedback. Users can also search for specific items available in the canteen. Additionally, the canteen administrator can access an admin page to view user reviews and work on improving the food items.
 
-## Running the code
-To run the code, switch over to the backend directory and run the following command:
-```
-flask run
-```
-Your flask server will be up and running on port 5000. You can head over to your browser and start exploring.
+## Features
 
-## Tech stack
-We are using,  
-  -  Flask for the Backend  
-  - Sqlite for the Database  
-  - Tailwind CSS, Jquery, graph.js for the Frontend
+- **Feedback Collection**: Users can provide feedback on the canteen's food.
+
+- **Search Functionality**: Users can search for any item available in the canteen.
+
+- **Insightful Recommendations**: Our system leverages advanced ML models, including collaborative filtering, sentiment analysis, and aspect-based sentiment analysis using transformers, to generate personalized food recommendations.
+
+- **Aspect Sentiment Triplet Extraction**: Utilizing pyabsa, this system breaks down text data into aspects (e.g., product features), extracts opinions about those aspects, and assigns sentiment polarities (positive, negative) to each opinion, providing insights into consumer feedback or reviews.
+
+- **Search Recommendation**: Implemented search recommendations for food items to enhance user experience using  String matching algorithm.
+
+- **Sentiment Analysis with Fine-tuned BERT Model**: Employing a fine-tuned BERT model for sentiment analysis provides a robust approach for rating prediction. The system accurately analyzes textual data and predicts ratings or sentiment scores out of 5.
+
+- **Collaborative Filtering**: Utilizing the SVD technique, the system offers recommendations based on collaborative filtering by considering user reviews on food items and recommending similar food choices from other users with shared interests.
+
+- **Summarization using Gensim**: Gensim aids in summarizing extensive feedback, providing concise overviews of user sentiments and preferences.
+
+- **Keyword Extraction with Gensim**: Gensim assists in extracting key terms and phrases from feedback, enabling a deeper understanding of the main aspects of user opinions.
+
+- **Flask-based Website**: The backend of this system is powered by Python and Flask, utilizing Jinja templates for rendering HTML, CSS, and JavaScript, enhancing the user interface and displaying the results seamlessly.
+
+
+## Contributors
+
+- [Himanshu Kumar Gupta](https://github.com/your_username) - Project Lead
+- [Gunjit Mittal](https://github.com/your_username) 
+- [Donal Loitam](https://github.com/your_username) 
+- [Suraj Kumar](https://github.com/your_username) 
+- [Raula Karthik](https://github.com/your_username) 
+- [Mannem Charan](https://github.com/your_username) 
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository_url>
+ ```
+
+
+2. Install the required dependencies:
+```bash
+pip install -r requirement.txt
+```
+
+3. Install the required dependencies:
+```bash
+cd backend/
+flask run 
+```
+
+4. Access the website:
+Open a web browser and navigate to `http://localhost:5000` to access the Canteen Recommendation System.
