@@ -43,14 +43,11 @@ triplet_extractor = ASTE.AspectSentimentTripletExtractor(
 )
 
 
+# recommendation_model
 num_users = User.query.count()
 num_items = Item.query.count()
-top_n=3
+top_n = 5
 item_list = [item.name for item in Item.query.all()]
-# print(item_list)
-# print(Item.query.with_entities(Item.name).all()[0])
-
-
 reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
 
 
@@ -88,12 +85,6 @@ user_recommendations = recommend_items_for_user(loaded_model, user_id_to_recomme
 recommend_item = user_recommendations.iloc[:, 1].values
 print(recommend_item)
 
-
-# aspect based sentiment analysis model
-triplet_extractor = ASTE.AspectSentimentTripletExtractor(
-    checkpoint="english"
-)
-
 def require_login(f):
     @wraps(f)
     def innerfunction(*args, **kwargs):
@@ -102,9 +93,6 @@ def require_login(f):
         else:
             return redirect(url_for('login'))
     return innerfunction
-
-# print(item_list)
-
 
 
 
@@ -145,18 +133,21 @@ def update_neg_pos(review, item_id):
 
     if item.negative_feedback == None:
         item.negative_feedback = ','.join(negative)
-    else:
+    elif len(negative) > 0:
         item.negative_feedback += ',' + ','.join(negative)
 
     if item.positive_feedback == None:
         item.positive_feedback = ','.join(positive)
-    else:
+    elif len(positive) > 0:
         item.positive_feedback += ',' + ','.join(positive)
 
     db.session.commit()
 
     # print(negative, positive)
 
+# reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
+# for i in reviews:
+#     update_neg_pos(i[0], i[1])
 
 
 @login_manager.user_loader
