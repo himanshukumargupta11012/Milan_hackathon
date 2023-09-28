@@ -8,6 +8,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
     <title>Canteen Feedback</title>
 </head>
 
@@ -22,23 +29,31 @@
         <img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]">
         <div class="flex items-center">
             {% if user.type==1 or user.type ==2 %}
-            <a href="{{url_for('admin')}}" class="review-button">Admin</a>
+            <a href="{{url_for('admin')}}"><button class="review-button"
+                    style="font-family: 'Unbounded';">Admin</button></a>
+
+            <!-- <a href="{{url_for('admin')}}" class="review-button"><button >Admin</button></a> -->
             {% endif %}
-            <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
+            <!-- <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a
+                    Review</button></a> -->
+            <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Write a
+                Review</button>
             {% if user.is_authenticated %}
-            <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
+            <a href="{{url_for('logout')}}"><button class="review-button"
+                    style="font-family: 'Unbounded';">Logout</button></a>
             <div class="avatar">
                 <img src={{user.profile_url}} alt="Avatar">
             </div>
             {% else %}
-            <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
+            <a href="{{url_for('login')}}"><button class="review-button"
+                    style="font-family: 'Unbounded';">Login</button></a>
             {% endif %}
         </div>
     </header>
     <div class="content">
         <section class="main-content" style="flex: 3;">
             <div class="search-container">
-                <input type="text" placeholder="Search for your canteen..." id="search_item">
+                <input type="text" placeholder="Search for your canteen..." id="search_item" style="width: 100%;">
                 <button class="search-button" onclick="search()" class="hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -67,6 +82,57 @@
                         </div>
                     </div>
                 </div>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form id="reviewForm", method="POST" action="review">
+                            <label for="contentItem" class="title">Select a Content Item:</label>
+                            <select id="contentItem" name="contentItem">
+                              <option value="Non-veg noodles">Non-veg Noodles</option>
+                              <option value="Veg noodles">Veg Noodles</option>
+                              <option value="Maggi">Maggi</option>
+                              <option value="Panipuri">Panipuri</option>
+                              <option value="Sandwich">Sandwich</option>
+                              <option value="Chicken roll">Chicken Roll</option>
+                              <option value="Veg roll">Veg Roll</option>
+                              <option value="Coffee">Coffee</option>
+                              <option value="Ice tea">Ice tea</option>
+                              <option value="Tea">Tea</option>
+                              <option value="Fruit juice">Fruit Juice</option>
+                            </select>
+                      
+                            <label for="review" class="title">Your Review:</label>
+                            <textarea id="review" name="review" rows="6" cols="40" placeholder="Write your review here"></textarea>
+                            <!-- <label for="rating" class="title">Rating:</label>
+                            <div class="stars">
+                              <input type="radio" id="star5" name="rating" value="5">
+                              <label for="star5"></label>
+                              <input type="radio" id="star4" name="rating" value="4">
+                              <label for="star4"></label>
+                              <input type="radio" id="star3" name="rating" value="3">
+                              <label for="star3"></label>
+                              <input type="radio" id="star2" name="rating" value="2">
+                              <label for="star2"></label>
+                              <input type="radio" id="star1" name="rating" value="1">
+                              <label for="star1"></label>
+                            </div> -->
+                            <button type="submit" class="submit" style="border: 2px solid; padding: 6px; border-radius: 5px;">Submit Review</button>
+                          </form>
+                    </div>
+                </div>
+                <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5"
+                    style="width: 97%; " id="review_list">
+
+                    <div id="positive_review_list" class="list-none"
+                        style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
+                        <h2 class="text-xl">Positive Feedback</h2>
+                    </div>
+
+                    <div id="negative_review_list" class="list-none"
+                        style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
+                        <h2 class="text-xl">Negative Feedback</h2>
+                    </div>
+                </div>
             </div>
 
         </section>
@@ -91,6 +157,75 @@
                 </ul>
             </div>
         </section>
+    </div>
+
+    <!-- star -->
+    <div class="star">
+        <span class="rateHeader">User Rating</span>
+<span class="fa fa-star rated"></span>
+<span class="fa fa-star rated"></span>
+<span class="fa fa-star rated"></span>
+<span class="fa fa-star rated"></span>
+<span class="fa fa-star"></span>
+<p>3.9 average based on 200 foodies.</p>
+<div class="row">
+<div class="data">
+<div>5 star</div>
+</div>
+<div class="progressBar">
+<div class="progressContainer">
+<div class="bar-5"></div>
+</div>
+</div>
+<div class="data right">
+<div>120</div>
+</div>
+<div class="data">
+<div>4 star</div>
+</div>
+<div class="progressBar">
+<div class="progressContainer">
+<div class="bar-4"></div>
+</div>
+</div>
+<div class="data right">
+<div>110</div>
+</div>
+<div class="data">
+<div>3 star</div>
+</div>
+<div class="progressBar">
+<div class="progressContainer">
+<div class="bar-3"></div>
+</div>
+</div>
+<div class="data right">
+<div>30</div>
+</div>
+<div class="data">
+<div>2 star</div>
+</div>
+<div class="progressBar">
+<div class="progressContainer">
+<div class="bar-2"></div>
+</div>
+</div>
+<div class="data right">
+<div>20</div>
+</div>
+<div class="data">
+<div>1 star</div>
+</div>
+<div class="progressBar">
+<div class="progressContainer">
+<div class="bar-1"></div>
+</div>
+</div>
+<div class="data right">
+<div>12</div>
+</div>
+</div>
+
     </div>
     <footer>
         <p>&copy; Milan Hackthon 2023 From Raman Block</p>
@@ -397,7 +532,7 @@
             labels: allLabels,
             datasets: [{
                 data: plotvalues, // The data values for each segment
-                backgroundColor: ['green', 'red'], // The colors for each segment
+                backgroundColor: ['#D81E5B', '#93A8AC'], // The colors for each segment
             }]
         };
 
@@ -425,5 +560,41 @@
     };
 
 </script>
+
+<script>
+    const modal = document.getElementById('myModal');
+    const modalContent = document.querySelector('.modal-content');
+    const btn = document.getElementById('openModal');
+    const span = document.getElementsByClassName('close')[0];
+
+    btn.onclick = () => {
+        modal.style.display = 'block';
+        modal.classList.remove('hide');
+        modal.classList.add('show');
+    };
+
+    span.onclick = () => {
+        modal.classList.remove('show');
+        modal.classList.add('hide');
+
+        // Add a delay to allow the animation to complete before hiding the modal
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 500); // This should match the transition duration in CSS
+    };
+
+    // Close the modal if user clicks anywhere outside of it
+    window.onclick = (event) => {
+        if (event.target !== modal && !modal.contains(event.target) && event.target !== btn) {
+            modal.classList.remove('show');
+            modal.classList.add('hide');
+
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500); // This should match the transition duration in CSS
+        }
+    };
+</script>
+
 
 </html>

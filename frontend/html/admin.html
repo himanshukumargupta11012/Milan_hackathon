@@ -8,6 +8,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300&display=swap" rel="stylesheet">
     <title>Canteen Feedback</title>
 </head>
 
@@ -19,7 +22,7 @@
     </div>
 
     <header class="flex-header">
-        <img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]">
+        <a href="{{url_for('index')}}"><img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]"></a>
         <div class="flex items-center">
             {% if user.type ==1 or user.type==2 %}
             <button class="review-button" id="openModal">Add Item</button>
@@ -28,12 +31,12 @@
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% endif %}
             {% if user.is_authenticated %}
-            <a href="{{url_for('logout')}}"><button class="review-button">Logout</button></a>
+            <a href="{{url_for('logout')}}"><button class="review-button" style="font-family: 'Unbounded';">Logout</button></a>
             <div class="avatar">
                 <img src={{user.profile_url}} alt="Avatar">
             </div>
             {% else %}
-            <a href="{{url_for('login')}}"><button class="review-button">Login</button></a>
+            <a href="{{url_for('login')}}"><button class="review-button" style="font-family: 'Unbounded';">Login</button></a>
             {% endif %}
         </div>
     </header>
@@ -53,13 +56,13 @@
       
               <input type="submit" value="Submit">
             </form>
-          </div>
         </div>
-      </div>
+    </div>
+    </div>
     <div class="content">
         <section class="main-content" style="flex: 3;">
             <div class="search-container">
-                <input type="text" placeholder="Search for your canteen..." id="search_item">
+                <input type="text" placeholder="Search for your canteen..." id="search_item" style="width: 100%;">
                 <button class="search-button" onclick="search()" class="hover:cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M0 0h24v24H0z" fill="none" />
@@ -74,16 +77,30 @@
                 </div>
             </div>
             <div style="width: 100%;" class="answerContent">
-            <!-- canva for drawing the graphs -->
-            <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
-                <div style="display: flex; flex-wrap: wrap;justify-content: center;">
-                    <div class="chart-container" style="width: 65%;">
-                        <canvas id="lineplot"></canvas>
-                    </div>
-                    <div class="chart-container" style="width: 29rem;">
-                        <canvas id="myPieChart"></canvas>
+                <!-- canva for drawing the graphs -->
+                <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
+                    <div style="display: flex; flex-wrap: wrap;justify-content: center;">
+                        <div class="chart-container" style="width: 65%;">
+                            <canvas id="lineplot"></canvas>
+                        </div>
+                        <div class="chart-container" style="width: 29rem;">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
                     </div>
                 </div>
+                <!-- <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5"
+                    style="width: 97%; " id="review_list">
+
+                    <div id="positive_review_list" class="list-none"
+                        style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
+                        <h2 class="text-xl">Positive Feedback</h2>
+                    </div>
+
+                    <div id="negative_review_list" class="list-none"
+                        style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
+                        <h2 class="text-xl">Negative Feedback</h2>
+                    </div>
+                </div> -->
             </div>
             <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px] py-5 flex-row flex md:flex-col" style="width: 97%; "
                 id="review_list">
@@ -383,7 +400,7 @@
             labels: allLabels,
             datasets: [{
                 data: plotvalues, // The data values for each segment
-                backgroundColor: ['green', 'red'], // The colors for each segment
+                backgroundColor: ['#D81E5B', '#93A8AC'], // The colors for each segment
             }]
         };
 
@@ -413,45 +430,45 @@
 </script>
 
 <script>
-const modal = document.getElementById('myModal');
-const modalContent = document.querySelector('.modal-content');
-const btn = document.getElementById('openModal');
-const span = document.getElementsByClassName('close')[0];
+    const modal = document.getElementById('myModal');
+    const modalContent = document.querySelector('.modal-content');
+    const btn = document.getElementById('openModal');
+    const span = document.getElementsByClassName('close')[0];
 
-btn.onclick = () => {
-  modal.style.display = 'block';
-  modal.classList.remove('hide');
-  modal.classList.add('show');
-};
+    btn.onclick = () => {
+        modal.style.display = 'block';
+        modal.classList.remove('hide');
+        modal.classList.add('show');
+    };
 
-span.onclick = () => {
-  modal.classList.remove('show');
-  modal.classList.add('hide');
+    span.onclick = () => {
+        modal.classList.remove('show');
+        modal.classList.add('hide');
 
-  // Add a delay to allow the animation to complete before hiding the modal
-  setTimeout(() => {
-    modal.style.display = 'none';
-  }, 500); // This should match the transition duration in CSS
-};
+        // Add a delay to allow the animation to complete before hiding the modal
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 500); // This should match the transition duration in CSS
+    };
 
-// Close the modal if user clicks anywhere outside of it
-window.onclick = (event) => {
-    if (event.target !== modal && !modal.contains(event.target) && event.target !== btn) {
-    modal.classList.remove('show');
-    modal.classList.add('hide');
+    // Close the modal if user clicks anywhere outside of it
+    window.onclick = (event) => {
+        if (event.target !== modal && !modal.contains(event.target) && event.target !== btn) {
+            modal.classList.remove('show');
+            modal.classList.add('hide');
 
-    setTimeout(() => {
-      modal.style.display = 'none';
-    }, 500); // This should match the transition duration in CSS
-  }
-};
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500); // This should match the transition duration in CSS
+        }
+    };
 
-// window.onclick = (event) => {
-//   if (event.target !== btn && event.target !== modal) {
-//     console.log("testing2")
-//     modal.style.display = 'none';
-//   }
-// };
+    // window.onclick = (event) => {
+    //   if (event.target !== btn && event.target !== modal) {
+    //     console.log("testing2")
+    //     modal.style.display = 'none';
+    //   }
+    // };
 
 </script>
 

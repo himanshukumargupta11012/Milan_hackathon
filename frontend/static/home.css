@@ -39,9 +39,10 @@ body {
     border-radius: 50%;
   }
   .review-button {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 2px 14px;
+    font-size: 22px;
     cursor: pointer;
+    font-weight: 600;
     background-color: #86bbd8;
     color: white;
     border: none;
@@ -49,9 +50,10 @@ body {
     margin:  0 7px;
   }
 
-  @media (max-width: 450px) {
+  @media (max-width: 600px) {
     .review-button {
-      margin:  0 2px;
+      padding: 0;
+      font-size: 1rem;
     }
     .hedear-img{
       margin: 0;
@@ -88,13 +90,7 @@ body {
       overflow-y: initial;
     }
   }
-  @media (max-width: 776px) {
-    .search-container{
-      width: 85vw;
-      display:flex;
-      justify-content: center;
-    }
-  }
+
 
   
   .main-content {
@@ -132,11 +128,18 @@ body {
     bottom: 0;
     width: 100%;
   }
-
-
+  
   .search-container {
     display: flex;
     align-items: center;
+    width: 57%;
+  }
+  @media (max-width: 500px) {
+    .search-container{
+      width: 100%;
+      display:flex;
+      justify-content: center;
+    }
   }
   
   .search-container input {
@@ -301,7 +304,7 @@ body {
 .dropdown {
   position: relative;
   display: inline-block;
-  width: 443px;
+  width: 57%
 }
 
 
@@ -320,7 +323,7 @@ body {
   position: absolute;
   background-color: #fffeeb; /* Change the background color to white */
   color: black; /* Change the text color to black */
-  width: 408px;
+  width: 100%;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -356,6 +359,11 @@ body {
   }
 }
 
+a:hover button:hover{
+  background-color:#4d8b31;
+  color: #eeeeff;
+
+}
 
 .canva{
   height: 343px;
@@ -391,3 +399,231 @@ input[type=text] {
 input[type=text]:focus {
   border: 3px solid #555;
 }
+
+
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 81px;
+  right: 0;
+  width: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: 0.5s;
+  z-index: 5;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  z-index: 5;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Add these styles to your existing CSS */
+
+.modal-content {
+background-color: #fefefe;
+border-radius: 10px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+font-size: 24px;
+margin-bottom: 20px;
+color: #333;
+}
+
+.modal-content label {
+display: block;
+margin-bottom: 6px;
+color: #333;
+font-weight: bold;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="url"],
+.modal-content textarea {
+width: calc(100% - 20px);
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+margin-bottom: 10px;
+}
+
+.modal-content input[type="submit"] {
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+background-color: #007BFF;
+color: white;
+cursor: pointer;
+font-size: 16px;
+}
+
+.modal-content input[type="submit"]:hover {
+background-color: #0056b3;
+}
+
+/* Add these styles to your existing CSS */
+
+.modal {
+display: none;
+position: fixed;
+top: 20;
+right: -100%;
+width: 30%;
+max-height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+transition: right 0.5s; /* Add a transition for the right property */
+}
+
+@media (max-width: 800px) {
+.modal{
+  width: 50%;
+}
+}
+@media (max-width: 800px) {
+.modal{
+  width: 80%;
+}
+}
+@media (min-width:800 ) {
+.modal{
+  width: 60%;
+}
+}
+
+/* Rest of the CSS remains the same */
+
+.modal.show {
+right: 0; /* Slide in from the right */
+}
+
+.modal.hide {
+right: -100%; /* Slide out to the right */
+}
+
+
+
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+select{
+  border: 1px solid;
+}
+select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.submit{
+
+}
+
+go-back-button{
+  height: fit-content;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+
+
+/* style for star */
+.star{
+  width: 50%;
+  margin-bottom: 4rem;
+}
+.rateHeader {
+  font-size: 25px;
+  margin-right: 25px;
+}
+.fa {
+  font-size: 25px;
+  color: grey;
+}
+.rated {
+  color: rgb(243, 222, 33);
+  border: 2px solid yellow;
+}
+.data {
+  float: left;
+  width: 15%;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.progressBar {
+  margin-top: 10px;
+  float: left;
+  width: 70%;
+}
+.right {
+  text-align: right;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.progressContainer {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+  border-radius: 10px;
+}
+.bar-1, .bar-2, .bar-3, .bar-4, .bar-5 {
+  border-radius: 10px;
+}
+.bar-5 {
+  width: 70%;
+  height: 18px;
+  background-color: rgb(243, 222, 33);
+}
+.bar-4 {
+  width: 50%;
+  height: 18px;
+  background-color: rgb(243, 222, 33);
+}
+.bar-3 {
+  width: 20%;
+  height: 18px;
+  background-color:rgb(243, 222, 33);
+}
+.bar-2 {
+  width: 65%;
+  height: 18px;
+  background-color: rgb(243, 222, 33);
+}
+.bar-1 {
+  width: 40%;
+  height: 18px;
+  background-color: rgb(243, 222, 33);
+}
+/* style for star */

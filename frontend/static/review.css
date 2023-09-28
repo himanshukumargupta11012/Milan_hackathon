@@ -82,7 +82,7 @@ body {
     margin-bottom: 10px;
   }
   
-
+/* 
   .stars {
     display: inline-block;
     margin-top: 10px;
@@ -103,12 +103,12 @@ body {
 
   .stars label:before {
     content: '\2605'; /* Unicode character for a star */
-  }
+  /* } */
 
   .stars input[type="radio"]:checked ~ label:before {
     content: '\2605'; /* Unicode character for a filled star */
     color: gold;
-  }
+  } */
 
   footer {
     background-color: #f0f0f0;
