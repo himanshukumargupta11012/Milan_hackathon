@@ -41,7 +41,7 @@ engine = create_engine('sqlite:///instance/canteen.db')
 Session2 = sessionmaker(bind=engine)
 session2 = Session2()
 app.app_context().push()
-session2.create_all()
+db.create_all()
 
 # aspect based sentiment analysis model
 triplet_extractor = ASTE.AspectSentimentTripletExtractor(checkpoint="english")
@@ -192,17 +192,21 @@ def get_review():
 @app.route('/admin', methods=['GET', 'POST'])
 @is_admin
 def admin():
-    list_of_items = [item.name.lower() for item in Item.query.all()]
     if current_user.type == 2:
         return redirect('/super')
-    return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items)
+    list_of_items = [item.name.lower() for item in Item.query.all()]
+    avg = session2.query(FoodReview.item_id, func.avg(FoodReview.rating).label("average")).group_by(FoodReview.item_id).all()
+    avg = {item_list[i[0]-1]:i[1] for i in avg}
+    return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items, avg_data=avg)
 
 # Route for the super user dashboard
 @app.route('/super', methods=['GET', 'POST'])
 @super_user
 def super():
     list_of_items = [item.name.lower() for item in Item.query.all()]
-    return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items)
+    avg = session2.query(FoodReview.item_id, func.avg(FoodReview.rating).label("average")).group_by(FoodReview.item_id).all()
+    avg = {item_list[i[0]-1]:i[1] for i in avg}
+    return render_template('admin.html', user=current_user, top5=top_items_this_week(), item_list=list_of_items, avg_data=avg)
 
 # Route for adding an item
 @app.route('/add_item', methods=['POST'])
