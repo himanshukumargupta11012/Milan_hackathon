@@ -362,7 +362,6 @@ body {
 a:hover button:hover{
   background-color:#4d8b31;
   color: #eeeeff;
-
 }
 
 .canva{
@@ -375,11 +374,11 @@ a:hover button:hover{
   flex-wrap: wrap;
 }
 
-@media (min-width: 1050px) {
+/* @media (min-width: 1050px) {
   .sidebar{
     overflow-y: auto;
   }
-}
+} */
 
 
 .answerContent{
@@ -550,14 +549,14 @@ go-back-button{
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: #4d8b31;
+  color: #eeeeff;
 }
 
 
 
 /* style for star */
 .star{
-  width: 50%;
   margin-bottom: 4rem;
 }
 .rateHeader {
@@ -601,7 +600,8 @@ button:hover {
 .bar-1, .bar-2, .bar-3, .bar-4, .bar-5 {
   border-radius: 10px;
 }
-.bar-5 {
+.bar {
+  border-radius: 10px;
   width: 70%;
   height: 18px;
   background-color: rgb(243, 222, 33);

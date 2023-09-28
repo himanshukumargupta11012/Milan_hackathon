@@ -12,70 +12,70 @@ from authlib.common.security import generate_token
 import numpy as np
 import torch
 import pandas as pd
-# from model import *
+from model import *
 from scipy.sparse.linalg import svds
-# from pyabsa import AspectSentimentTripletExtraction as ASTE
+from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
 
 
-# from gensim.summarization.summarizer import summarize
-# from gensim.summarization import keywords
-# from nltk.tokenize import sent_tokenize
-# import nltk
-# nltk.download('punkt')
+from gensim.summarization.summarizer import summarize
+from gensim.summarization import keywords
+from nltk.tokenize import sent_tokenize
+import nltk
+nltk.download('punkt')
 
 
-# def create_keyword_dict(item_id, df, n_keywords =20):
-#     # Filter the DataFrame to get reviews for the specified itemId
-#     print(df.head())
-#     item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
+def create_keyword_dict(item_id, df, n_keywords =20):
+    # Filter the DataFrame to get reviews for the specified itemId
+    print(df.head())
+    item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
 
-#     # Combine the reviews into a single text
-#     combined_text = ' '.join(item_reviews)
+    # Combine the reviews into a single text
+    combined_text = ' '.join(item_reviews)
 
-#     # Tokenize the combined text into sentences
-#     sentences = sent_tokenize(combined_text)
+    # Tokenize the combined text into sentences
+    sentences = sent_tokenize(combined_text)
 
-#     # Extract keywords from the combined text
-#     extracted_keywords = keywords(combined_text, words=n_keywords, lemmatize=True).split('\n')
+    # Extract keywords from the combined text
+    extracted_keywords = keywords(combined_text, words=n_keywords, lemmatize=True).split('\n')
 
-#     # Create a dictionary to store keyword occurrences
-#     keyword_occurrences = {keyword: [] for keyword in extracted_keywords}
+    # Create a dictionary to store keyword occurrences
+    keyword_occurrences = {keyword: [] for keyword in extracted_keywords}
 
-#     # Iterate through sentences and keywords
-#     for sentence in sentences:
-#         for keyword in extracted_keywords:
-#             if keyword in sentence:
-#                 # Add the sentence to the dictionary under the keyword
-#                 keyword_occurrences[keyword].append(sentence)
+    # Iterate through sentences and keywords
+    for sentence in sentences:
+        for keyword in extracted_keywords:
+            if keyword in sentence:
+                # Add the sentence to the dictionary under the keyword
+                keyword_occurrences[keyword].append(sentence)
 
-#     return extracted_keywords, keyword_occurrences
-
-
+    return extracted_keywords, keyword_occurrences
 
 
-# def get_summary(item_id, df, proportion=0.2, max_words = 100):
-#     # Filter the DataFrame to get reviews for the specified itemId
-#     item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
 
-#     # Combine the reviews into a single text
-#     combined_text = ' '.join(item_reviews)
 
-#     # Generate the summary
-#     summary_word_count = summarize(combined_text, word_count=max_words)
-#     summary_proportion = summarize(combined_text, ratio=proportion)
-#     summary = min(summary_word_count, summary_proportion, key=len)
+def get_summary(item_id, df, proportion=0.2, max_words = 100):
+    # Filter the DataFrame to get reviews for the specified itemId
+    item_reviews = df[df['itemId'] == item_id]['Review'].tolist()
 
-#     # Tokenize the summary into sentences
-#     summary_sentences = sent_tokenize(summary)
+    # Combine the reviews into a single text
+    combined_text = ' '.join(item_reviews)
 
-#     # Remove duplicates by converting to a set and back to a list
-#     unique_summary_sentences = list(set(summary_sentences))
+    # Generate the summary
+    summary_word_count = summarize(combined_text, word_count=max_words)
+    summary_proportion = summarize(combined_text, ratio=proportion)
+    summary = min(summary_word_count, summary_proportion, key=len)
 
-#     # Reconstruct the summary with unique sentences
-#     unique_summary = ' '.join(unique_summary_sentences)
+    # Tokenize the summary into sentences
+    summary_sentences = sent_tokenize(summary)
 
-#     return unique_summary
+    # Remove duplicates by converting to a set and back to a list
+    unique_summary_sentences = list(set(summary_sentences))
+
+    # Reconstruct the summary with unique sentences
+    unique_summary = ' '.join(unique_summary_sentences)
+
+    return unique_summary
 
 
 
@@ -259,15 +259,15 @@ def search_result():
     result = [avg, item.positive_feedback, item.negative_feedback]
     item_id = item.id
 
-    # keyword_list, keyword_dict = create_keyword_dict(item_id, ratings_data1)
-    # item_summary = get_summary(item_id, ratings_data1)
+    keyword_list, keyword_dict = create_keyword_dict(item_id, ratings_data1)
+    item_summary = get_summary(item_id, ratings_data1)
 
-    keyword_dict = {"keyword1":["dsds", "dsds"], "keyword2":["dsds", "dsds"], "keyword3":["dsds", "dsds"]}
-    item_summary = "fkjdsnfldsjfkdsjofsjfajflkasjd"
-
-    stmt = session2.query(func.count(FoodReview.rating).label('total_quantity')).group_by(FoodReview.rating).filter(FoodReview.item_id == item_id).all()
-    stmt = [i[0] for i  in stmt]
-    result.append(stmt)
+    stmt = session2.query(FoodReview.rating ,func.count(FoodReview.rating).label('total_quantity')).group_by(FoodReview.rating).filter(FoodReview.item_id == item_id).all()
+    rating_list = {i:0 for i in range(1,6)}
+    for i in stmt:
+        rating_list[i[0]] = i[1]
+        
+    result.append(rating_list)
     result.append(keyword_dict)
     result.append(item_summary)
     return jsonify(result)

@@ -25,10 +25,10 @@
         <a href="{{url_for('index')}}"><img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]"></a>
         <div class="flex items-center">
             {% if user.type ==1 or user.type==2 %}
-            <button class="review-button" id="openModal">Add Item</button>
-            <a href="{{url_for('index')}}" class="review-button">Home</a>
+            <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Add Item</button>
+            <a href="{{url_for('index')}}" class="review-button" style="font-family: 'Unbounded';">Home</a>
             {%else%}
-            <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
+            <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a Review</button></a>
             {% endif %}
             {% if user.is_authenticated %}
             <a href="{{url_for('logout')}}"><button class="review-button" style="font-family: 'Unbounded';">Logout</button></a>

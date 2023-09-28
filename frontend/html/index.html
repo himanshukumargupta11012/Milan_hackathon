@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <title>Canteen Feedback</title>
 </head>
@@ -36,8 +36,7 @@
             {% endif %}
             <!-- <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a
                     Review</button></a> -->
-            <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Write a
-                Review</button>
+            <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Write a Review</button>
             {% if user.is_authenticated %}
             <a href="{{url_for('logout')}}"><button class="review-button"
                     style="font-family: 'Unbounded';">Logout</button></a>
@@ -68,10 +67,37 @@
                 </div>
             </div>
 
-            <div class="m-5 flex flex-wrap" id="item_tags"></div>
-            <div class="hidden h-[200px] list-none w-full p-2" id="item_tags_reviews"></div>
+            <div class="hidden" id="item_content">
+                <div class="m-5 flex flex-wrap" id="item_tags"></div>
+                <div class="h-[200px] list-none w-full p-2 overflow-y-auto" id="item_tags_reviews"></div>
+                
+                <div class="star">
+                    <span class="rateHeader">User Rating</span>
+                    <span class="fa fa-star rated"></span>
+                    <span class="fa fa-star rated"></span>
+                    <span class="fa fa-star rated"></span>
+                    <span class="fa fa-star rated"></span>
+                    <span class="fa fa-star"></span>
+                    <p>3.9 average based on 200 foodies.</p>
+                    <div class="row" id="rating_count_display">
+                        
+                        <div class="hidden" id="dummy_rating_item">
+                            <div class="data">
+                                5 star
+                            </div>
+                            <div class="progressBar">
+                                <div class="progressContainer">
+                                    <div class="bar"></div>
+                                </div>
+                            </div>
+                            <div class="data right">
+                                120
+                            </div>
+                        </div>
 
-            <div style="width: 100%;" class="answerContent">
+                    </div>
+                </div>
+
                 <div class="flex-col items-center gap-y-5 w-full" id="item_detail">
                     <div style="display: flex; flex-wrap: wrap;justify-content: center;">
                         <div class="chart-container" style="width: 65%;">
@@ -82,55 +108,36 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div style="width: 100%;" class="answerContent">
+                
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
-                        <form id="reviewForm", method="POST" action="review">
+                        <form id="reviewForm" , method="POST" action="review">
                             <label for="contentItem" class="title">Select a Content Item:</label>
                             <select id="contentItem" name="contentItem">
-                              <option value="Non-veg noodles">Non-veg Noodles</option>
-                              <option value="Veg noodles">Veg Noodles</option>
-                              <option value="Maggi">Maggi</option>
-                              <option value="Panipuri">Panipuri</option>
-                              <option value="Sandwich">Sandwich</option>
-                              <option value="Chicken roll">Chicken Roll</option>
-                              <option value="Veg roll">Veg Roll</option>
-                              <option value="Coffee">Coffee</option>
-                              <option value="Ice tea">Ice tea</option>
-                              <option value="Tea">Tea</option>
-                              <option value="Fruit juice">Fruit Juice</option>
+                                <option value="Non-veg noodles">Non-veg Noodles</option>
+                                <option value="Veg noodles">Veg Noodles</option>
+                                <option value="Maggi">Maggi</option>
+                                <option value="Panipuri">Panipuri</option>
+                                <option value="Sandwich">Sandwich</option>
+                                <option value="Chicken roll">Chicken Roll</option>
+                                <option value="Veg roll">Veg Roll</option>
+                                <option value="Coffee">Coffee</option>
+                                <option value="Ice tea">Ice tea</option>
+                                <option value="Tea">Tea</option>
+                                <option value="Fruit juice">Fruit Juice</option>
                             </select>
-                      
+
                             <label for="review" class="title">Your Review:</label>
-                            <textarea id="review" name="review" rows="6" cols="40" placeholder="Write your review here"></textarea>
-                            <!-- <label for="rating" class="title">Rating:</label>
-                            <div class="stars">
-                              <input type="radio" id="star5" name="rating" value="5">
-                              <label for="star5"></label>
-                              <input type="radio" id="star4" name="rating" value="4">
-                              <label for="star4"></label>
-                              <input type="radio" id="star3" name="rating" value="3">
-                              <label for="star3"></label>
-                              <input type="radio" id="star2" name="rating" value="2">
-                              <label for="star2"></label>
-                              <input type="radio" id="star1" name="rating" value="1">
-                              <label for="star1"></label>
-                            </div> -->
-                            <button type="submit" class="submit" style="border: 2px solid; padding: 6px; border-radius: 5px;">Submit Review</button>
-                          </form>
-                    </div>
-                </div>
-                <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5"
-                    style="width: 97%; " id="review_list">
+                            <textarea id="review" name="review" rows="6" cols="40"
+                                placeholder="Write your review here"></textarea>
 
-                    <div id="positive_review_list" class="list-none"
-                        style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
-                        <h2 class="text-xl">Positive Feedback</h2>
-                    </div>
-
-                    <div id="negative_review_list" class="list-none"
-                        style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
-                        <h2 class="text-xl">Negative Feedback</h2>
+                            <button type="submit" class="submit"
+                                style="border: 2px solid; padding: 6px; border-radius: 5px;">Submit Review</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -160,73 +167,7 @@
     </div>
 
     <!-- star -->
-    <div class="star">
-        <span class="rateHeader">User Rating</span>
-<span class="fa fa-star rated"></span>
-<span class="fa fa-star rated"></span>
-<span class="fa fa-star rated"></span>
-<span class="fa fa-star rated"></span>
-<span class="fa fa-star"></span>
-<p>3.9 average based on 200 foodies.</p>
-<div class="row">
-<div class="data">
-<div>5 star</div>
-</div>
-<div class="progressBar">
-<div class="progressContainer">
-<div class="bar-5"></div>
-</div>
-</div>
-<div class="data right">
-<div>120</div>
-</div>
-<div class="data">
-<div>4 star</div>
-</div>
-<div class="progressBar">
-<div class="progressContainer">
-<div class="bar-4"></div>
-</div>
-</div>
-<div class="data right">
-<div>110</div>
-</div>
-<div class="data">
-<div>3 star</div>
-</div>
-<div class="progressBar">
-<div class="progressContainer">
-<div class="bar-3"></div>
-</div>
-</div>
-<div class="data right">
-<div>30</div>
-</div>
-<div class="data">
-<div>2 star</div>
-</div>
-<div class="progressBar">
-<div class="progressContainer">
-<div class="bar-2"></div>
-</div>
-</div>
-<div class="data right">
-<div>20</div>
-</div>
-<div class="data">
-<div>1 star</div>
-</div>
-<div class="progressBar">
-<div class="progressContainer">
-<div class="bar-1"></div>
-</div>
-</div>
-<div class="data right">
-<div>12</div>
-</div>
-</div>
-
-    </div>
+    
     <footer>
         <p>&copy; Milan Hackthon 2023 From Raman Block</p>
     </footer>
@@ -245,6 +186,9 @@
         }, 4000)
     }
 
+
+
+
     message = "{{ messages }}"
     if (message !== "None") {
         showAlert(message)
@@ -262,9 +206,13 @@
     negative_list = document.getElementById("negative_review_list")
     item_tags = document.getElementById("item_tags")
     item_tags_reviews = document.getElementById("item_tags_reviews")
+    item_content = document.getElementById("item_content")
+    dummy_rating_item = document.getElementById("dummy_rating_item")
+    rating_count_display = document.getElementById("rating_count_display")
     canva.width = 400
     canva.height = 300
     is_tag_clicked = false
+    // is_searched = 
 
     var item_list = {{ item_list | safe}}
 
@@ -327,17 +275,45 @@
             contentType: "application/json",
             dataType: 'json',
             success: function (result) {
+                item_content.classList.replace("hidden", "block")
+
+                rating_count_display.innerHTML = ''
+                item_tags.innerHTML = ''
+
+
                 console.log(result)
-                item_tags_list = ["test", "test2", "tskjddskjd", "test", "test2", "tskjddskjd", "test", "test2", "tskjddskjd", "test", "test2", "tskjddskjd"]
-                item_tags_list = Object.keys(result[3])
-                item_tags_reviews_list = { "test": ["1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa", "1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa", "1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa", "1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa"], "test2": ["1,jdsljsfdsaf", "lkskjdklsa"], "tskjddskjd": ["1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa", "1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa", "1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa", "1,jdsljsfdsaf", "lkskjdklsadjkasjdojdsadsa"] }
 
-                item_tags_reviews_list = result[3]
+                item_tags_list = Object.keys(result[4])
+                item_tags_reviews_list = result[4]
 
-                summary = result[4]
+                summary = result[5]
+
+                each_rating_count = result[3]
+
+                var sum = 0;
+
+                for (var key in each_rating_count) {
+                    if (each_rating_count.hasOwnProperty(key)) {
+                        sum += each_rating_count[key];
+                    }
+                }
+
+
+                for(let i = 0; i < Object.keys(each_rating_count).length; i++) {
+                    let div = dummy_rating_item.cloneNode(true);
+                    div.classList.replace("hidden", "flex");
+                    div.firstElementChild.textContent = 5 - i;
+                    bar_width = Math.ceil((each_rating_count[5 - i]*100) / sum);
+                    console.log(bar_width)
+                    div.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.classList.add("w-["+bar_width + "%]")
+                    div.firstElementChild.nextElementSibling.nextElementSibling.textContent = each_rating_count[5 - i]
+                    rating_count_display.appendChild(div)
+                }
+
+
 
                 for (let i = 0; i < item_tags_list.length; i++) {
-                    li = document.createElement("li")
+                    let li = document.createElement("li")
                     li.textContent = item_tags_list[i]
                     li.classList.add("inline", "bg-gray-100", "m-1", "p-1", "rounded", "hover:cursor-pointer")
                     item_tags.appendChild(li)
