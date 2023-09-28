@@ -15,7 +15,7 @@ import pandas as pd
 import random
 # from model import *
 from scipy.sparse.linalg import svds
-# from pyabsa import AspectSentimentTripletExtraction as ASTE
+from pyabsa import AspectSentimentTripletExtraction as ASTE
 from helper import CollabFNet, create_candidate_set, predict_ratings_for_candidate_set, recommend_items_for_user
 
 load_dotenv(".env")
@@ -38,10 +38,9 @@ db.create_all()
 
 
 # aspect based sentiment analysis model
-# triplet_extractor = ASTE.AspectSentimentTripletExtractor(
-#     checkpoint="english"
-# )
-
+triplet_extractor = ASTE.AspectSentimentTripletExtractor(
+    checkpoint="english", 
+)
 
 # recommendation_model
 num_users = User.query.count()
@@ -118,10 +117,8 @@ def super_user(f):
 
 
 def update_neg_pos(review, item_id): 
+    dict = triplet_extractor.predict(review)['Triplets']
 
-    # dict = triplet_extractor.predict(review)['Triplets']
-    dict = {}
-    print(len(dict))
     if dict == '[]':
         return
     d2_list = np.array([[d['Aspect'], d['Opinion'], d['Polarity']] for d in dict], dtype="object")
@@ -131,6 +128,7 @@ def update_neg_pos(review, item_id):
     prev = ""
     for j in range(len(d2_list)):
         if np.all(d2_list[:, 0] == d2_list[0][0]) or np.all(d2_list[:, 1] == d2_list[0][1]):
+            d2_list[j][1] = d2_list[j][1].replace(',', '').replace('.', '')
             if d2_list[j][2] == "Negative":
                 if d2_list[j][1] not in negative:
                     negative.append(' '.join([d2_list[j][0], d2_list[j][1]]))
@@ -141,6 +139,7 @@ def update_neg_pos(review, item_id):
         
         else:
             if prev != d2_list[j][0]:
+                d2_list[index][1] = d2_list[index][1].replace(',', '').replace('.', '')
                 if d2_list[index][2] == "Negative":
                     if d2_list[index][2] not in negative:
                         negative.append(' '.join([d2_list[j][0], d2_list[index][1]]))
@@ -152,8 +151,8 @@ def update_neg_pos(review, item_id):
                 prev = d2_list[j][0]
     
     item = Item.query.get(item_id)
-
     if item.negative_feedback == None:
+        
         item.negative_feedback = ','.join(negative)
     elif len(negative) > 0:
         item.negative_feedback += ',' + ','.join(negative)
@@ -165,11 +164,12 @@ def update_neg_pos(review, item_id):
 
     db.session.commit()
 
-    # print(negative, positive)
 
 # reviews = [[item.review,item.item_id] for item in FoodReview.query.all()]
 # for i in reviews:
 #     update_neg_pos(i[0], i[1])
+
+
 
 
 @login_manager.user_loader
