@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 import os, requests
 from db_models import *
 from flask_login import login_user, LoginManager, current_user, logout_user
+from sqlalchemy import create_engine, Column, Integer, String, func
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from authlib.integrations.flask_client import OAuth
 from authlib.common.security import generate_token
 import numpy as np
@@ -32,7 +35,10 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 oauth = OAuth(app)
-
+# Create a new engine instance
+engine = create_engine('sqlite:///instance/canteen.db')
+Session2 = sessionmaker(bind=engine)
+session2 = Session2()
 app.app_context().push()
 db.create_all()
 
@@ -99,7 +105,7 @@ def is_admin(f):
     @require_login
     def innerfunction(*args, **kwargs):
         # print(current_user.email)
-        if current_user.type==2:
+        if current_user.type==1 or current_user.type==2:
             return f(*args, **kwargs)
         else:
             return redirect(url_for('index',q=1))
@@ -183,19 +189,27 @@ def search_result():
     item = Item.query.filter_by(name=item_name).first()
     avg =  average_rating_window(item.id,32)
     result = [avg, item.positive_feedback, item.negative_feedback]
+    item_id = item.id
+    stmt = session2.query(func.count(FoodReview.rating).label('total_quantity')).group_by(FoodReview.rating).filter(FoodReview.item_id == item_id).all()
+    stmt = [i[0] for i  in stmt]
+    result.append(stmt)
     return jsonify(result)
 
 @app.route('/')
-def index(q=0):
+def index():
     list_of_items = [item.name.lower() for item in Item.query.all()]
+    q_dict = {0:None,1:"You are not an admin", 2:"You are not a super user"}
+    try :
+        q = int(request.args.get('q'))
+    except:
+        q=0
     # ItemPage(1)
     print(top_items_this_week())
     if not current_user.is_authenticated:
-        return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=top_items_this_week())
+        return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=top_items_this_week(), messages=q_dict[q])
     else:
         item_id = recommend_user_items(current_user.id, top_n)
         print(item_id)
-        q_dict = {0:None,1:"You are not an admin", 2:"You are not a super user"}
         is_adm = current_user.type == 1 or current_user.type == 2
         is_sup = current_user.type == 2
         item_name = [item_list[i-1] for i in item_id]
@@ -255,9 +269,6 @@ def get_review():
         update_neg_pos(review, item_id)
         # rating = get_rating(review)
         rating = np.random.randint(1,5)
-        # rating = int(request.form['rating'])
-        # sentiment_insights = RunModelSentimentAnalysis(review)
-        # timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
         newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None)
         db.session.add(newReview)
         db.session.commit()
@@ -267,15 +278,14 @@ def get_review():
 @app.route('/admin', methods=['GET', 'POST'])
 @is_admin
 def admin():
-    if current_user.id == 1:
+    if current_user.type == 2:
         return redirect('/super')
-    list_of_items = [item.name.lower() for item in Item.query.all()]
-    return render_template('admin.html', user=current_user, item_list=list_of_items, top5=top_items_this_week())
+    return render_template('admin.html', user=current_user, top5=top_items_this_week())
 
 @app.route('/super', methods=['GET', 'POST'])
 @super_user
 def super():
-    return jsonify("Welcome Super User")
+    return render_template('admin.html', user=current_user, top5=top_items_this_week())
 
 
 def get_average_rating(item_id):
