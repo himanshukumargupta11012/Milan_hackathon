@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     name = db.Column(db.String(80), nullable=True)
     profile_url = db.Column(db.String(255))
-    
+    type = db.Column(db.Integer, nullable=False)
     # Define a one-to-many relationship with FoodReview
     reviews = db.relationship('FoodReview', backref='user', lazy=True)
 
@@ -36,6 +36,8 @@ class Item(db.Model):
     
     # Define a one-to-many relationship with FoodReview
     reviews = db.relationship('FoodReview', backref='item')
+    # Define a one-to-many relationship with FoodReview
+    # items = db.relationship('Items', backref='user', lazy=True)
 
 # db.create_all()
 # Create the tables in the database

@@ -61,14 +61,14 @@
                     </div>
                 </div>
             </div>
-            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5" style="width: 97%; overflow-y: auto;"
+            <div class="hidden justify-evenly  m-2 mg:m-10 h-[300px]  border-4 border-gray-100 py-5" style="width: 97%; "
                 id="review_list">
 
-                <div id="positive_review_list" class="list-none">
+                <div id="positive_review_list" class="list-none" style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex; flex-wrap: wrap;">
                     <h2 class="text-xl">Positive Feedback</h2>
                 </div>
 
-                <div id="negative_review_list" class="list-none">
+                <div id="negative_review_list" class="list-none" style="border: 2px solid;max-height: 220px; overflow-y: auto; display: flex;flex-wrap: wrap;">
                     <h2 class="text-xl">Negative Feedback</h2>
                 </div>
             </div>
@@ -224,6 +224,8 @@
                 for (let i = 0; i < positive_reviews.length; i++) {
 
                     li = document.createElement('li')
+                    li.style.margin = "2px 5px"
+                    li.style.height = "fit-content"
                     li.textContent = positive_reviews[i]
                     positive_list.appendChild(li)
                 }
@@ -232,6 +234,8 @@
 
 
                     li = document.createElement('li')
+                    li.style.margin = "2px 5px"
+                    li.style.height = "fit-content"
                     li.textContent = negative_reviews[i]
                     negative_list.appendChild(li)
                 }
