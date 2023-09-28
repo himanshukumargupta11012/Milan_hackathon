@@ -3,10 +3,8 @@ import numpy as np
 import torch
 from helper import CollabFNet, train_epocs
 
-
-# Speify the correct number of users and items
-num_users = 130
-num_items = 11
+num_users = 100
+num_items = 10
 
 
 ratings = FoodReview.query.all()

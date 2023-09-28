@@ -499,3 +499,42 @@ input[type=text] {
 .modal-content input[type="submit"]:hover {
   background-color: #0056b3;
 }
+
+/* Add these styles to your existing CSS */
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 20;
+  right: -100%;
+  width: 30%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: right 0.5s; /* Add a transition for the right property */
+}
+
+@media (max-width: 800px) {
+  .modal{
+    width: 50%;
+  }
+}
+@media (max-width: 800px) {
+  .modal{
+    width: 80%;
+  }
+}
+@media (min-width:800 ) {
+  .modal{
+    width: 60%;
+  }
+}
+
+/* Rest of the CSS remains the same */
+
+.modal.show {
+  right: 0; /* Slide in from the right */
+}
+
+.modal.hide {
+  right: -100%; /* Slide out to the right */
+}

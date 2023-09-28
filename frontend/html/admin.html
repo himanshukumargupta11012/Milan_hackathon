@@ -23,8 +23,7 @@
         <div class="flex items-center">
             {% if user.type ==1 or user.type==2 %}
             <button class="review-button" id="openModal">Add Item</button>
-            <a href="{{url_for('index')}}">Home</a>
-            {% else %}
+            <a href="{{url_for('index')}}" class="review-button">Home</a>
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% endif %}
             {% if user.is_authenticated %}
@@ -400,29 +399,45 @@
 </script>
 
 <script>
-    const modal = document.getElementById('myModal');
+const modal = document.getElementById('myModal');
+const modalContent = document.querySelector('.modal-content');
 const btn = document.getElementById('openModal');
 const span = document.getElementsByClassName('close')[0];
-const content = document.getElementsByClassName('content');
 
 btn.onclick = () => {
-  modal.style.width = '30%';
   modal.style.display = 'block';
+  modal.classList.remove('hide');
+  modal.classList.add('show');
 };
 
 span.onclick = () => {
-  modal.style.width = '0';
-  modal.style.display = 'none';
+  modal.classList.remove('show');
+  modal.classList.add('hide');
+
+  // Add a delay to allow the animation to complete before hiding the modal
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 500); // This should match the transition duration in CSS
 };
 
-content.onclick = (event) => {
-console.log("check")
-  if (event.target === modal) {
-    modal.style.width = '0';
-    modal.style.display = 'none';
-    console.log("checking")
+// Close the modal if user clicks anywhere outside of it
+window.onclick = (event) => {
+    if (event.target !== modal && !modal.contains(event.target) && event.target !== btn) {
+    modal.classList.remove('show');
+    modal.classList.add('hide');
+
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 500); // This should match the transition duration in CSS
   }
 };
+
+// window.onclick = (event) => {
+//   if (event.target !== btn && event.target !== modal) {
+//     console.log("testing2")
+//     modal.style.display = 'none';
+//   }
+// };
 
 </script>
 
