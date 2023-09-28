@@ -115,17 +115,30 @@
     canva.width = 400
     canva.height = 300
 
-    var item_list = {{ item_list | safe}}
+    var item_list = {{item_list | safe}}
 
 
     function jaccardSimilarity(word1, word2) {
-        const set1 = new Set(word1.split(''));
-        const set2 = new Set(word2.split(''));
+        var max_common = 0, curr = 0;
 
-        const intersection = new Set([...set1].filter(char => set2.has(char)));
-        const union = new Set([...set1, ...set2]);
+        for(let i = 0; i < (word2.length - word1.length + 1); i++) {
+            curr = 0;
+            console.log(curr)
+            for(let j = 0; j < word1.length; j++) {
+                if(word1[j] === word2[i + j]) curr++;
+            }
+            max_common = Math.max(max_common, curr)
+        }
+        console.log(max_common)
+        return max_common / word1.length
+        // const set1 = new Set(word1.split(''));
+        // const set2 = new Set(word2.split(''));
 
-        return intersection.size / union.size;
+        // const intersection = new Set([...set1].filter(char => set2.has(char)));
+        // const union = new Set([...set1, ...set2]);
+
+        // return intersection.size / union.size;
+
     }
 
 
@@ -134,8 +147,8 @@
         curr_search_value = search_item.value
         data = []
         for (let i = 0; i < item_list.length; i++) {
-            similarity = jaccardSimilarity(item_list[i], search_item.value)
-            if (similarity > .4) {
+            similarity = jaccardSimilarity(search_item.value, item_list[i])
+            if (similarity > .5) {
                 data.push(item_list[i])
             }
         }
@@ -156,7 +169,7 @@
             searchResults.style.display = "block"
         }
     })
-
+    
     function search() {
         const searchTerm = document.getElementById("search_item").value.toLowerCase();
 
@@ -181,8 +194,17 @@
                 console.log(result)
 
                 rating_array = result[0]
+                
+                var d = new Date();
+                d.setDate(d.getDate() - 1);
 
-                date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                date = []
+                var d = new Date();
+                for(let i = 0; i < rating_array.length; i++) {
+                    d.setDate(d.getDate() - 1)
+                    date.push(d.getDate().toString() + " " + d.toLocaleString("en-US", { month: "short" }).toString())
+                }
+                date.reverse()
                 if (item_line_chart != 1) {
                     item_line_chart.destroy()
                 }
