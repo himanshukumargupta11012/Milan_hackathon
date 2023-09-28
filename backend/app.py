@@ -94,11 +94,33 @@ def require_login(f):
             return redirect(url_for('login'))
     return innerfunction
 
+def is_admin(f):
+    @wraps(f)
+    @require_login
+    def innerfunction(*args, **kwargs):
+        # print(current_user.email)
+        if current_user.type==2:
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('index',q=1))
+    return innerfunction
 
 
-def update_neg_pos(review, item_id):
+def super_user(f):
+    @wraps(f)
+    @require_login
+    def innerfunction(*args, **kwargs):
+        if current_user.type==2: 
+            return f(*args, **kwargs)
+        else:
+            return redirect(url_for('index',q=2))
+    return innerfunction
+
+
+def update_neg_pos(review, item_id): 
 
     dict = triplet_extractor.predict(review)['Triplets']
+    # dict = {}
     print(len(dict))
     if dict == '[]':
         return
@@ -164,7 +186,7 @@ def search_result():
     return jsonify(result)
 
 @app.route('/')
-def index():
+def index(q=0):
     list_of_items = [item.name.lower() for item in Item.query.all()]
     # ItemPage(1)
     print(top_items_this_week())
@@ -173,8 +195,11 @@ def index():
     else:
         item_id = recommend_user_items(current_user.id, top_n)
         print(item_id)
+        q_dict = {0:None,1:"You are not an admin", 2:"You are not a super user"}
+        is_adm = current_user.type == 1 or current_user.type == 2
+        is_sup = current_user.type == 2
         item_name = [item_list[i-1] for i in item_id]
-        return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=item_name)
+        return render_template('index.html', item_list=list_of_items, user=current_user, top5=top_items_this_week(), recommend_items=item_name, messages=q_dict[q])
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -198,9 +223,13 @@ def google_auth():
     user = oauth.google.parse_id_token(token, nonce=session['nonce'])
     session['user'] = user
     usr = User.query.filter_by(email=user['email']).first()
+    is_adm = usr.type == 1 or usr.type == 2
     if usr is None:
-        usr = User(email=user['email'], name=user['name'], profile_url=user['picture'])
+        usr = User(email=user['email'], name=user['name'], profile_url=user['picture'],type=0)
         db.session.add(usr)
+        db.session.commit()
+    if is_adm and usr.profile_url is None:
+        usr.profile_url = user['picture']
         db.session.commit()
     login_user(usr, remember=True)
     return redirect('/')
@@ -225,6 +254,7 @@ def get_review():
         review = request.form['review']
         update_neg_pos(review, item_id)
         rating = get_rating(review)
+        # rating  = np.random.randint(1,5)
         # rating = int(request.form['rating'])
         # sentiment_insights = RunModelSentimentAnalysis(review)
         # timestamp = datetime.utcnow()+timedelta(hours=5, minutes=30)
@@ -232,6 +262,20 @@ def get_review():
         db.session.add(newReview)
         db.session.commit()
         return redirect(url_for('index'))
+
+
+@app.route('/admin', methods=['GET', 'POST'])
+@is_admin
+def admin():
+    if current_user.id == 1:
+        return redirect('/super')
+    return jsonify("hello")
+
+@app.route('/super', methods=['GET', 'POST'])
+@super_user
+def super():
+    return jsonify("Welcome Super User")
+
 
 def get_average_rating(item_id):
     # Query the database to get the average rating for the specified item
@@ -488,6 +532,6 @@ def recommend_user_items(user_id,num_recommendations):
         return answer
 # recommend_user_items(132,7)
 if __name__ == "__main__":
-    recommend_user_items(132,7)
+    # recommend_user_items(132,7)
     app.run(host='0.0.0.0', port=5000, debug=True)
    
