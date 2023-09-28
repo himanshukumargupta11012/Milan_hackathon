@@ -22,7 +22,7 @@
         <img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]">
         <div class="flex items-center">
             {% if user.type==1 or user.type ==2 %}
-            <a href="{{url_for('admin')}}">Admin</a>
+            <a href="{{url_for('admin')}}" class="review-button">Admin</a>
             {% endif %}
             <a href="{{url_for('get_review')}}"><button class="review-button">Write a Review</button></a>
             {% if user.is_authenticated %}
