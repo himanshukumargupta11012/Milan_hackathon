@@ -125,7 +125,7 @@
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
-                        <form id="reviewForm" , method="POST" action="review">
+                        <!-- <form id="reviewForm" , method="POST" action="review">
                             <label for="contentItem" class="title">Select a Content Item:</label>
                             <select id="contentItem" name="contentItem">
                                 <option value="Non-veg noodles">Non-veg Noodles</option>
@@ -147,7 +147,36 @@
 
                             <button type="submit" class="submit"
                                 style="border: 2px solid; padding: 6px; border-radius: 5px;">Submit Review</button>
-                        </form>
+                        </form> -->
+
+                        <div class="container1">
+                            <h1 class="title">Write a Review</h1>
+                            <form id="reviewForm" method="POST" action="review" class="review-form">
+                                <div class="form-group">
+                                    <label for="contentItem">Select a Content Item:</label>
+                                    <select id="contentItem" name="contentItem" class="select-box">
+                                        <option value="Non-veg noodles">Non-veg Noodles</option>
+                                        <option value="Veg noodles">Veg Noodles</option>
+                                        <option value="Maggi">Maggi</option>
+                                        <option value="Panipuri">Panipuri</option>
+                                        <option value="Sandwich">Sandwich</option>
+                                        <option value="Chicken roll">Chicken Roll</option>
+                                        <option value="Veg roll">Veg Roll</option>
+                                        <option value="Coffee">Coffee</option>
+                                        <option value="Ice tea">Ice tea</option>
+                                        <option value="Tea">Tea</option>
+                                        <option value="Fruit juice">Fruit Juice</option>
+                                        <!-- Add more options as needed -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="review">Your Review:</label>
+                                    <textarea id="review" name="review" rows="6" cols="40" placeholder="Write your review here"
+                                        class="text-area"></textarea>
+                                </div>
+                                <button type="submit" class="submit-button" style="background-color: #2980b9;">Submit Review</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,6 +252,7 @@
     canva.width = 400
     canva.height = 300
     is_tag_clicked = false
+    prev_li = ""
     // is_searched = 
 
     var item_list = {{ item_list | safe}}
@@ -321,8 +351,6 @@
                     rating_count_display.appendChild(div)
                 }
 
-
-
                 for (let i = 0; i < item_tags_list.length; i++) {
                     let li = document.createElement("li")
                     li.textContent = item_tags_list[i]
@@ -330,16 +358,22 @@
                     item_tags.appendChild(li)
 
                     li.addEventListener("click", () => {
-                        if (!is_tag_clicked) {
+                        if (!is_tag_clicked || prev_li !== li) {
                             item_tags_reviews.classList.replace("hidden", "block")
+                            item_tags_reviews.innerHTML = ""
                             curr_reviews = item_tags_reviews_list[li.textContent];
                             for (let j = 0; j < curr_reviews.length; j++) {
                                 li2 = document.createElement("li");
                                 li2.textContent = curr_reviews[j];
                                 item_tags_reviews.appendChild(li2)
                                 li2.classList.add("bg-[#fffeeb]", "m-1", "p-1", "rounded", "w-fit")
+                                prev_li = li
                             }
-                            is_tag_clicked = !is_tag_clicked
+                            if(prev_li !== li){}
+                            else{
+                                is_tag_clicked = !is_tag_clicked
+                            }
+                            
                         }
                         else {
                             item_tags_reviews.classList.replace("block", "hidden")

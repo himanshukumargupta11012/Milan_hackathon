@@ -25,7 +25,14 @@
         <a href="{{url_for('index')}}"><img src="./../static/raman.jpeg" alt="Avatar" class="hedear-img h-[60px]"></a>
         <div class="flex items-center">
             {% if user.type ==1 or user.type==2 %}
+            {% if user.type==1 %}
             <button class="review-button" id="openModal" style="font-family: 'Unbounded';">Add Item</button>
+            <button class="hidden" id="openModal2">Add Admin</button>
+            {% endif %}
+            {% if user.type==2 %}
+            <button class="hidden" id="openModal">Add Item</button>
+            <button class="review-button" id="openModal2" style="font-family: 'Unbounded';">Add Admin</button>
+            {% endif %}
             <a href="{{url_for('index')}}" class="review-button" style="font-family: 'Unbounded';">Home</a>
             {%else%}
             <a href="{{url_for('get_review')}}"><button class="review-button" style="font-family: 'Unbounded';">Write a
@@ -128,27 +135,15 @@
     </div>
 
     </section>
-    <!-- <section style="flex:1.4;" class="sidebar">
-            <div class="chart-container" style="position: relative; display: flex; justify-content: center;">
-                <canvas id="myChart"></canvas>
-            </div>
-            <div class="hot-topics flex-col gap-y-2">
-                <ul>
-                    {% if not user.is_authenticated %}
-                    <h2>Recommended items</h2>
-                    {% else %}
-                    <h2>Recommended for you</h2>
-                    {% endif %}
 
-                    {% if recommend_items is not none %}
-                    
-                    {% for item in recommend_items %}
-                    <li>{{item}}</li>
-                    {% endfor %}
-                    {%endif%}
-                </ul>
-            </div>
-        </section> -->
+    </div>
+
+    <div id="add_admin_div" class="hidden z-10 fixed top-[50%] right-[50%] bg-gray-300 p-5">
+        <form action="add_admin" method="POST" class="flex-col">
+            <input type="text" name="admin_email">
+            <input type="submit" class="bg-green-400 p-2 rounded">
+
+        </form>
     </div>
     <!-- <footer class="z-0">
         <p>&copy; Milan Hackthon 2023 From Raman Block</p>
@@ -461,8 +456,24 @@
 <script>
     const modal = document.getElementById('myModal');
     const modalContent = document.querySelector('.modal-content');
-    const btn = document.getElementById('openModal');
+    btn = document.getElementById('openModal');
     const span = document.getElementsByClassName('close')[0];
+    add_admin_btn = document.getElementById("openModal2")
+    const add_admin_div = document.getElementById("add_admin_div")
+
+    add_admin_true = false
+
+
+    add_admin_btn.onclick = ()=>{
+        if(add_admin_true) {
+            add_admin_div.classList.replace("flex", "hidden")
+        }
+        else {
+            console.log("fdsfkds")
+            add_admin_div.classList.replace("hidden", "flex")
+        }
+        add_admin_true = !add_admin_true
+    }
 
     btn.onclick = () => {
         modal.style.display = 'block';

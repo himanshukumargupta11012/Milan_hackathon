@@ -8,13 +8,13 @@ Welcome to the Canteen Recommendation & Review System for IIT Hyderabad! This we
 
 - **Search Functionality**: Users can search for any item available in the canteen.
 
-- **Insightful Recommendations**: Our system leverages advanced ML models, including collaborative filtering, sentiment analysis, and aspect-based sentiment analysis using transformers, to generate personalized food recommendations.
+- **Insightful Recommendations**: Our system leverages advanced ML models, including collaborative filtering, sentiment analysis, and aspect-based sentiment analysis , to generate personalized food recommendations.
 
 - **Aspect Sentiment Triplet Extraction**: Utilizing pyabsa, this system breaks down text data into aspects (e.g., product features), extracts opinions about those aspects, and assigns sentiment polarities (positive, negative) to each opinion, providing insights into consumer feedback or reviews.
 
-- **Search Recommendation**: Implemented search recommendations for food items to enhance user experience using  String matching algorithm.
+- **Search Recommendation**: Implemented search recommendations for food items to enhance user experience using String matching algorithm.
 
-- **Sentiment Analysis with Fine-tuned BERT Model**: Employing a fine-tuned BERT model for sentiment analysis provides a robust approach for rating prediction. The system accurately analyzes textual data and predicts ratings or sentiment scores out of 5.
+- **Sentiment Analysis with Fine-tuned BERT Model**: fine-tuned BERT model for sentiment analysis. The system accurately analyzes textual data and predicts ratings or sentiment scores out of 5.
 
 - **Collaborative Filtering**: Utilizing the SVD technique, the system offers recommendations based on collaborative filtering by considering user reviews on food items and recommending similar food choices from other users with shared interests.
 
@@ -27,12 +27,12 @@ Welcome to the Canteen Recommendation & Review System for IIT Hyderabad! This we
 
 ## Contributors
 
-- [Himanshu Kumar Gupta](https://github.com/your_username) - Project Lead
-- [Gunjit Mittal](https://github.com/your_username) 
-- [Donal Loitam](https://github.com/your_username) 
+- [Himanshu Kumar Gupta](https://github.com/himanshukumargupta11012) - Project Lead
+- [Gunjit Mittal](https://github.com/gunjitmittal) 
+- [Donal Loitam](https://github.com/Donal-08) 
 - [Suraj Kumar](https://github.com/kumarsuraj151) 
 - [Ravula Karthik](https://github.com/karthik6281) 
-- [Mannem Charan](https://github.com/your_username) 
+- [Mannem Charan](https://github.com/charanyash) 
 
 ## Installation
 
