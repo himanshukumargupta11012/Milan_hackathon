@@ -184,6 +184,7 @@ def get_review():
         update_neg_pos(review, item_id)
         rating = get_rating(review)
         newReview = FoodReview(user_id=user_id, review=review, rating=rating, item_id=item_id, sentiment_insights=None)
+        print(item_name, item_id, review, rating, user_id)
         db.session.add(newReview)
         db.session.commit()
         return redirect(url_for('index'))
